@@ -1,1 +1,1 @@
-@extends('layouts.dashboard')
+@extends('modules.profile')
