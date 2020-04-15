@@ -4,6 +4,10 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use BrowscapPHP\BrowscapUpdater;
+use BrowscapPHP\Helper\IniLoaderInterface;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +28,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        # Update the browscap.ini into Redis cache
+        $schedule->command('browscap:cache')
+            ->daily()
+            ->runInBackground()
+            ->onOneServer();
     }
 
     /**
