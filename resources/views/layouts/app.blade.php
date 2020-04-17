@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @stack('scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -52,11 +53,6 @@
 
         /* Medium devices (tablets, 768px and up)*/
         @media (min-width: 768px) { 
-        
-            
-            #sidePanel {
-                display: block !important;
-            }
             
         }
 
@@ -70,7 +66,6 @@
         
         }
     </style>
-    
     @stack('styles')
     
 </head>

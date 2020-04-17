@@ -4,11 +4,11 @@
 
 @section('content')
     <div class="container h-100">
-                
-        <div class="d-flex flex-wrap">
+    
+        <div class="row">
         
             {{-- Side menu --}}
-            <div id="sidePanel" class="d-none border-bottom pb-4 border-secondary">
+            <div id="sidePanel" class="col-md-4 border-bottom border-secondary pb-4">
             
                 {{-- Search box --}}
                 <div class="bg-secondary rounded-lg mt-5">
@@ -31,7 +31,7 @@
                 <div class="nav flex-column nav-pills">
                     <a href="#" class="nav-link active text-light">Home</a>
                     <a href="#" class="nav-link text-light">Profile</a>
-                    <a href="#" class="nav-link text-light">Campaigns</a>
+                    <a href="#" class="nav-link text-light">Codes</a>
                     <a href="#" class="nav-link text-light">Contact</a>
                 </div>
                 
@@ -45,11 +45,9 @@
             </div>
             
             {{-- Module --}}
-            <div id="module" class="flex-grow-1 p-5 text-light">
+            <div id="module" class="col-md-8 p-5 text-light">
                 @yield('module')
             </div>
-            
-            
         </div>
         
     </div>

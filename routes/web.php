@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('modules.codes.show');
 });
 
 Auth::routes();
@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/redirect', 'VisitController@Pipeline');
+
+Route::get('/test', 'CodesController@ViewIndex');
