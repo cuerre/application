@@ -23,6 +23,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/redirect', 'VisitController@Pipeline');
 
+
+
+/**
+ *
+ * Endpoints to manage codes
+ *
+ */
+
 Route::get('/codes', 'CodesController@ViewIndex');
 
+Route::get('/codes/creation', 'CodesController@ViewCreation');
+
 Route::delete('/code', 'CodesController@DeleteOne');
+
+Route::post('/code', 'CodesController@CreateOne');
+
+

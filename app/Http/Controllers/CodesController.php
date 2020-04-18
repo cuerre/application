@@ -81,7 +81,8 @@ class CodesController extends Controller
         public static function CreateOne( Request $request )
         {
             try{
-            
+                
+                return dd($request);
                 # Check input data
                 /*$validatedData = $request->validate([
                     'title' => ['required', 'unique:posts', 'max:255'],
@@ -119,13 +120,16 @@ class CodesController extends Controller
                 if (!$delete)
                     throw new Exception ('Code not deleted');
                     
-                return redirect('test')
+                return redirect('codes')
                     ->send();
                        
             } catch ( Exception $e ) {
                 report($e);
                 
-                return redirect('test')
+                return redirect('codes')
+                    ->withErrors([
+                        'message' => 'Something failed when deleting the code'
+                    ])
                     ->send();
             }
         }
@@ -145,6 +149,29 @@ class CodesController extends Controller
 
                 # Show index view
                 return view('modules.codes.index', ['codes' => $codes]);
+                
+            } catch ( Exception $e ) {
+                report ($e);
+
+                abort(404);
+            }
+        }
+        
+        
+        
+        /**
+        * Show the creation view for codes
+        *
+        * @return 
+        */
+        public static function ViewCreation ()
+        {
+            try {
+                # Get the codes collection and paginate them
+                //$codes = self::GetAll()->paginate(5);
+
+                # Show index view
+                return view('modules.codes.creation');
                 
             } catch ( Exception $e ) {
                 report ($e);
