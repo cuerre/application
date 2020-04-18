@@ -3,7 +3,6 @@
 
 
 @push('styles.tablet')
-    
     #sidePanel {
         display: block !important;
     }
@@ -44,7 +43,7 @@
                 <div class="nav flex-column nav-pills">
                     <a href="#" class="nav-link active text-light">Home</a>
                     <a href="#" class="nav-link text-light">Profile</a>
-                    <a href="#" class="nav-link text-light">Codes</a>
+                    <a href="{{ url('codes') }}" class="nav-link text-light">Codes</a>
                     <a href="#" class="nav-link text-light">Contact</a>
                 </div>
                 

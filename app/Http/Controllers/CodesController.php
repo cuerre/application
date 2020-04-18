@@ -100,12 +100,33 @@ class CodesController extends Controller
         *
         * @return bool
         */
-        public static function RemoveOne( int $codeId )
+        public static function DeleteOne( Request $request )
         {
             try{
-                             
+                # We need the user ID
+                $userId = 1;
+                    
+                # Check input data
+                $validatedData = $request->validate([
+                    'id' => ['required', 'integer', 'exists:codes'],
+                ]);
+                
+                # Delete asked code
+                $delete = Code::where('user_id', $userId)
+                    ->where('id', $request->input('id'))
+                    ->delete();
+                    
+                if (!$delete)
+                    throw new Exception ('Code not deleted');
+                    
+                return redirect('test')
+                    ->send();
+                       
             } catch ( Exception $e ) {
-
+                report($e);
+                
+                return redirect('test')
+                    ->send();
             }
         }
      

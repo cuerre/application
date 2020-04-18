@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="my-auto">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary shadow">
                 <i class="material-icons align-middle">add</i>
                 <span class="align-middle">New code</span>
             </button>
@@ -30,7 +30,7 @@
             $codeUrl = App\Http\Controllers\CodesController::GetImageUrl($code['id']);
         @endphp
         
-        <div class="row m-0 bg-secondary rounded mb-4 p-3 justify-content-center">
+        <div class="row m-0 bg-secondary rounded mb-4 p-3 justify-content-center shadow">
             <div class="col-md-auto p-3">
                 <div class="d-flex justify-content-center">
                     <img src="{{ $codeUrl }}" class="rounded-lg" style="width: 6rem !important;">
@@ -41,7 +41,7 @@
                     {{-- Top bar container --}}
                     <div class="p-2 text-break mb-auto">
                         <small class="text-uppercase text-dark">Code name</small>
-                        <h5>{{ $code['name'] }}</h5>
+                        <p>{{ $code['name'] }}</p>
                     </div>
                     
                     {{-- Bottom bar container --}}
@@ -65,9 +65,14 @@
                         </div>
                         
                         {{-- Delete --}}
-                        <a href="#" role="button" class="btn btn-secondary mr-1">
-                            <i class="material-icons align-middle">delete</i>
-                        </a>
+                        <form id="delete-code-form" action="{{ url('code') }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="id" value="{{ $code['id'] }}">
+                            <button type="submit" class="btn btn-secondary mr-1" onclick="return confirm('Are you sure?')">
+                                <i class="material-icons align-middle">delete</i>
+                            </button>
+                        </form>
                         
                     </div>
 

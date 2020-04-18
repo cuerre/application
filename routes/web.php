@@ -23,4 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/redirect', 'VisitController@Pipeline');
 
-Route::get('/test', 'CodesController@ViewIndex');
+Route::get('/codes', 'CodesController@ViewIndex');
+
+Route::delete('/code', 'CodesController@DeleteOne');
