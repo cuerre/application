@@ -2,13 +2,26 @@
 
 
 
+@push('styles.tablet')
+    
+    #sidePanel {
+        display: block !important;
+    }
+    
+    #module {
+        padding: 2rem !important;
+    }
+@endpush
+
+
+
 @section('content')
     <div class="container h-100">
     
         <div class="row">
         
             {{-- Side menu --}}
-            <div id="sidePanel" class="col-md-4 border-bottom border-secondary pb-4">
+            <div id="sidePanel" class="d-none col-md-4 pt-5">
             
                 {{-- Search box --}}
                 <div class="bg-secondary rounded-lg mt-5">
@@ -26,7 +39,7 @@
                 
                 {{-- Navigation --}}
                 <p class="mt-5 text-uppercase text-muted ml-3">
-                    Dashboard
+                    Dashboards
                 </p>
                 <div class="nav flex-column nav-pills">
                     <a href="#" class="nav-link active text-light">Home</a>
@@ -45,7 +58,7 @@
             </div>
             
             {{-- Module --}}
-            <div id="module" class="col-md-8 p-5 text-light">
+            <div id="module" class="col-md-8 text-light">
                 @yield('module')
             </div>
         </div>

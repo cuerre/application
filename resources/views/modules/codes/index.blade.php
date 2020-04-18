@@ -6,11 +6,22 @@
 
     {{-- Top title --}}
     <div class="d-flex justify-content-between mb-5 pb-3 border-bottom border-secondary">
-        <h1 class="my-auto">Codes</h1>
-        <button type="button" class="btn btn-primary my-auto">
-            <i class="material-icons align-middle">add</i>
-            <span class="align-middle">New code</span>
-        </button>
+        <div class="d-flex flex-column">
+            <div>
+                <span class="text-uppercase text-muted mb-auto">
+                    Dashboard
+                </span>
+            </div>
+            <div class="p-0">
+                <h3 class="mb-auto text-light">Codes</h3>
+            </div>
+        </div>
+        <div class="my-auto">
+            <button type="button" class="btn btn-primary">
+                <i class="material-icons align-middle">add</i>
+                <span class="align-middle">New code</span>
+            </button>
+        </div>
     </div>
     
     {{-- Code list --}}
@@ -18,17 +29,19 @@
         @php
             $codeUrl = App\Http\Controllers\CodesController::GetImageUrl($code['id']);
         @endphp
-    
-        <div class="media bg-secondary p-3 rounded mb-4">
-            <img src="{{ $codeUrl }}" class="mr-3 rounded-lg" style="width: 6rem !important;">
-            
-            <div class="media-body align-self-stretch">
-            
-                <div class="d-flex align-items-start flex-column h-100" >
-                
+        
+        <div class="row m-0 bg-secondary rounded mb-4 p-3 justify-content-center">
+            <div class="col-md-auto p-3">
+                <div class="d-flex justify-content-center">
+                    <img src="{{ $codeUrl }}" class="rounded-lg" style="width: 6rem !important;">
+                </div>
+            </div>
+            <div class="col p-0">
+                <div class="d-flex flex-column h-100 w-100">
                     {{-- Top bar container --}}
-                    <div class="mb-auto w-100">
-                        <h5 class="mt-0">{{ $code['name'] }}</h5>
+                    <div class="p-2 text-break mb-auto">
+                        <small class="text-uppercase text-dark">Code name</small>
+                        <h5>{{ $code['name'] }}</h5>
                     </div>
                     
                     {{-- Bottom bar container --}}
@@ -41,10 +54,10 @@
 
                         {{-- Download dropdown --}}
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle mr-1" id="dropdownMenu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle mr-1" data-display="static" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons align-middle">save_alt</i>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{{ $codeUrl }}&output=PNG&download">.PNG</a>
                                 <a class="dropdown-item" href="{{ $codeUrl }}&output=SVG&download">.SVG</a>
                                 <a class="dropdown-item" href="{{ $codeUrl }}&output=EPS&download">.EPS</a>
@@ -57,18 +70,31 @@
                         </a>
                         
                     </div>
+
                 </div>
             </div>
         </div>
         
     @empty
-        <p>No users</p>
+        
+        <div class="card border-0">
+            <div class="card-body bg-secondary rounded">
+                <p class="card-text">
+                    Click the button on the top and create 
+                    a new super vitamin code 
+                </p>
+            </div>
+        </div>
+        
     @endforelse
     
     {{-- Paginator --}}
-    <div class="d-flex justify-content-end">
-        {{ $codes->links() }}
-    </div>
+    @if ( $codes->lastPage() > 1)
+        <div class="d-flex justify-content-end">
+            {{ $codes->links() }}
+        </div>
+    @endif
+    
 
 @endsection
 

@@ -1,17 +1,14 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    @stack('scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,7 +16,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     
     <!-- Bugfixes for Google Material Icons -->
     <style>
@@ -44,26 +41,26 @@
          * Extra small devices (portrait phones, less than 576px)
          * No media query for `xs` since this is the default in Bootstrap
          */
+        @stack('styles.phone.portrait')
         
-
         /* Small devices (landscape phones, 576px and up) */
         @media (min-width: 576px) { 
-        
+            @stack('styles.phone.landscape')
         }
 
         /* Medium devices (tablets, 768px and up)*/
-        @media (min-width: 768px) { 
-            
+        @media (min-width: 768px) {
+            @stack('styles.tablet')
         }
 
         /* Large devices (desktops, 992px and up) */
         @media (min-width: 992px) { 
-        
+            @stack('styles.large')
         }
 
         /* Extra large devices (large desktops, 1200px and up) */
         @media (min-width: 1200px) { 
-        
+            @stack('styles.extra')
         }
     </style>
     @stack('styles')
@@ -83,7 +80,7 @@
                     </span>
                 </a>
                 
-                {{-- Menu toggler --}}
+                {{-- Menu toggler --}}                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -137,7 +134,7 @@
         </main>
         
         {{-- Footer --}}
-        <footer class="container p-5">
+        <footer class="container mt-5">
             <div class="row text-muted">
                 <div class="col-md-6 pb-3">
                     <span class="text-muted font-weight-bold text-uppercase" style="font-size: 1.5rem;">
@@ -163,5 +160,12 @@
         
         
     </div>
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    @stack('scripts')
+    
 </body>
 </html>

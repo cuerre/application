@@ -120,15 +120,14 @@ class CodesController extends Controller
         {
             try {
                 # Get the codes collection and paginate them
-                $codes = self::GetAll()->paginate(1);
+                $codes = self::GetAll()->paginate(5);
 
                 # Show index view
                 return view('modules.codes.index', ['codes' => $codes]);
                 
             } catch ( Exception $e ) {
                 report ($e);
-                
-                # Go to 404 page
+
                 abort(404);
             }
         }
