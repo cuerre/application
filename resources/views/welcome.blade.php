@@ -1,1 +1,0 @@
-@extends('modules.profile')
