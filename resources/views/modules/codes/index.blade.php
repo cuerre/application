@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="my-auto">
-            <a href="{{ url('codes/creation') }}" role="button" class="btn btn-primary shadow">
+            <a href="{{ url('codes/creation') }}" role="button" class="btn btn-primary">
                 <i class="material-icons align-middle">add</i>
                 <span class="align-middle">New code</span>
             </a>
@@ -30,7 +30,7 @@
             $codeUrl = App\Http\Controllers\CodesController::GetImageUrl($code['id']);
         @endphp
         
-        <div class="row m-0 bg-secondary rounded mb-4 p-3 justify-content-center shadow">
+        <div class="row m-0 bg-secondary rounded mb-4 p-3 justify-content-center">
             <div class="col-md-auto p-3">
                 <div class="d-flex justify-content-center">
                     <img src="{{ $codeUrl }}" class="rounded-lg" style="width: 6rem !important;">

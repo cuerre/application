@@ -98,7 +98,7 @@ class CodesController extends Controller
                 $targets = collect( $request->input('targets') )->recursive();
                 
                 # Check data field
-                $targets->every(function ($value, $key) {
+                $verifyTargets = $targets->every(function ($value, $key) {
                     if ( !is_int($key) )
                         return false;
                         
@@ -107,10 +107,23 @@ class CodesController extends Controller
                         'url' => ['required', 'url', 'filled'],
                     ]);
                     
-                    if ( $validator->fails() )
+                    if ( $validator->fails() ){
                         return false;
+                    }
                     return true;
                 });
+                
+                if (!$verifyTargets)
+                    throw new Exception ('Some field is malformed');
+                    
+                # Check 'any' target
+                $verifyAny = $targets->every(function ($value, $key) {
+                    if ($value->has('any'))
+                        return true;
+                });
+                
+                if (!$verifyAny)
+                    throw new Exception ('You have to define "Any" target');
                 
                 # Format data field
                 $data = collect([
@@ -196,7 +209,7 @@ class CodesController extends Controller
         {
             try {
                 # Get the codes collection and paginate them
-                $codes = self::GetAll()->paginate(5);
+                $codes = self::GetAll()->paginate(3);
 
                 # Show index view
                 return view('modules.codes.index', ['codes' => $codes]);

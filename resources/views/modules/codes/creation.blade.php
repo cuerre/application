@@ -20,7 +20,7 @@
     
     {{-- Errors --}}
     @if ($errors->any())
-        <div class="alert alert-primary">
+        <div class="alert alert-danger">
             <ul class="list-unstyled">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -38,13 +38,12 @@
         </div>
         
         <div class="form-group mb-4">
-            <button type="button" class="btn btn-sm btn-secondary shadow" v-on:click="addTarget()">
+            <button type="button" class="btn btn-sm btn-secondary" v-on:click="addTarget()">
                 <i class="material-icons align-middle">add</i>
             </button>
-            <button type="button" class="btn btn-sm btn-secondary shadow" v-on:click="removeTarget()">
+            <button type="button" class="btn btn-sm btn-secondary" v-on:click="removeTarget()">
                 <i class="material-icons align-middle">remove</i>
             </button>
-            <p class="text-muted small mt-2">Set your redirections</p>
         </div>
         
         {{-- Targets --}}     
@@ -79,7 +78,7 @@
                 }
             },
             template: `
-                <div class="my-4 shadow">
+                <div class="my-4">
                     <div class="row align-items-end m-0 border border-secondary rounded bg-secondary py-4 px-2">
                         <div class="col-md-4">
                             <label class="small">User system</label>
