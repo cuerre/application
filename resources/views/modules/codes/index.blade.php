@@ -17,10 +17,10 @@
             </div>
         </div>
         <div class="my-auto">
-            <button type="button" class="btn btn-primary shadow">
+            <a href="{{ url('codes/creation') }}" role="button" class="btn btn-primary shadow">
                 <i class="material-icons align-middle">add</i>
                 <span class="align-middle">New code</span>
-            </button>
+            </a>
         </div>
     </div>
     

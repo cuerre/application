@@ -6,6 +6,7 @@ use App\StatBrowscap as StatBrowscap;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\BrowscapController;
 
 class InputController extends Controller
@@ -24,7 +25,7 @@ class InputController extends Controller
                 throw new Exception('Browser data not stored');
             
         } catch ( Exception $e ){
-            report($e);
+            Log::error($e->getMessage());
         }
     }
     
@@ -67,7 +68,7 @@ class InputController extends Controller
                 throw new Exception('Impossible to save browser data');
             
         } catch ( Exception $e ){
-            report($e);
+            Log::error($e->getMessage());
             return false;
         }
         return true;

@@ -13,17 +13,28 @@
                 </span>
             </div>
             <div class="p-0">
-                <h3 class="mb-auto text-light">Creating a code</h3>
+                <h3 class="mb-auto text-light">New code</h3>
             </div>
         </div>
     </div>
+    
+    {{-- Errors --}}
+    @if ($errors->any())
+        <div class="alert alert-primary">
+            <ul class="list-unstyled">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     
     
     <form action="{{ url('code') }}" method="POST">
         @csrf
 
         <div class="form-group mb-5">
-            <input type="text" class="form-control" placeholder="Give it a name">
+            <input type="text" name="name" class="form-control" placeholder="Give it a name">
         </div>
         
         <div class="form-group mb-4">
@@ -33,7 +44,7 @@
             <button type="button" class="btn btn-sm btn-secondary shadow" v-on:click="removeTarget()">
                 <i class="material-icons align-middle">remove</i>
             </button>
-            <p class="text-muted small mt-2">Set your targets</p>
+            <p class="text-muted small mt-2">Set your redirections</p>
         </div>
         
         {{-- Targets --}}     
@@ -60,29 +71,27 @@
         Vue.component('codes-target-selector', {
             props: ['name'],
             methods: {
-                setTargetName: function() {
-                    let name = this.$props.name;
-                    return "target["+name+"][system]";
+                setTargetSystem: function() {
+                    return "targets["+this.$props.name+"][system]";
                 },
                 setTargetUrl: function() {
-                    let name = this.$props.name;
-                    return "target["+name+"][url]";
+                    return "targets["+this.$props.name+"][url]";
                 }
             },
             template: `
                 <div class="my-4 shadow">
                     <div class="row align-items-end m-0 border border-secondary rounded bg-secondary py-4 px-2">
-                        <div class="col col-md-4">
-                            <label class="small">Your target</label>
-                            <select class="form-control" :name="setTargetName()" >
+                        <div class="col-md-4">
+                            <label class="small">User system</label>
+                            <select class="form-control" :name="setTargetSystem()" >
                                 <option value="android" selected>Android</option>
                                 <option value="ios">iOS</option>
                                 <option value="any">Any</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="col-md">
                             <label class="small">Destination url</label>
-                            <input type="text" class="form-control" :name="setTargetUrl()" placeholder="http://destination.url/...">
+                            <input type="text" class="form-control" :name="setTargetUrl()" placeholder="http://destination.url">
                         </div>
                     </div>
                 </div>

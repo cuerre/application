@@ -6,6 +6,7 @@ use App\Code as Code;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\BrowscapController;
 
 class ActionController extends Controller
@@ -46,13 +47,29 @@ class ActionController extends Controller
             # Simplify data field var name
             $data = $code[0]['data'];
                 
-            if ( !$data->has('redirections') )
-                throw new Exception('No redirections for this code');
+            if ( !$data->has('targets') )
+                throw new Exception('No targets for this code');
+                
+            # Redirect for platform specific target
+            $data['targets']->each(function ($item, $key) use ($platform) {
+                # http://192.168.0.42:8000/redirect?c=12
+                
+                # Transform 'target' to lower case
+                $target = Str::of( $item['system'] )
+                    ->lower()
+                    ->__toString();
+                
+                # Go to the promoted site
+                if ( $target === $platform)
+                    return redirect()
+                        ->away($item['url'])
+                        ->send();
+            });
                 
             # Redirect for target 'any'
-            $data['redirections']->each(function ($item){
+            $data['targets']->each(function ($item, $key){
                 # Transform 'target' to lower case
-                $target = Str::of( $item['target'] )
+                $target = Str::of( $item['system'] )
                     ->lower()
                     ->__toString();
                     
@@ -63,40 +80,12 @@ class ActionController extends Controller
                         ->send();
             });
             
-            # Redirect for platform specific target
-            $data['redirections']->each(function ($item) use ($platform) {
-                # Transform 'target' to lower case
-                $target = Str::of( $item['target'] )
-                    ->lower()
-                    ->__toString();
-                
-                # Go to the promoted site
-                if ( $target === $platform)
-                    return redirect()
-                        ->away($item['url'])
-                        ->send();
-            });
-            
-            # Redirect for target 'fallback'
-            $data['redirections']->each(function ($item){
-                # Transform 'target' to lower case
-                $target = Str::of( $item['target'] )
-                    ->lower()
-                    ->__toString();
-                    
-                # Go to the promoted site
-                if ( $target === 'fallback' ) 
-                    return redirect()
-                        ->away($item['url'])
-                        ->send();
-                        
-                # Last change to redirect missed. register it
-                throw new Exception('Fallback target not found on this code');
-            });
+            throw new Exception('Target "any" not configured. Redirection failed.');
             
         } catch ( Exception $e ) {
-            report($e);
-            
+        
+            Log::emergency($e->getMessage());
+                   
             # Redirect to our fallback page
             return redirect('redirect/failed')
                 ->send();

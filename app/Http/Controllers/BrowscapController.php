@@ -31,14 +31,15 @@ class BrowscapController extends Controller
                 ->recursive();
                 
             if ( $data->isEmpty() ){
-                return collect([]);
+                throw new Exception ('Browser data not retrieved from browscap');
             }
             
             # Return data when collected
             return $data;
             
         } catch (Exception $e) {
-            report($e);
+            Log::error($e->getMessage());
+            
             return collect([]);
         }
     }
@@ -60,7 +61,9 @@ class BrowscapController extends Controller
             return $data->toJson();
             
         } catch (Exception $e) {
-            report($e);
+        
+            Log::error($e->getMessage());
+
             return collect([])->toJson();
         }
     }

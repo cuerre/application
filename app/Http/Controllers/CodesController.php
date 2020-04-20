@@ -6,6 +6,8 @@ use App\Code;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class CodesController extends Controller
 {
@@ -32,10 +34,8 @@ class CodesController extends Controller
                 
             } catch ( Exception $e ){
 
-                # Store the exception
-                report ($e);
+                Log::error($e->getMessage());
 
-                # Return an empty collection    
                 return collect([]);
             }
         }
@@ -67,7 +67,7 @@ class CodesController extends Controller
                 return $codeUrl;
                 
             } catch ( Exception $e ) {
-                report ($e);
+                Log::error($e->getMessage());
             }
         }
         
@@ -82,15 +82,63 @@ class CodesController extends Controller
         {
             try{
                 
-                return dd($request);
-                # Check input data
-                /*$validatedData = $request->validate([
-                    'title' => ['required', 'unique:posts', 'max:255'],
-                    'body' => ['required'],
-                ]);*/
-                  
+                # Retrieve the user
+                $userId = 1;
+                
+                # Check the input fields
+                $validator = Validator::make($request->all(), [
+                    'name' => ['required', 'max:100'],
+                    'targets' => ['required', 'array', 'min:1'],
+                ]);
+                
+                if ($validator->fails())
+                    throw new Exception ('Some field is malformed');
+                    
+                # Convert target to a collection
+                $targets = collect( $request->input('targets') )->recursive();
+                
+                # Check data field
+                $targets->every(function ($value, $key) {
+                    if ( !is_int($key) )
+                        return false;
+                        
+                    $validator = Validator::make($value->toArray(), [
+                        'system' => ['required', 'alpha_num', 'filled'],
+                        'url' => ['required', 'url', 'filled'],
+                    ]);
+                    
+                    if ( $validator->fails() )
+                        return false;
+                    return true;
+                });
+                
+                # Format data field
+                $data = collect([
+                    'targets' => $targets
+                ]);
+                                
+                # Add new code
+                $code          = new Code;
+                $code->user_id = $userId;
+                $code->name    = $request->input('name');
+                $code->data    = $data->toArray();
+                
+                if ( !$code->save() )
+                    throw new Exception ('Failed to create the code');
+                    
+                # Go to the index
+                return redirect('codes')
+                    ->send();
+                
             } catch ( Exception $e ) {
-
+                Log::error($e->getMessage());
+                
+                # Go to the form with error bag
+                return redirect('codes/creation')
+                    ->withErrors([
+                        'message' => $e->getMessage()
+                    ])
+                    ->send();
             }
         }
         
@@ -108,9 +156,12 @@ class CodesController extends Controller
                 $userId = 1;
                     
                 # Check input data
-                $validatedData = $request->validate([
+                $validator = Validator::make($request->all(), [
                     'id' => ['required', 'integer', 'exists:codes'],
                 ]);
+                
+                if ($validator->fails())
+                    throw new Exception ('Some field is malformed');
                 
                 # Delete asked code
                 $delete = Code::where('user_id', $userId)
@@ -124,11 +175,11 @@ class CodesController extends Controller
                     ->send();
                        
             } catch ( Exception $e ) {
-                report($e);
+                Log::error($e->getMessage());
                 
                 return redirect('codes')
                     ->withErrors([
-                        'message' => 'Something failed when deleting the code'
+                        'message' => $e->getMessage()
                     ])
                     ->send();
             }
@@ -151,7 +202,7 @@ class CodesController extends Controller
                 return view('modules.codes.index', ['codes' => $codes]);
                 
             } catch ( Exception $e ) {
-                report ($e);
+                Log::error($e->getMessage());
 
                 abort(404);
             }
@@ -174,7 +225,7 @@ class CodesController extends Controller
                 return view('modules.codes.creation');
                 
             } catch ( Exception $e ) {
-                report ($e);
+                Log::error($e->getMessage());
 
                 abort(404);
             }
