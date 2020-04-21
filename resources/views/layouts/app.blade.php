@@ -167,6 +167,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script>
+        $(function () {
+            console.log('caca');
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     @stack('scripts')
     
 </body>
