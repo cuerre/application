@@ -13,7 +13,7 @@
                 </span>
             </div>
             <div class="p-0">
-                <h3 class="mb-auto text-light">New code</h3>
+                <h3 class="mb-auto text-light font-weight-normal">New code</h3>
             </div>
         </div>
     </div>

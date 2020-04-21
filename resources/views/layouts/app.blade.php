@@ -75,8 +75,9 @@
             
                 {{-- Logo --}}
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <span class="text-light font-weight-bold text-uppercase" style="font-size: 1.5rem;">
-                        { {{ config('app.name') }} }
+                    <img src="{{ asset('imgs/logo.png') }}" style="max-height: 2.5rem; filter: invert(100%)" class="align-middle mr-3"/>
+                    <span class="text-light font-weight-bold text-uppercase align-middle" style="font-size: 2.5rem;">
+                        {{ config('app.name') }}
                     </span>
                 </a>
                 

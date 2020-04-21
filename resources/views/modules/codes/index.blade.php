@@ -13,7 +13,7 @@
                 </span>
             </div>
             <div class="p-0">
-                <h3 class="mb-auto text-light">Codes</h3>
+                <h3 class="mb-auto text-light font-weight-normal">Codes</h3>
             </div>
         </div>
         <div class="my-auto">
@@ -44,8 +44,20 @@
                         <p>{{ $code['name'] }}</p>
                     </div>
                     
+                    {{-- Targets bar container --}}
+                    <div class="p-2 text-break mb-auto">
+                        <small class="text-uppercase text-dark">Targets</small>
+                        <div>    
+                            @foreach ( $code['data']['targets'] as $target )
+                                <span class="badge badge-pill badge-dark text-capitalize">
+                                    {{ $target['system'] }}
+                                </span>
+                            @endforeach
+                        </div>
+                    </div>
+                    
                     {{-- Bottom bar container --}}
-                    <div class="d-flex flex-row w-100">
+                    <div class="d-flex flex-row w-100 py-2">
                     
                         {{-- Stats --}}
                         <a href="#" role="button" class="btn btn-secondary mr-1">

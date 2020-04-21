@@ -23,6 +23,7 @@
             <div id="sidePanel" class="d-none col-md-4 pt-5">
             
                 {{-- Search box --}}
+                <!--
                 <div class="bg-secondary rounded-lg mt-5">
                     <div class="d-flex flex-row">
                       <div class="flex-grow-1">
@@ -35,9 +36,10 @@
                       </div>
                     </div>
                 </div>
+                -->
                 
                 {{-- Navigation --}}
-                <p class="mt-5 text-uppercase text-muted ml-3">
+                <p class="text-uppercase text-muted ml-3">
                     Dashboards
                 </p>
                 <div class="nav flex-column nav-pills">
