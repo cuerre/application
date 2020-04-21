@@ -116,14 +116,11 @@ class CodesController extends Controller
                 if (!$verifyTargets)
                     throw new Exception ('Some field is malformed');
                     
-                # Check 'any' target
-                $verifyAny = $targets->every(function ($value, $key) {
-                    if ($value->has('any'))
-                        return true;
-                });
+                # Check if Any target is set
+                $verifyAny = $targets->firstWhere('system', 'any');
                 
-                if (!$verifyAny)
-                    throw new Exception ('You have to define "Any" target');
+                if ( is_null($verifyAny) )
+                    throw new Exception ('You must define "Any" target. Remember that everything can fail.');
                 
                 # Format data field
                 $data = collect([
