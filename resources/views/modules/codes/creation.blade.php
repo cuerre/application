@@ -30,18 +30,26 @@
     @endif
     
     
+    
+    
+    
+    
+    
+    
     <form action="{{ url('code') }}" method="POST">
         @csrf
 
+        {{-- Name --}}
         <div class="form-group mb-5">
             <input type="text" name="name" class="form-control" placeholder="Give it a name">
         </div>
         
-        <div class="form-group mb-4">
-            <button type="button" class="btn btn-sm btn-secondary" v-on:click="addTarget()">
+        {{-- Buttons --}}
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-secondary" v-on:click="addTarget()">
                 <i class="material-icons align-middle">add</i>
             </button>
-            <button type="button" class="btn btn-sm btn-secondary" v-on:click="removeTarget()">
+            <button type="button" class="btn btn-secondary" v-on:click="removeTarget()">
                 <i class="material-icons align-middle">remove</i>
             </button>
         </div>
@@ -81,16 +89,17 @@
                 <div class="my-4">
                     <div class="row align-items-end m-0 border border-secondary rounded bg-secondary py-4 px-2">
                         <div class="col-md-4">
-                            <label class="small">User system</label>
-                            <select class="form-control" :name="setTargetSystem()" >
-                                <option value="android" selected>Android</option>
+                            <select class="form-control text-secondary" :name="setTargetSystem()">
+                                <option value="win10">Windows 10</option>
+                                <option value="android">Android</option>
                                 <option value="ios">iOS</option>
-                                <option value="any">Any</option>
+                                <option value="any" selected>Any</option>
                             </select>
+                            <label class="small text-dark text-monospace">User system</label>
                         </div>
                         <div class="col-md">
-                            <label class="small">Destination url</label>
-                            <input type="text" class="form-control" :name="setTargetUrl()" placeholder="http://destination.url">
+                            <input type="text" class="form-control text-secondary" :name="setTargetUrl()" placeholder="http://destination.url">
+                            <label class="small text-dark text-monospace">Destination url</label>
                         </div>
                     </div>
                 </div>

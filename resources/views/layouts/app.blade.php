@@ -130,7 +130,7 @@
         </nav>
 
         {{-- Content --}}
-        <main class="py-4 min-vh-100">
+        <main class="py-4" style="min-height: 70vh !important;">
             @yield('content')
         </main>
         
@@ -138,9 +138,12 @@
         <footer class="container mt-5">
             <div class="row text-muted">
                 <div class="col-md-6 pb-3">
-                    <span class="text-muted font-weight-bold text-uppercase" style="font-size: 1.5rem;">
-                        { {{ config('app.name') }} }
+                    <img src="{{ asset('imgs/logo.png') }}" style="max-height: 1.5rem; filter: invert(50%)" class="align-middle mr-2"/>
+                    
+                    <span class="text-muted font-weight-bold text-uppercase align-middle" style="font-size: 1.5rem;">
+                        {{ config('app.name') }}
                     </span>
+                    
                 </div>
                 <div class="col-sm">
                     <a href="/blog" class="text-reset d-block">Blog</a>

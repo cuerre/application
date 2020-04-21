@@ -19,7 +19,7 @@
         <div class="my-auto">
             <a href="{{ url('codes/creation') }}" role="button" class="btn btn-primary">
                 <i class="material-icons align-middle">add</i>
-                <span class="align-middle">New code</span>
+                <span class="align-middle">New</span>
             </a>
         </div>
     </div>
