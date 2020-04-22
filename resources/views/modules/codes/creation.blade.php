@@ -29,13 +29,6 @@
         </div>
     @endif
     
-    
-    
-    
-    
-    
-    
-    
     <form action="{{ url('code') }}" method="POST">
         @csrf
 
@@ -87,19 +80,18 @@
             },
             template: `
                 <div class="my-4">
-                    <div class="row align-items-end m-0 border border-secondary rounded bg-secondary py-4 px-2">
-                        <div class="col-md-4">
+                    <div class="row align-items-end m-0 rounded bg-secondary py-4 px-2">
+                        <div class="col-md-4 align-self-stretch">
                             <select class="form-control text-secondary" :name="setTargetSystem()">
+                                <option selected>Choose a target...</option>
                                 <option value="win10">Windows 10</option>
                                 <option value="android">Android</option>
                                 <option value="ios">iOS</option>
-                                <option value="any" selected>Any</option>
+                                <option value="any">Any</option>
                             </select>
-                            <label class="small text-dark text-monospace">User system</label>
                         </div>
-                        <div class="col-md">
-                            <input type="text" class="form-control text-secondary" :name="setTargetUrl()" placeholder="http://destination.url">
-                            <label class="small text-dark text-monospace">Destination url</label>
+                        <div class="col-md align-self-stretch">
+                            <input type="text" class="form-control text-secondary" :name="setTargetUrl()" placeholder="http://goto.destination.com">
                         </div>
                     </div>
                 </div>

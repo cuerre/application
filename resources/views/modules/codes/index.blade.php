@@ -49,12 +49,16 @@
                         <small class="text-uppercase text-dark">Targets</small>
                         <div>    
                             @foreach ( $code['data']['targets'] as $target )
-                                <span class="badge badge-dark text-capitalize" 
-                                    data-toggle="tooltip" 
-                                    data-placement="top" 
-                                    title="{{ $target['url'] }}">
-                                    {{ $target['system'] }}
-                                </span>
+                                <a href="{{ $target['url'] }}" target="_blank">
+                                    <button type="button" class="btn btn-sm btn-secondary active"
+                                        data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        title="{{ $target['url'] }}">
+                                            <span class="text-capitalize">
+                                                {{ $target['system'] }}
+                                            </span>
+                                    </button>
+                                </a>
                             @endforeach
                         </div>
                     </div>
