@@ -5,7 +5,7 @@
 @section('module')
 
     {{-- Top title --}}
-    <div class="d-flex justify-content-between mb-5 py-3 border-bottom border-muted">
+    <div class="d-flex justify-content-between mb-5 py-3">
         <div class="d-flex flex-column">
             <div>
                 <span class="text-uppercase text-muted mb-auto">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="my-auto">
-            <a href="{{ url('codes/creation') }}" role="button" class="btn btn-primary">
+            <a href="{{ url('dashboard/codes/creation') }}" role="button" class="btn btn-primary">
                 <i class="material-icons align-middle">add</i>
                 <span class="align-middle">New</span>
             </a>
@@ -30,7 +30,7 @@
             $codeUrl = App\Http\Controllers\CodesController::GetImageUrl($code['id']);
         @endphp
         
-        <div class="row m-0 bg-light rounded mb-4 p-3 justify-content-center border">
+        <div class="row m-0 bg-light rounded mb-4 p-3 justify-content-center">
             <div class="col-md-auto p-3">
                 <div class="d-flex justify-content-center">
                     <img src="{{ $codeUrl }}" class="rounded-lg shadow-sm" style="width: 6rem !important;">
@@ -50,7 +50,7 @@
                         <div>    
                             @foreach ( $code['data']['targets'] as $target )
                                 <a href="{{ $target['url'] }}" target="_blank" class="text-decoration-none">
-                                    <button type="button" class="btn btn-sm btn-link text-muted active p-0"
+                                    <button type="button" class="btn btn-sm bg-secondary text-light"
                                         data-toggle="tooltip" 
                                         data-placement="top" 
                                         title="{{ $target['url'] }}">

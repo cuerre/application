@@ -5,7 +5,7 @@
 @section('module')
 
     {{-- Top title --}}
-    <div class="d-flex justify-content-between mb-5 py-3 border-bottom border-muted">
+    <div class="d-flex justify-content-between mb-5 py-3">
         <div class="d-flex flex-column">
             <div>
                 <span class="text-uppercase text-muted mb-auto">
@@ -38,13 +38,15 @@
         </div>
         
         {{-- Buttons --}}
-        <div class="btn-group border rounded" role="group">
-            <button type="button" class="btn btn-light" v-on:click="addTarget()">
-                <i class="material-icons align-middle">add</i>
-            </button>
-            <button type="button" class="btn btn-light" v-on:click="removeTarget()">
-                <i class="material-icons align-middle">remove</i>
-            </button>
+        <div class="d-flex justify-content-end">
+            <div class="btn-group rounded" role="group">
+                <button type="button" class="btn btn-light" v-on:click="addTarget()">
+                    <i class="material-icons align-middle">add</i>
+                </button>
+                <button type="button" class="btn btn-light" v-on:click="removeTarget()">
+                    <i class="material-icons align-middle">remove</i>
+                </button>
+            </div>
         </div>
         
         {{-- Targets --}}     
@@ -52,10 +54,12 @@
         </codes-target-selector>
    
         {{-- Submit button --}}
-        <div class="form-group mt-5 ">
-            <button type="submit" class="btn btn-primary">
-                Create!
-            </button>
+        <div class="d-flex justify-content-end">
+            <div class="form-group mt-5 ">
+                <button type="submit" class="btn btn-primary">
+                    Create!
+                </button>
+            </div>
         </div>
         
     </form>
@@ -80,7 +84,7 @@
             },
             template: `
                 <div class="my-4">
-                    <div class="row align-items-end m-0 rounded bg-light border py-4 px-2">
+                    <div class="row align-items-end m-0 rounded bg-light py-4 px-2">
                         <div class="col-md-4 align-self-stretch">
                             <select class="form-control form-control-sm py-4 mb-3 text-secondary" :name="setTargetSystem()">
                                 <option selected>Choose a target...</option>

@@ -27,16 +27,20 @@ Route::get('/redirect', 'VisitController@Pipeline');
 
 /**
  *
- * Endpoints to manage codes
+ * Dashboard endpoints
  *
  */
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
-Route::get('/codes', 'CodesController@ViewIndex');
+    Route::get('/codes', 'CodesController@ViewIndex');
 
-Route::get('/codes/creation', 'CodesController@ViewCreation');
+    Route::get('/codes/creation', 'CodesController@ViewCreation');
 
-Route::delete('/code', 'CodesController@DeleteOne');
+    Route::delete('/code', 'CodesController@DeleteOne');
 
-Route::post('/code', 'CodesController@CreateOne');
+    Route::post('/code', 'CodesController@CreateOne');
+});
+
+
 
 

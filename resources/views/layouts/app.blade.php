@@ -71,7 +71,7 @@
     <div id="app">
     
         {{-- Navbar --}}
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top" >
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top d-flex flex-column" >
             <div class="container">
             
                 {{-- Logo --}}
@@ -129,6 +129,7 @@
                 </div>
             </div>
         </nav>
+        
 
         {{-- Content --}}
         <main class="container-fluid d-flex py-5" style="min-height: 70vh !important;">
