@@ -76,9 +76,9 @@
             
                 {{-- Logo --}}
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('imgs/logo.png') }}" style="max-height: 2.5rem; " class="align-middle mr-3"/>
-                    <span class="text-dark font-weight-bold text-uppercase align-middle" style="font-size: 2.5rem;">
-                        {{ config('app.name') }}
+                    <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 2.5rem; " class="align-middle mr-3"/>
+                    <span class="text-primary font-weight-bold text-uppercase align-middle" style="font-size: 2.5rem;">
+                        {{-- config('app.name') --}}
                     </span>
                 </a>
                 
@@ -98,12 +98,18 @@
                     
                         {{-- Authentication Links --}}
                         @guest
-                            <li class="nav-item">
-                                <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
+                            @if(Route::currentRouteName() !== 'login' )
                                 <li class="nav-item">
-                                    <a class="btn btn-primary mr-2" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">
+                                        {{ __('Login') }}
+                                    </a>
+                                </li>
+                            @endif
+                            @if (Route::has('register') && Route::currentRouteName() !== 'register')
+                                <li class="nav-item">
+                                    <a class="btn btn-primary mr-2" href="{{ route('register') }}">
+                                        {{ __('Register') }}
+                                    </a>
                                 </li>
                             @endif
                         @else
@@ -137,29 +143,39 @@
         </main>
         
         {{-- Footer --}}
-        <footer class="container mt-5">
+        <footer class="container mt-5 text-muted">
+            <div class="row p-3">
+                <div class="col">
+                    <span class="font-weight-bolder">Company</span>
+                    <a href="/blog" class="d-block">Blog</a>
+                    <a href="/about" class="d-block">About</a>
+                    <a href="/about" class="d-block">Press</a>
+                    
+                </div>
+                <div class="col">
+                    <span class="font-weight-bolder">Community</span>
+                    <a href="/faq" class="d-block">FAQ</a>
+                    <a href="/donations" class="d-block">Donations</a>
+                    <a href="/achetronic" class="d-block">Achetronic</a>
+                </div>
+                <div class="col">
+                    <span class="font-weight-bolder">Deeper</span>
+                    <a href="/support" class="d-block">Support</a>
+                    <a href="/status" class="d-block">Status</a>
+                    <a href="/pricing" class="d-block">Pricing</a>
+                    <a href="/terms" class="d-block">Terms</a>
+                    <a href="/privacy" class="d-block">Privacy</a>
+                </div>
+            </div>
             <div class="row text-muted p-3">
                 <div class="col-md-6 pb-3">
-                    <img src="{{ asset('imgs/logo_muted.png') }}" style="max-height: 1.5rem;" class="align-middle mr-2"/>
-                    
+                    <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 1.5rem;" class="align-middle mr-2"/>
                     <span class="text-muted font-weight-bold text-uppercase align-middle" style="font-size: 1.5rem;">
-                        {{ config('app.name') }}
+                        {{-- config('app.name') --}}
                     </span>
-                    
                 </div>
-                <div class="col-sm">
-                    <a href="/blog" class="text-reset d-block">Blog</a>
-                    <a href="/about" class="text-reset d-block">About</a>
-                    <a href="/contact" class="text-reset d-block">Contact us</a>
-                    <a href="/pricing" class="text-reset d-block">Pricing</a>
-                </div>
-                <div class="col-sm">
-                    <a href="/status" class="text-reset d-block">Status</a>
-                    <a href="/help" class="text-reset d-block">Help</a>
-                </div>
-                <div class="col-sm">
-                    <a href="/terms" class="text-reset d-block">Terms</a>
-                    <a href="/privacy" class="text-reset d-block">Privacy</a>
+                <div class="col-md-6 pb-3">
+                                        
                 </div>
             </div>
         </footer>

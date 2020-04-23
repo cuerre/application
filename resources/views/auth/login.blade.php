@@ -1,21 +1,41 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
+
+@push('styles.large')
+    #loginAnimation {
+        display: block !important;
+    }
+@endpush
+
+
+
+@section('content')
+<div class="container d-flex align-items-center p-0">
+    <div class="row justify-content-center w-100 m-0">
+    
+        <div class="col-lg-6 p-0">
+            <div class="card w-100 rounded border-0">
+
+                <div class="card-body bg-white text-dark shadow-sm rounded border-0 p-5">
+                
+                    {{-- Card header --}}
+                    <div class="mb-4">
+                        <span class="h5">
+                            {{ __('Welcome back to Cuerre') }}
+                        </span>
+                    </div>
+                
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
+                        {{-- Email field --}}
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <div class="col-md">
+                                <label for="email" class="text-md-right small font-weight-bolder">
+                                    {{ __('E-Mail Address') }}
+                                </label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror form-control-sm py-4" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -25,11 +45,13 @@
                             </div>
                         </div>
 
+                        {{-- Password field --}}
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                            <div class="col-md">
+                                <label for="email" class="text-md-right small font-weight-bolder">
+                                    {{ __('Password') }}
+                                </label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror form-control-sm py-4" name="password" required autocomplete="current-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -38,36 +60,57 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
+                        
+                        {{-- See remember toggle --}}
+                        <div class="d-flex justify-content-end custom-control custom-switch">
+                            <input name="remember" type="checkbox" class="custom-control-input" id="toggleRemember" {{ old('remember') ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="toggleRemember">
+                                {{ __('Remember me') }}
+                            </label>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                        {{-- Submit button --}}
+                        <div class="form-group row my-4">
+                            <div class="col-md d-flex justify-content-end">
+                                <button type="submit" class="btn btn-block btn-lg btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
+                            </div>
+                        </div>
+                        
+                        {{-- Recovery link --}}
+                        <div class="form-group row m-0">
+                            <div class="col-md px-0">
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                        {{ __('Forgot your password?') }}
                                     </a>
                                 @endif
                             </div>
                         </div>
+                        
+                        {{-- Register link --}}
+                        <div class="form-group row m-0">
+                            <div class="col-md px-0">
+                                @if (Route::has('register'))
+                                    <a class="btn btn-link" href="{{ route('register') }}">
+                                        {{ __('Create account') }}
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        
                     </form>
                 </div>
             </div>
         </div>
+        <!--
+        <div class="col"></div>
+        <div class="col-lg-5 p-3">
+            <img id="loginAnimation" src="{{ asset('imgs/animations/login.gif') }}" class="d-none w-100 align-self-center"/>
+        </div>
+        -->
     </div>
 </div>
 @endsection

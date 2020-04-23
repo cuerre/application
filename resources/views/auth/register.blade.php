@@ -37,6 +37,13 @@
                 <div class="card-body bg-white text-dark shadow-sm rounded border-0 p-5">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        
+                        {{-- Card header --}}
+                        <div class="mb-4">
+                            <span class="h5">
+                                {{ __('Create new account') }}
+                            </span>
+                        </div>
 
                         {{-- Name field --}}
                         <div class="form-group row py-2">
@@ -105,6 +112,9 @@
                         </div>
                     </form>
                 </div>
+                
+                {{-- Oauth providers --}}
+                <!--
                 <div class="bg-white py-4">
                     <div class="row p-3">
                         <div class="col-lg d-flex justify-content-center my-1">
@@ -123,6 +133,7 @@
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </div>
         <div class="col"></div>
