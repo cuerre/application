@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth', 'password.confirm']);
+
 
 Route::get('/redirect', 'VisitController@Pipeline');
     
@@ -34,7 +34,7 @@ Route::get('/redirect', 'VisitController@Pipeline');
 
 
 
-
+//Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth', 'password.confirm']);
 /**
  *
  * Dashboard endpoints
