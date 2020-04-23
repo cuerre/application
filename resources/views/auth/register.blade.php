@@ -6,7 +6,22 @@
     #registerAnimation {
         display: block !important;
     }
+@endpush
 
+
+
+{{-- Show/Hide password with Toggle --}}
+@push('scripts')
+    let togglePass = document.querySelector('#togglePass');
+    let inputPass  = document.querySelector('#password');
+    
+    togglePass.addEventListener("change", function(){
+        if(togglePass.checked){
+            inputPass.type = "text"
+        }else{
+            inputPass.type = "password"
+        }
+    }, false);
 @endpush
 
 
@@ -70,8 +85,8 @@
                         
                         {{-- See password toggle --}}
                         <div class="d-flex justify-content-end custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1"></label>
+                            <input type="checkbox" class="custom-control-input" id="togglePass">
+                            <label class="custom-control-label" for="togglePass"></label>
                         </div>
                         
                         {{-- Terms and conditions --}}

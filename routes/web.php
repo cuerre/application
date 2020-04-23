@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+/**
+ *
+ * Web endpoints
+ *
+ */
 Route::get('/', function () {
     return view('modules.codes.show');
 });
@@ -22,6 +29,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/redirect', 'VisitController@Pipeline');
+    
+
+
 
 
 
@@ -39,6 +49,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::delete('/code', 'CodesController@DeleteOne');
 
     Route::post('/code', 'CodesController@CreateOne');
+    
 });
 
 
