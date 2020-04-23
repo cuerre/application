@@ -104,7 +104,7 @@
                         <div class="form-group row py-4 mb-0">
                             <div class="col-md">
                                 <button type="submit" class="btn btn-lg btn-primary">
-                                    <span class="small">
+                                    <span>
                                         {{ __('Register') }}
                                     </span>
                                 </button>

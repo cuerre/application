@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth', 'password.confirm']);
 
 Route::get('/redirect', 'VisitController@Pipeline');
     
@@ -41,6 +41,10 @@ Route::get('/redirect', 'VisitController@Pipeline');
  *
  */
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+
+    Route::get('/', function () {
+        return redirect('/dashboard/codes');
+    });
 
     Route::get('/codes', 'CodesController@ViewIndex');
 

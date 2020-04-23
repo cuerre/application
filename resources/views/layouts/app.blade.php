@@ -191,7 +191,7 @@
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        });
         
         @stack('scripts')
     </script>

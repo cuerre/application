@@ -1,23 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
+<div class="container d-flex align-items-center p-0">
+    <div class="row justify-content-center w-100 m-0">
+        <div class="col-lg-6 p-0">
+            <div class="card w-100 rounded border-0">
 
-                <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
+                <div class="card-body bg-white text-dark shadow-sm rounded border-0 p-5">
+                
+                    {{-- Card header --}}
+                    <div class="mb-4">
+                        <span class="h5">
+                            {{ __('Confirm password') }}
+                        </span>
+                    </div>
+                
+                    {{-- Card notice --}}
+                    <div class="mb-4">
+                        <span>
+                            {{ __('Please confirm your password before continuing.') }}
+                        </span>
+                    </div>
+                    
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
 
+                        {{-- Password field --}}
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                            <div class="col-md">
+                                <label for="email" class="text-md-right small font-weight-bolder">
+                                    {{ __('Password') }}
+                                </label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror form-control-sm py-4" name="password" required autocomplete="current-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -27,19 +42,28 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
+                        {{-- Submit button --}}
+                        <div class="form-group row py-4 mb-0">
+                            <div class="col-md">
+                                <button type="submit" class="btn btn-lg btn-primary">
+                                    <span>
+                                        {{ __('Reset password') }}
+                                    </span>
                                 </button>
-
+                            </div>
+                        </div>
+                        
+                        {{-- Recovery link --}}
+                        <div class="form-group row m-0">
+                            <div class="col-md px-0">
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                    <a class="btn btn-link px-0" href="{{ route('password.request') }}">
+                                        {{ __('Forgot your password?') }}
                                     </a>
                                 @endif
                             </div>
                         </div>
+                        
                     </form>
                 </div>
             </div>

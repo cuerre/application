@@ -50,8 +50,7 @@
         </div>
         
         {{-- Targets --}}     
-        <codes-target-selector v-for="item in range" v-bind:name="item">
-        </codes-target-selector>
+        <codes-target-selector v-for="item in range" v-bind:name="item"></codes-target-selector>
    
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
@@ -70,7 +69,6 @@
 
 {{-- Javascript for this form --}}
 @push('scripts')
-    <script>
         //Register Page header component
         Vue.component('codes-target-selector', {
             props: ['name'],
@@ -122,6 +120,5 @@
             }
         })
         
-    </script>
 @endpush
 
