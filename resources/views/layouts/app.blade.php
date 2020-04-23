@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -17,6 +17,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" >-->
     
     <!-- Bugfixes for Google Material Icons -->
     <style>
@@ -66,17 +67,17 @@
     @stack('styles')
     
 </head>
-<body class="bg-dark">
+<body class="bg-light">
     <div id="app">
     
         {{-- Navbar --}}
-        <nav class="navbar navbar-expand-md navbar-light bg-transparent">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top" >
             <div class="container">
             
                 {{-- Logo --}}
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('imgs/logo.png') }}" style="max-height: 2.5rem; filter: invert(100%)" class="align-middle mr-3"/>
-                    <span class="text-light font-weight-bold text-uppercase align-middle" style="font-size: 2.5rem;">
+                    <img src="{{ asset('imgs/logo.png') }}" style="max-height: 2.5rem; " class="align-middle mr-3"/>
+                    <span class="text-dark font-weight-bold text-uppercase align-middle" style="font-size: 2.5rem;">
                         {{ config('app.name') }}
                     </span>
                 </a>
@@ -98,11 +99,11 @@
                         {{-- Authentication Links --}}
                         @guest
                             <li class="nav-item">
-                                <a class="btn btn-outline-light text-light mr-2" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="btn btn-outline-light text-light mr-2" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="btn btn-primary mr-2" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
@@ -130,15 +131,15 @@
         </nav>
 
         {{-- Content --}}
-        <main class="py-4" style="min-height: 70vh !important;">
+        <main class="container-fluid d-flex py-5" style="min-height: 70vh !important;">
             @yield('content')
         </main>
         
         {{-- Footer --}}
         <footer class="container mt-5">
-            <div class="row text-muted">
+            <div class="row text-muted p-3">
                 <div class="col-md-6 pb-3">
-                    <img src="{{ asset('imgs/logo.png') }}" style="max-height: 1.5rem; filter: invert(50%)" class="align-middle mr-2"/>
+                    <img src="{{ asset('imgs/logo_muted.png') }}" style="max-height: 1.5rem;" class="align-middle mr-2"/>
                     
                     <span class="text-muted font-weight-bold text-uppercase align-middle" style="font-size: 1.5rem;">
                         {{ config('app.name') }}
@@ -172,7 +173,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script>
         $(function () {
-            console.log('caca');
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>

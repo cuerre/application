@@ -15,7 +15,7 @@
 
 
 @section('content')
-    <div class="container h-100">
+    <div class="container">
     
         <div class="row">
         
@@ -43,10 +43,23 @@
                     Dashboards
                 </p>
                 <div class="nav flex-column nav-pills">
-                    <a href="#" class="nav-link active text-light">Home</a>
-                    <a href="#" class="nav-link text-light">Profile</a>
-                    <a href="{{ url('codes') }}" class="nav-link text-light">Codes</a>
-                    <a href="#" class="nav-link text-light">Contact</a>
+                    <a href="#" class="nav-link active">
+                        <i class="material-icons align-middle mr-2">house</i>
+                        <span class="align-middle">Home</span>
+                    </a>
+                    <a href="{{ url('codes') }}" class="nav-link text-secondary">
+                        <i class="material-icons align-middle mr-2">crop_square</i>
+                        <span class="align-middle">Codes</span>
+                    </a>
+                    
+                    <a href="#" class="nav-link text-secondary">
+                        <i class="material-icons align-middle mr-2">face</i>
+                        <span class="align-middle">Profile</span>
+                    </a>
+                    <a href="#" class="nav-link text-secondary">
+                        <i class="material-icons align-middle mr-2">mail</i>
+                        <span class="align-middle">Support</span>
+                    </a>
                 </div>
                 
                 {{-- Navigation extra --}}
@@ -54,12 +67,15 @@
                     More
                 </p>
                 <div class="nav flex-column nav-pills">
-                    <a href="#" class="nav-link text-light">Developers</a>
+                    <a href="#" class="nav-link text-secondary">
+                        <i class="material-icons align-middle mr-2">code</i>
+                        <span class="align-middle">Developers</span>
+                    </a>
                 </div>
             </div>
             
             {{-- Module --}}
-            <div id="module" class="col-md-8 text-light">
+            <div id="module" class="col-md-8 text-light bg-white rounded shadow-sm">
                 @yield('module')
             </div>
         </div>

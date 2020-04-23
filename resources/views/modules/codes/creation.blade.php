@@ -5,7 +5,7 @@
 @section('module')
 
     {{-- Top title --}}
-    <div class="d-flex justify-content-between mb-5 pb-3 border-bottom border-secondary">
+    <div class="d-flex justify-content-between mb-5 py-3 border-bottom border-muted">
         <div class="d-flex flex-column">
             <div>
                 <span class="text-uppercase text-muted mb-auto">
@@ -13,7 +13,7 @@
                 </span>
             </div>
             <div class="p-0">
-                <h3 class="mb-auto text-light font-weight-normal">New code</h3>
+                <h3 class="mb-auto text-dark font-weight-normal">New code</h3>
             </div>
         </div>
     </div>
@@ -34,15 +34,15 @@
 
         {{-- Name --}}
         <div class="form-group mb-5">
-            <input type="text" name="name" class="form-control" placeholder="Give it a name">
+            <input type="text" name="name" class="form-control form-control-sm py-4" placeholder="Give it a name">
         </div>
         
         {{-- Buttons --}}
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary" v-on:click="addTarget()">
+        <div class="btn-group border rounded" role="group">
+            <button type="button" class="btn btn-light" v-on:click="addTarget()">
                 <i class="material-icons align-middle">add</i>
             </button>
-            <button type="button" class="btn btn-secondary" v-on:click="removeTarget()">
+            <button type="button" class="btn btn-light" v-on:click="removeTarget()">
                 <i class="material-icons align-middle">remove</i>
             </button>
         </div>
@@ -80,9 +80,9 @@
             },
             template: `
                 <div class="my-4">
-                    <div class="row align-items-end m-0 rounded bg-secondary py-4 px-2">
+                    <div class="row align-items-end m-0 rounded bg-light border py-4 px-2">
                         <div class="col-md-4 align-self-stretch">
-                            <select class="form-control text-secondary" :name="setTargetSystem()">
+                            <select class="form-control form-control-sm py-4 mb-3 text-secondary" :name="setTargetSystem()">
                                 <option selected>Choose a target...</option>
                                 <option value="win10">Windows 10</option>
                                 <option value="android">Android</option>
@@ -91,7 +91,7 @@
                             </select>
                         </div>
                         <div class="col-md align-self-stretch">
-                            <input type="text" class="form-control text-secondary" :name="setTargetUrl()" placeholder="http://goto.destination.com">
+                            <input type="text" class="form-control form-control-sm py-4 text-secondary" :name="setTargetUrl()" placeholder="http://goto.destination.com">
                         </div>
                     </div>
                 </div>
