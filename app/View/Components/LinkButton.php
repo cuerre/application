@@ -32,7 +32,7 @@ class LinkButton extends Component
      *
      * @return void
      */
-    public function __construct($icon, $content, $link)
+    public function __construct($icon=null, $content, $link)
     {
         //
         $this->icon    = $icon;

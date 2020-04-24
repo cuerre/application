@@ -5,17 +5,9 @@
 @section('module')
 
     {{-- Top title --}}
-    <div class="d-flex justify-content-between mb-5 py-3">
-        <div class="d-flex flex-column">
-            <div>
-                <span class="text-uppercase text-muted mb-auto">
-                    Dashboard
-                </span>
-            </div>
-            <div class="p-0">
-                <h3 class="mb-auto text-dark font-weight-normal">Codes</h3>
-            </div>
-        </div>
+    <x-card-header
+        title="Codes"
+        hint="dashboard">
         <div class="my-auto">
             <x-link-button 
                 icon="add"
@@ -23,7 +15,7 @@
                 :link="url('dashboard/codes/creation')">
             </x-link-button >
         </div>
-    </div>
+    </x-card-header>
     
     {{-- Code list --}}
     @forelse ($codes->items() as $code)

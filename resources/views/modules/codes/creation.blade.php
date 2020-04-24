@@ -5,18 +5,10 @@
 @section('module')
 
     {{-- Top title --}}
-    <div class="d-flex justify-content-between mb-5 py-3">
-        <div class="d-flex flex-column">
-            <div>
-                <span class="text-uppercase text-muted mb-auto">
-                    Dashboard
-                </span>
-            </div>
-            <div class="p-0">
-                <h3 class="mb-auto text-dark font-weight-normal">New code</h3>
-            </div>
-        </div>
-    </div>
+    <x-card-header
+        title="New code"
+        hint="dashboard">
+    </x-card-header>
     
     {{-- Errors --}}
     @if ($errors->any())

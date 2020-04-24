@@ -2,36 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Code;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class CodesController extends Controller
+class ProfileController extends Controller
 {
         /**
-        * Get 
+        * Get all profile of the signed user
         *
         * @return 
         */
-        public static function GetAll()
+        public static function Get()
         {
             try {
                 # We need the user ID
                 $userId = Auth::id();
                 
                 # Retrieve all codes
-                $codes = Code::where('user_id', $userId)
-                    ->get();
+                $profile = User::where('id', $userId)
+                    ->first();
                 
                 # Convert results to collections
-                $codes = collect( $codes )
+                $profile = collect( $profile )
                     ->recursive();
                 
-                return $codes;
+                return $profile;
                 
             } catch ( Exception $e ){
 
@@ -44,47 +45,69 @@ class CodesController extends Controller
         
         
         /**
-        * Generate the URL to get 
-        * a QR image from the api
+        * Update the profile of signed user
         *
-        * @return string
+        * @return 
         */
-        public static function GetImageUrl( int $codeId )
-        {
+        public static function Update( Request $request )
+        {           
             try{
-                # Build the content of the code
-                $codeContent = Str::of('')
-                    ->append(url('redirect?c='))
-                    ->append($codeId);
+                # Retrieve the user
+                $userId = Auth::id();
                 
-                # Build the url
-                $codeUrl = Str::of('http://')
-                    ->append(config('services.cuerre.api.host'))
-                    ->append(':')
-                    ->append(config('services.cuerre.api.port'))
-                    ->append('/api/encode?data=')
-                    ->append($codeContent);
-               
-                return $codeUrl;
+                # Check the input fields
+                $validator = Validator::make($request->all(), [
+                    'name'     => ['sometimes', 'required', 'string', 'max:100'],
+                    'password' => ['sometimes', 'required', 'confirmed', 'string', 'max:100']
+                ]);
+                
+                if ($validator->fails())
+                    throw new Exception ('Some field is malformed');
+                
+                # Convert the input array into collection
+                $validated = collect($validator->validated());
+                
+                # If password is present, hash it
+                if( $validated->has('password') ){
+                    $validated->put('password', Hash::make($validated['password']));
+                }
+                
+                # Try to update data
+                $affected = User::where('id', $userId)
+                    ->update($validator->validated());
+                    
+                if( $affected !== 1 )
+                    throw new Exception ('We could not update your profile');
+                    
+                # Go to the form with error bag
+                return redirect('dashboard/profile')
+                    ->send();
                 
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
+                
+                # Go to the form with error bag
+                return redirect('dashboard/profile')
+                    ->withErrors([
+                        'message' => $e->getMessage()
+                    ])
+                    ->send();
             }
         }
         
         
-        
+
         /**
         * Create new code
         *
         * @return Illuminate\Http\RedirectResponse
         */
-        public static function CreateOne( Request $request )
+        /*public static function CreateOne( Request $request )
         {
             try{
                 
                 # Retrieve the user
-                $userId = Auth::id();
+                $userId = 1;
                 
                 # Check the input fields
                 $validator = Validator::make($request->all(), [
@@ -152,6 +175,7 @@ class CodesController extends Controller
                     ->send();
             }
         }
+        */
         
         
         
@@ -160,11 +184,11 @@ class CodesController extends Controller
         *
         * @return bool
         */
-        public static function DeleteOne( Request $request )
+        /*public static function DeleteOne( Request $request )
         {
             try{
                 # We need the user ID
-                $userId = Auth::id();
+                $userId = 1;
                     
                 # Check input data
                 $validator = Validator::make($request->all(), [
@@ -194,12 +218,12 @@ class CodesController extends Controller
                     ])
                     ->send();
             }
-        }
+        }*/
      
      
      
         /**
-        * Show the index view with codes
+        * Show the index view for profile
         *
         * @return 
         */
@@ -207,10 +231,10 @@ class CodesController extends Controller
         {
             try {
                 # Get the codes collection and paginate them
-                $codes = self::GetAll()->paginate(3);
+                $profile = self::Get();
 
                 # Show index view
-                return view('modules.codes.index', ['codes' => $codes]);
+                return view('modules.profile.index', ['profile' => $profile]);
                 
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
@@ -222,15 +246,37 @@ class CodesController extends Controller
         
         
         /**
-        * Show the creation view for codes
+        * Show the view to change name
         *
         * @return 
         */
-        public static function ViewCreation ()
+        public static function ViewChangeName ()
         {
             try {
+
                 # Show index view
-                return view('modules.codes.creation');
+                return view('modules.profile.change.name');
+                
+            } catch ( Exception $e ) {
+                Log::error($e->getMessage());
+
+                abort(404);
+            }
+        }
+        
+        
+        
+        /**
+        * Show the view to change the password
+        *
+        * @return 
+        */
+        public static function ViewChangePassword ()
+        {
+            try {
+
+                # Show index view
+                return view('modules.profile.change.password');
                 
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());

@@ -16,7 +16,7 @@
         <div class="row">
         
             {{-- Side menu --}}
-            <div id="sidePanel" class="d-none col-md-4 pt-5">
+            <div id="sidePanel" class="d-none col-md-4">
             
                 {{-- Navigation --}}
                 <x-dashboard-menu header="dashboard">
@@ -35,7 +35,7 @@
                     <x-dashboard-menu-item 
                         icon="face" 
                         content="Profile" 
-                        link="#">
+                        :link="url('dashboard/profile')">
                     </x-dashboard-menu-item>
                     
                     <x-dashboard-menu-item 

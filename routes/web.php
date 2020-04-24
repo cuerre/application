@@ -45,6 +45,18 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/', function () {
         return redirect('/dashboard/codes');
     });
+    
+    Route::get('/profile', 'ProfileController@ViewIndex');
+    
+    Route::get('/profile/change/name', 'ProfileController@ViewChangeName');
+    
+    Route::get('/profile/change/password', 'ProfileController@ViewChangePassword');
+    
+    Route::put('/profile/name', 'ProfileController@Update');
+    
+    Route::put('/profile/password', 'ProfileController@Update');
+    
+    
 
     Route::get('/codes', 'CodesController@ViewIndex');
 
