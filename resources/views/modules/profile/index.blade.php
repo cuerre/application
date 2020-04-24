@@ -38,7 +38,7 @@
     
     {{-- Close account --}}
     <div class="mt-5">
-        <a href="#">
+        <a href="{{ url('dashboard/profile/deletion') }}">
             {{ __('Delete account') }}
         </a>
     </div>

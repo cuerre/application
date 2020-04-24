@@ -180,45 +180,40 @@ class ProfileController extends Controller
         
         
         /**
-        * Remove a code and all associated data
+        * Remove a profile
         *
         * @return bool
         */
-        /*public static function DeleteOne( Request $request )
+        public static function Delete( Request $request )
         {
             try{
                 # We need the user ID
-                $userId = 1;
+                $userId = Auth::id();
                     
-                # Check input data
-                $validator = Validator::make($request->all(), [
-                    'id' => ['required', 'integer', 'exists:codes'],
-                ]);
-                
-                if ($validator->fails())
-                    throw new Exception ('Some field is malformed');
-                
-                # Delete asked code
-                $delete = Code::where('user_id', $userId)
-                    ->where('id', $request->input('id'))
+                # Delete asked profile
+                $delete = User::where('id', $userId)
                     ->delete();
                     
                 if (!$delete)
-                    throw new Exception ('Code not deleted');
-                    
-                return redirect('dashboard/codes')
+                    throw new Exception ('We could not delete your account');
+                
+                # Logout the user
+                Auth::logout();
+                
+                # Go to register page
+                return redirect('register')
                     ->send();
                        
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
                 
-                return redirect('dashboard/codes')
+                return redirect('dashboard/profile')
                     ->withErrors([
                         'message' => $e->getMessage()
                     ])
                     ->send();
             }
-        }*/
+        }
      
      
      
@@ -253,7 +248,6 @@ class ProfileController extends Controller
         public static function ViewChangeName ()
         {
             try {
-
                 # Show index view
                 return view('modules.profile.change.name');
                 
@@ -274,9 +268,28 @@ class ProfileController extends Controller
         public static function ViewChangePassword ()
         {
             try {
-
                 # Show index view
                 return view('modules.profile.change.password');
+                
+            } catch ( Exception $e ) {
+                Log::error($e->getMessage());
+
+                abort(404);
+            }
+        }
+        
+        
+        
+        /**
+        * Show the view to delete the account
+        *
+        * @return 
+        */
+        public static function ViewDeletion ()
+        {
+            try {
+                # Show index view
+                return view('modules.profile.delete');
                 
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());

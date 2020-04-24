@@ -46,18 +46,27 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         return redirect('/dashboard/codes');
     });
     
-    Route::get('/profile', 'ProfileController@ViewIndex');
+    Route::prefix('profile')->group(function () {
     
-    Route::get('/profile/change/name', 'ProfileController@ViewChangeName');
+        Route::get('/', 'ProfileController@ViewIndex');
+        
+        Route::get('/change/name', 'ProfileController@ViewChangeName');
+        
+        Route::put('/name', 'ProfileController@Update');
+        
+        Route::get('/change/password', 'ProfileController@ViewChangePassword')->middleware(['password.confirm']);
+        
+        Route::put('/password', 'ProfileController@Update');
+        
+        Route::get('/deletion', 'ProfileController@ViewDeletion');
+        
+        Route::delete('/', 'ProfileController@Delete');
     
-    Route::get('/profile/change/password', 'ProfileController@ViewChangePassword');
-    
-    Route::put('/profile/name', 'ProfileController@Update');
-    
-    Route::put('/profile/password', 'ProfileController@Update');
+    });
     
     
 
+    
     Route::get('/codes', 'CodesController@ViewIndex');
 
     Route::get('/codes/creation', 'CodesController@ViewCreation');
@@ -65,6 +74,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::delete('/code', 'CodesController@DeleteOne');
 
     Route::post('/code', 'CodesController@CreateOne');
+        
+
     
 });
 
