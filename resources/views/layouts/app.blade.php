@@ -1,42 +1,28 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <!-- Required meta tags -->
+    {{-- Meta tags --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- CSRF Token -->
+    {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name') }}</title>
+    {{-- Title --}}
+    <title>
+        {{ config('app.name') }}
+    </title>
 
-    <!-- Fonts -->
+    {{-- Fonts --}}
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Styles -->
+    {{-- Static styles CSS --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" >-->
-    
-    <!-- Bugfixes for Google Material Icons -->
-    <style>
-        /* Rules for sizing the icon. */
-        .material-icons.md-18 { font-size: 18px; }
-        .material-icons.md-24 { font-size: 24px; }
-        .material-icons.md-36 { font-size: 36px; }
-        .material-icons.md-48 { font-size: 48px; }
+    <link rel="stylesheet" href="{{ asset('css/material.css') }}">
 
-        /* Rules for using icons as black on a light background. */
-        .material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-        .material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
-
-        /* Rules for using icons as white on a dark background. */
-        .material-icons.md-light { color: rgba(255, 255, 255, 1); }
-        .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
-    </style>
-    
-    <!-- Custom CSS -->
+    {{-- Embeded CSS --}}
     <style>
         /*
          * Extra small devices (portrait phones, less than 576px)
@@ -65,21 +51,20 @@
         }
     </style>
     @stack('styles')
-    
 </head>
+
+
+
 <body class="bg-light">
     <div id="app">
     
         {{-- Navbar --}}
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top d-flex flex-column" >
-            <div class="container">
+            <div class="container py-2">
             
                 {{-- Logo --}}
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 2.5rem; " class="align-middle mr-3"/>
-                    <span class="text-primary font-weight-bold text-uppercase align-middle" style="font-size: 2.5rem;">
-                        {{-- config('app.name') --}}
-                    </span>
                 </a>
                 
                 {{-- Menu toggler --}}                
@@ -90,7 +75,26 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">
+                                Use cases
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">
+                                About 
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">
+                                Pricing 
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">
+                                Documentation
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
