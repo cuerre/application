@@ -28,34 +28,27 @@
                     @csrf
 
                     {{-- Email field --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('E-Mail Address') }}
-                            </label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror form-control-sm py-4" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                           <x-input
+                                name="email"
+                                type="email" 
+                                pre="Give it a name"
+                                :label="__('Email address')">
+                            </x-input>
+                        
                         </div>
                     </div>
 
                     {{-- Password field --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('Password') }}
-                            </label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror form-control-sm py-4" name="password" required autocomplete="current-password">
-
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="password"
+                                type="password" 
+                                pre="Give it a name"
+                                :label="__('Password')">
+                            </x-input>
                         </div>
                     </div>
                     
@@ -68,11 +61,14 @@
                     </div>
 
                     {{-- Submit button --}}
-                    <div class="form-group row my-4">
+                    
+                    <div class="row my-4">
                         <div class="col-md d-flex justify-content-end">
-                            <button type="submit" class="btn btn-block btn-lg btn-primary">
-                                {{ __('Login') }}
-                            </button>
+                            <x-submit-button 
+                                :content="__('Sign In')"
+                                size="lg" 
+                                block>
+                            </x-submit-button>
                         </div>
                     </div>
                     
@@ -97,8 +93,7 @@
                             @endif
                         </div>
                     </div>
-                    
-                    
+
                 </form>
             </x-striped-card>
         </div>

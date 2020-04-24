@@ -29,13 +29,15 @@
         </div>
     @endif
     
-    <form action="{{ url('code') }}" method="POST">
+    <form action="{{ url('dashboard/code') }}" method="POST">
         @csrf
 
         {{-- Name --}}
-        <div class="form-group mb-5">
-            <input type="text" name="name" class="form-control form-control-sm py-4" placeholder="Give it a name">
-        </div>
+        <x-input
+            name="name"
+            pre="Give it a name"
+            label="testing que te cagas">
+        </x-input>
         
         {{-- Buttons --}}
         <div class="d-flex justify-content-end">
@@ -50,15 +52,14 @@
         </div>
         
         {{-- Targets --}}     
-        <codes-target-selector v-for="item in range" v-bind:name="item"></codes-target-selector>
+        <codes-target-selector 
+            v-for="item in range" 
+            v-bind:name="item">
+        </codes-target-selector>
    
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
-            <div class="form-group mt-5 ">
-                <button type="submit" class="btn btn-primary">
-                    Create!
-                </button>
-            </div>
+            <x-submit-button content="Create!"></x-submit-button>
         </div>
         
     </form>
@@ -93,7 +94,11 @@
                             </select>
                         </div>
                         <div class="col-md align-self-stretch">
-                            <input type="text" class="form-control form-control-sm py-4 text-secondary" :name="setTargetUrl()" placeholder="http://goto.destination.com">
+                            <input 
+                                type="text" 
+                                class="form-control form-control-sm py-4 text-secondary" 
+                                :name="setTargetUrl()" 
+                                placeholder="http://goto.destination.com">
                         </div>
                     </div>
                 </div>

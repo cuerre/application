@@ -25,18 +25,13 @@
                     @csrf
 
                     {{-- Password field --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('Password') }}
-                            </label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror form-control-sm py-4" name="password" required autocomplete="current-password">
-
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="password"
+                                type="password" 
+                                :label="__('Password')">
+                            </x-input>
                         </div>
                     </div>
 

@@ -19,55 +19,46 @@
                     <input type="hidden" name="token" value="{{ $token }}">
 
                     {{-- Email field --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('Email address') }}
-                            </label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="email"
+                                type="email" 
+                                :label="__('Email address')">
+                            </x-input>
+                            {{-- $email ?? old('email') --}}
                         </div>
                     </div>
 
                     {{-- Password field --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('Password') }}
-                            </label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="password"
+                                type="password" 
+                                :label="__('Password')">
+                            </x-input>
                         </div>
                     </div>
 
                     {{-- Password field confirmation --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('Confirm password') }}
-                            </label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            <x-input
+                                name="password_confirmation"
+                                type="password" 
+                                :label="__('Confirm password')">
+                            </x-input>
                         </div>
                     </div>
 
                     {{-- Submit button --}}
                     <div class="form-group row py-4 mb-0">
                         <div class="col-md">
-                            <button type="submit" class="btn btn-lg btn-primary">
-                                <span>
-                                    {{ __('Reset password') }}
-                                </span>
-                            </button>
+                            <x-submit-button 
+                                :content="__('Reset password')"
+                                size="lg">
+                            </x-submit-button>
                         </div>
                     </div>
                     

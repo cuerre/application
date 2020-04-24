@@ -137,14 +137,14 @@ class CodesController extends Controller
                     throw new Exception ('Failed to create the code');
                     
                 # Go to the index
-                return redirect('codes')
+                return redirect('dashboard/codes')
                     ->send();
                 
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
                 
                 # Go to the form with error bag
-                return redirect('codes/creation')
+                return redirect('dashboard/codes/creation')
                     ->withErrors([
                         'message' => $e->getMessage()
                     ])
@@ -181,13 +181,13 @@ class CodesController extends Controller
                 if (!$delete)
                     throw new Exception ('Code not deleted');
                     
-                return redirect('codes')
+                return redirect('dashboard/codes')
                     ->send();
                        
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
                 
-                return redirect('codes')
+                return redirect('dashboard/codes')
                     ->withErrors([
                         'message' => $e->getMessage()
                     ])

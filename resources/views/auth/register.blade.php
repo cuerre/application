@@ -43,47 +43,35 @@
                     </div>
 
                     {{-- Name field --}}
-                    <div class="form-group row py-2">
+                    <div class="row py-2">
                         <div class="col-md">
-                            <label for="name" class="text-md-right small font-weight-bolder">
-                                {{ __('Name (entire)') }}
-                            </label>
-                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror form-control-sm py-4" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="name"
+                                type="text" 
+                                :label="__('Name(entire)')">
+                            </x-input>
                         </div>
                     </div>
 
                     {{-- Email field --}}
-                    <div class="form-group row py-2">
+                    <div class="row py-2">
                         <div class="col-md">
-                            <label for="email" class="text-md-right small font-weight-bolder">
-                                {{ __('E-Mail Address') }}
-                            </label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror form-control-sm py-4" name="email" value="{{ old('email') }}" required autocomplete="email">
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="email"
+                                type="email" 
+                                :label="__('Email address')">
+                            </x-input>
                         </div>
                     </div>
 
                     {{-- Password field --}}
-                    <div class="form-group row">
+                    <div class="row">
                         <div class="col-md">
-                            <label for="password" class="text-md-right small font-weight-bolder">
-                                {{ __('Password') }}
-                            </label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror form-control-sm py-4" name="password" required autocomplete="new-password">
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <x-input
+                                name="password"
+                                type="password" 
+                                :label="__('Password')">
+                            </x-input>
                         </div>
                     </div>
                     
@@ -98,13 +86,12 @@
                         {{ __('By clicking the button, you accept our TOS and our Privacy Policy') }}
                     </div>
 
-                    <div class="form-group row py-4 mb-0">
+                    <div class="row py-4 mb-0">
                         <div class="col-md">
-                            <button type="submit" class="btn btn-lg btn-primary">
-                                <span>
-                                    {{ __('Register') }}
-                                </span>
-                            </button>
+                            <x-submit-button 
+                                :content="__('Register')"
+                                size="lg">
+                            </x-submit-button>
                         </div>
                     </div>
                 </form>

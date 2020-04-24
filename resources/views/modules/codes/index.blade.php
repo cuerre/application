@@ -17,10 +17,11 @@
             </div>
         </div>
         <div class="my-auto">
-            <a href="{{ url('dashboard/codes/creation') }}" role="button" class="btn btn-primary">
-                <i class="material-icons align-middle">add</i>
-                <span class="align-middle">New</span>
-            </a>
+            <x-link-button 
+                icon="add"
+                content="New"
+                :link="url('dashboard/codes/creation')">
+            </x-link-button >
         </div>
     </div>
     
@@ -84,7 +85,7 @@
                         </div>
                         
                         {{-- Delete --}}
-                        <form id="delete-code-form" action="{{ url('code') }}" method="POST">
+                        <form id="delete-code-form" action="{{ url('dashboard/code') }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $code['id'] }}">
