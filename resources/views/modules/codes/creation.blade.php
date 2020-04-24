@@ -34,9 +34,9 @@
 
         {{-- Name --}}
         <x-input
-            name="name"
-            pre="Give it a name"
-            label="testing que te cagas">
+            name="name" 
+            type="text" 
+            pre="Give it a name">
         </x-input>
         
         {{-- Buttons --}}
@@ -59,7 +59,9 @@
    
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
-            <x-submit-button content="Create!"></x-submit-button>
+            <x-submit-button 
+                content="Create!">
+            </x-submit-button>
         </div>
         
     </form>

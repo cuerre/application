@@ -40,8 +40,7 @@
                         <div class="col-md">
                             <x-submit-button 
                                 :content="__('Send reset link')"
-                                size="lg" 
-                                block>
+                                size="lg">
                             </x-submit-button>
                         </div>
                     </div>

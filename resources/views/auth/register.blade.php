@@ -79,20 +79,22 @@
                     <div class="d-flex justify-content-end custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="togglePass">
                         <label class="custom-control-label" for="togglePass"></label>
+                        <i class="material-icons align-middle my-auto text-muted">visibility</i>
                     </div>
                     
-                    {{-- Terms and conditions --}}
-                    <div class="mt-4 small">
-                        {{ __('By clicking the button, you accept our TOS and our Privacy Policy') }}
-                    </div>
-
-                    <div class="row py-4 mb-0">
+                    {{-- Submit button --}}
+                    <div class="row pt-3 pb-0 mb-0">
                         <div class="col-md">
                             <x-submit-button 
                                 :content="__('Register')"
                                 size="lg">
                             </x-submit-button>
                         </div>
+                    </div>
+                    
+                    {{-- Terms and conditions --}}
+                    <div class="small">
+                        {{ __('By registering, you accept our TOS and our Privacy Policy') }}
                     </div>
                 </form>
             

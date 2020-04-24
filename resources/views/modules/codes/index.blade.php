@@ -74,7 +74,13 @@
 
                         {{-- Download dropdown --}}
                         <div class="dropdown">
-                            <button class="btn btn-sm dropdown-toggle mr-1" data-display="static" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button 
+                                class="btn btn-sm dropdown-toggle mr-1" 
+                                data-display="static" 
+                                type="button" 
+                                data-toggle="dropdown" 
+                                aria-haspopup="true" 
+                                aria-expanded="false">
                                 <i class="material-icons align-middle">save_alt</i>
                             </button>
                             <div class="dropdown-menu">
@@ -103,9 +109,9 @@
     @empty
         
         <div class="card border-0">
-            <div class="card-body bg-light rounded text-secondary border">
+            <div class="card-body bg-light rounded text-secondary">
                 <p class="card-text">
-                    Touch <kbd>+ New</kbd> on the top to create 
+                    Touch <kbd class="mx-2">+ New</kbd> on the top to create 
                     a new super vitamin code 
                 </p>
             </div>

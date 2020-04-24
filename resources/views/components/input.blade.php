@@ -9,7 +9,7 @@
         id="{{ $name }}" 
         name="{{ $name }}" 
         class="form-control form-control-sm py-4 @error($name) is-invalid @enderror" 
-        @if( !is_null($label) )
+        @if( !is_null($pre) )
             placeholder="{{ $pre }}"
         @endif
         autocomplete="{{ $name }}"

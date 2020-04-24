@@ -33,7 +33,6 @@
                            <x-input
                                 name="email"
                                 type="email" 
-                                pre="Give it a name"
                                 :label="__('Email address')">
                             </x-input>
                         
@@ -46,14 +45,13 @@
                             <x-input
                                 name="password"
                                 type="password" 
-                                pre="Give it a name"
                                 :label="__('Password')">
                             </x-input>
                         </div>
                     </div>
                     
                     {{-- See remember toggle --}}
-                    <div class="d-flex justify-content-end custom-control custom-switch">
+                    <div class="d-flex justify-content-start custom-control custom-switch">
                         <input name="remember" type="checkbox" class="custom-control-input" id="toggleRemember" {{ old('remember') ? 'checked' : '' }}>
                         <label class="custom-control-label" for="toggleRemember">
                             {{ __('Remember me') }}
@@ -61,22 +59,20 @@
                     </div>
 
                     {{-- Submit button --}}
-                    
                     <div class="row my-4">
                         <div class="col-md d-flex justify-content-end">
                             <x-submit-button 
                                 :content="__('Sign In')"
-                                size="lg" 
-                                block>
+                                size="lg">
                             </x-submit-button>
                         </div>
                     </div>
                     
                     {{-- Recovery link --}}
-                    <div class="form-group row m-0">
+                    <div class="row m-0 mb-2">
                         <div class="col-md px-0">
                             @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                <a class="btn btn-link p-0" href="{{ route('password.request') }}">
                                     {{ __('Forgot your password?') }}
                                 </a>
                             @endif
@@ -84,10 +80,10 @@
                     </div>
                     
                     {{-- Register link --}}
-                    <div class="form-group row m-0">
+                    <div class="row m-0 mb-3">
                         <div class="col-md px-0">
                             @if (Route::has('register'))
-                                <a class="btn btn-link" href="{{ route('register') }}">
+                                <a class="btn btn-link p-0" href="{{ route('register') }}">
                                     {{ __('Create account') }}
                                 </a>
                             @endif
