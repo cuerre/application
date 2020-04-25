@@ -9,6 +9,8 @@
         hint="dashboard">
     </x-card-header>
     
+    <x-alert-errors/>
+    
     <x-action-list>
         <x-action-list-item
             :field="__('Name')" 

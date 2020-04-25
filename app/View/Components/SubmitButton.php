@@ -28,16 +28,23 @@ class SubmitButton extends Component
     public $block;
     
     /**
+     * The button content
+     *
+     * @var string
+     */
+    public $confirmation;
+    
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($content, $size=null, $block=false)
+    public function __construct($content, $size=null, $block=false, $confirmation=null)
     {
-        //
-        $this->content = $content;
-        $this->size    = $size;
-        $this->block   = $block;
+        $this->content        = $content;
+        $this->size           = $size;
+        $this->block          = $block;
+        $this->confirmation   = $confirmation;
     }
 
     /**
@@ -48,9 +55,10 @@ class SubmitButton extends Component
     public function render()
     {
         return view('components.submit-button',[
-            'content' => $this->content,
-            'size'    => $this->size,
-            'block'   => $this->block
+            'content'        => $this->content,
+            'size'           => $this->size,
+            'block'          => $this->block,
+            'confirmation'   => $this->confirmation
         ]);
     }
 }

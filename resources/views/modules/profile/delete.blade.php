@@ -19,7 +19,8 @@
         </div>
         
         <x-submit-button
-            :content="__('Delete my account')">
+            :content="__('Delete my account')"
+            :confirmation="__('Are you sure?')">
         </x-submit-button>
     </form>
 @endsection

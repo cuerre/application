@@ -54,11 +54,11 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         
         Route::put('/name', 'ProfileController@Update');
         
-        Route::get('/change/password', 'ProfileController@ViewChangePassword')->middleware(['password.confirm']);
+        Route::get('/change/password', 'ProfileController@ViewChangePassword'); //->middleware(['password.confirm'])
         
         Route::put('/password', 'ProfileController@Update');
         
-        Route::get('/deletion', 'ProfileController@ViewDeletion');
+        Route::get('/deletion', 'ProfileController@ViewDeletion'); //->middleware(['password.confirm'])
         
         Route::delete('/', 'ProfileController@Delete');
     
@@ -74,6 +74,10 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::delete('/code', 'CodesController@DeleteOne');
 
     Route::post('/code', 'CodesController@CreateOne');
+    
+    
+    
+    Route::get('/test', 'OutputController@ViewTest');
         
 
     
