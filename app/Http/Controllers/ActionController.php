@@ -80,7 +80,7 @@ class ActionController extends Controller
                         ->send();
             });
             
-            throw new Exception('Target "any" not configured. Redirection failed.');
+            throw new Exception('Target "any" not configured. Redirection failed.'); # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             
         } catch ( Exception $e ) {
         

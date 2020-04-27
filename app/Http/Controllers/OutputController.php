@@ -30,10 +30,14 @@ class OutputController extends Controller
      */
     public static function ViewTest( Request $request )
     {
-        $stats = new StatsController(1);
-        
-        return dd($stats->GetSystems());
-        return view('modules.test');
+        $stats = new StatsController(31);
+
+        return view('modules.test',[
+            'systems'  => $stats->GetPlatforms(),
+            'browsers' => $stats->GetBrowsers(),
+            'deviceTypes'  => $stats->GetDeviceTypes(),
+            'browserTypes'  => $stats->GetBrowserTypes(),
+        ]);
     }
     
     

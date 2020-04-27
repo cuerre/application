@@ -62,7 +62,7 @@ class InputController extends Controller
             
             $statBrowscap = new StatBrowscap;
             $statBrowscap->code_id = $codeId;
-            $statBrowscap->data = $browserData->toJson();
+            $statBrowscap->data = $browserData;
             
             if ( !$statBrowscap->save() )
                 throw new Exception('Impossible to save browser data');
