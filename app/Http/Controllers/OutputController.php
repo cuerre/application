@@ -33,9 +33,9 @@ class OutputController extends Controller
         $stats = new StatsController(31);
 
         return view('modules.test',[
-            'systems'  => $stats->GetPlatforms(),
-            'browsers' => $stats->GetBrowsers(),
-            'deviceTypes'  => $stats->GetDeviceTypes(),
+            'platforms'     => $stats->GetPlatforms(),
+            'browsers'      => $stats->GetBrowsers(),
+            'deviceTypes'   => $stats->GetDeviceTypes(),
             'browserTypes'  => $stats->GetBrowserTypes(),
         ]);
     }
