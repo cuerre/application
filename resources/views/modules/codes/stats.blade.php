@@ -11,7 +11,6 @@
             :content="__('Refresh')"
             :link="url()->current()">
         </x-link-button>
-
     </x-card-header>
 
     <div class="row my-3">

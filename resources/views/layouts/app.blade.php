@@ -183,26 +183,34 @@
                 </div>
             </div>
         </footer>
-        
-        
+
     </div>
     
+    
     <!-- Scripts -->
+    {{-- On production: npm run dev | npm run production --}}
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    {{-- On developing: use these --}}
+    <!--
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    -->
 
+    {{-- JS Charts --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+
+    {{-- JS Custom --}}
     <script type="module">
         import * as ColorController from "{{ asset('js/ColorController.js') }}";
 
         window.color = new ColorController.ColorController();
 
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
+        //$(function () {
+        //    $('[data-toggle="tooltip"]').tooltip()
+        //});
         
         @stack('scripts')
     </script>

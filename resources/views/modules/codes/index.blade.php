@@ -16,6 +16,9 @@
             </x-link-button >
         </div>
     </x-card-header>
+
+    {{-- Errors --}}
+    <x-alert-errors /> 
     
     {{-- Code list --}}
     @forelse ($codes->items() as $code)
@@ -60,7 +63,7 @@
                     <div class="d-flex flex-row w-100 py-2">
                     
                         {{-- Stats --}}
-                        <a href="#" role="button" class="btn btn-sm text-dark text-decoration-none mr-1">
+                        <a href="{{ url('dashboard/codes/stats?code=' . $code['id']) }}" role="button" class="btn btn-sm text-dark text-decoration-none mr-1">
                             <i class="material-icons align-middle">bar_chart</i>
                         </a>
 

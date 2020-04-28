@@ -71,6 +71,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     Route::get('/codes/creation', 'CodesController@ViewCreation');
 
+    Route::get('/codes/stats', 'CodesController@ViewStats');
+
     Route::delete('/code', 'CodesController@DeleteOne');
 
     Route::post('/code', 'CodesController@CreateOne');

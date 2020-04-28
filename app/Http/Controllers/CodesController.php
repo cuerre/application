@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\StatBrowscap;
 use App\Code;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\StatsController;
 
 class CodesController extends Controller
 {
@@ -40,8 +43,8 @@ class CodesController extends Controller
                 return collect([]);
             }
         }
-        
-        
+
+
         
         /**
         * Generate the URL to get 
@@ -235,11 +238,69 @@ class CodesController extends Controller
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
 
-                abort(404);
+                return redirect('dashboard/codes')
+                    ->withErrors([
+                        'message' => $e->getMessage()
+                    ])
+                    ->send();
+            }
+        }
+
+
+
+        /**
+        * Get all available stats of a code given
+        * as URL param (?code=)
+        *
+        * @param  Request $request
+        * @return Illuminate\Contracts\Support\Renderable
+        * @return Illuminate\Http\RedirectResponse
+        */
+        public static function ViewStats( Request $request )
+        {
+            try {
+                # We need the user ID and code ID
+                $userId = Auth::id();
+
+                # Check the input fields
+                $validator = Validator::make($request->all(), [
+                    'code' => [
+                        'required', 
+                        'integer',
+                        Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
+                            $query->where('user_id', $userId);
+                        }),
+                    ],
+                ]);
+                
+                if ($validator->fails())
+                    throw new Exception ('Some field is malformed');
+
+                # Get the stats for that code
+                $stats = new StatsController( $request->input('code') );
+
+                # Show index view
+                return view('modules.codes.stats', [
+                    'platforms'     => $stats->GetPlatforms(),
+                    'browsers'      => $stats->GetBrowsers(),
+                    'deviceTypes'   => $stats->GetDeviceTypes(),
+                    'browserTypes'  => $stats->GetBrowserTypes(),
+                    'lastWeek'      => $stats->GetLastWeek(),
+                    'lastMonth'     => $stats->GetLastMonth(),
+                    'lastYear'      => $stats->GetLastYear(),
+                ]);
+                
+            } catch ( Exception $e ){
+
+                Log::error($e->getMessage());
+
+                return redirect('dashboard/codes')
+                    ->withErrors([
+                        'message' => $e->getMessage()
+                    ])
+                    ->send();
             }
         }
       
-      
-      
-       
+
 }
