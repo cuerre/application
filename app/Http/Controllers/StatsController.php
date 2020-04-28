@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\StatBrowscap as StatBrowscap;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class StatsController extends Controller
 {
@@ -218,22 +219,101 @@ class StatsController extends Controller
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-        $orderbydate = DB::table('sales_flat_orders as w')
-                ->select(array(DB::Raw('sum(w.total_item_count) as Day_count'),DB::Raw('DATE(w.created_at) day')))
-                ->groupBy('day')
-                ->orderBy('w.created_at')
+    /**
+     * Retrieves a collection of data
+     * that were stored after an input date
+     * 
+     * @param Illuminate\Support\Carbon $date
+     * @return Illuminate\Support\Collection
+     */
+    private function GetAfterDate(Carbon $date)
+    {
+        try {
+            $readings = StatBrowscap::select('created_at')
+                ->where('code_id', $this->codeId)
+                ->whereDate('created_at', '>', $date)
                 ->get();
-    */
+        
+            return $readings;
+
+        } catch (Exception $e){
+            Log::error($e->getMessage());
+
+            return collect([]);
+        }
+    }
+
+
+
+    /**
+     * Retrieves data collection of last week
+     * 
+     * @return Illuminate\Support\Collection
+     */
+    public function GetLastWeek()
+    {
+        try {
+            # Substract a week from now
+            $targetDate = Carbon::now()->subWeek();
+
+            # Get that data from DB
+            $readings = $this->GetAfterDate($targetDate);
+
+            # Group the visitors by day
+            $readings = $readings->map(function ($item, $key) {
+                return collect([
+                    'day' => Carbon::parse($item->created_at)->isoFormat('dddd')
+                ]);
+            })
+            ->groupBy('day')
+            ->map(function ($item, $key) {
+                return $item->count();
+            });
+
+            return $readings;
+        } catch (Exception $e){
+            Log::error($e->getMessage());
+
+            return collect([]);
+        }
+    }
+
+
+
+    /**
+     * Retrieves data collection of last month
+     * 
+     * @return Illuminate\Support\Collection
+     */
+    public function GetLastMonth()
+    {
+        try {
+            # Substract a month from now
+            $targetDate = Carbon::now()->subMonth();
+
+            # Get that data from DB
+            $readings = $this->GetAfterDate($targetDate);
+
+            # Group the visitors by day
+            $readings = $readings->map(function ($item, $key) {
+                return collect([
+                    'day' => Carbon::parse($item->created_at)->isoFormat('D')
+                ]);
+            })
+            ->groupBy('day')
+            ->map(function ($item, $key) {
+                return $item->count();
+            });
+
+            return $readings;
+        } catch (Exception $e){
+            Log::error($e->getMessage());
+
+            return collect([]);
+        }
+    }
+    
+    
     
     
     
