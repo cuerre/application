@@ -312,6 +312,41 @@ class StatsController extends Controller
             return collect([]);
         }
     }
+
+
+
+    /**
+     * Retrieves data collection of last Year
+     * 
+     * @return Illuminate\Support\Collection
+     */
+    public function GetLastYear()
+    {
+        try {
+            # Substract a month from now
+            $targetDate = Carbon::now()->subYear();
+
+            # Get that data from DB
+            $readings = $this->GetAfterDate($targetDate);
+
+            # Group the visitors by day
+            $readings = $readings->map(function ($item, $key) {
+                return collect([
+                    'month' => Carbon::parse($item->created_at)->isoFormat('MMMM')
+                ]);
+            })
+            ->groupBy('month')
+            ->map(function ($item, $key) {
+                return $item->count();
+            });
+
+            return $readings;
+        } catch (Exception $e){
+            Log::error($e->getMessage());
+
+            return collect([]);
+        }
+    }
     
     
     

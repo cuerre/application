@@ -39,6 +39,7 @@ class OutputController extends Controller
             'browserTypes'  => $stats->GetBrowserTypes(),
             'lastWeek'      => $stats->GetLastWeek(),
             'lastMonth'     => $stats->GetLastMonth(),
+            'lastYear'      => $stats->GetLastYear(),
         ]);
     }
     
