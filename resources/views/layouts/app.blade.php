@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ url('pricing') }}">
                                 Pricing 
                             </a>
                         </li>
@@ -119,10 +119,14 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->email }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('dashboard') }}">
+                                        {{ __('Dashboard') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -186,18 +190,18 @@
 
     </div>
     
+
     
     <!-- Scripts -->
     {{-- On production: npm run dev | npm run production --}}
     <script src="{{ asset('js/app.js') }}"></script>
 
-    {{-- On developing: use these --}}
-    <!--
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    -->
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
 
     {{-- JS Charts --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
@@ -207,14 +211,9 @@
         import * as ColorController from "{{ asset('js/ColorController.js') }}";
 
         window.color = new ColorController.ColorController();
-
-        //$(function () {
-        //    $('[data-toggle="tooltip"]').tooltip()
-        //});
         
         @stack('scripts')
     </script>
-    
     
 </body>
 </html>

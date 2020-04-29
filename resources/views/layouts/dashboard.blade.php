@@ -21,12 +21,6 @@
                 {{-- Navigation --}}
                 <x-dashboard-menu header="dashboard">
                     <x-dashboard-menu-item 
-                        icon="house" 
-                        content="Home" 
-                        :link="url('dashboard/home')">
-                    </x-dashboard-menu-item>
-                    
-                    <x-dashboard-menu-item 
                         icon="crop_square" 
                         content="Codes" 
                         :link="url('dashboard/codes')">
@@ -47,7 +41,7 @@
                     <x-dashboard-menu-item 
                         icon="mail" 
                         content="Support" 
-                        link="#">
+                        :link="url('dashboard/support')">
                     </x-dashboard-menu-item>
                 </x-dashboard-menu>
                 

@@ -9,7 +9,7 @@
         <x-link-button
             icon="refresh"
             :content="__('Refresh')"
-            :link="url()->current()">
+            :link="url()->full()">
         </x-link-button>
     </x-card-header>
 
@@ -136,7 +136,7 @@
         },
         scales: {
             xAxes: [{
-                stacked: true
+                stacked: true,
             }],
             yAxes: [{
                 stacked: true,

@@ -31,10 +31,12 @@ Auth::routes();
 Route::get('/redirect', 'VisitController@Pipeline');
     
 
+Route::get('/pricing', function () {
+    return view('pricing');
+});
 
 
 
-//Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth', 'password.confirm']);
 /**
  *
  * Dashboard endpoints
@@ -66,7 +68,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     
     
 
-    
     Route::get('/codes', 'CodesController@ViewIndex');
 
     Route::get('/codes/creation', 'CodesController@ViewCreation');
@@ -79,6 +80,11 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     
     
     
+    Route::get('/support', function () {
+        return view('modules.support');
+    });
+
+
     Route::get('/test', 'OutputController@ViewTest');
         
 

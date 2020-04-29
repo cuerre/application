@@ -1,4 +1,4 @@
-<li class="list-group-item px-0 border-bottom border-light">
+<li class="list-group-item px-0 border-bottom border-light bg-transparent">
     <div class="d-flex flex-row">
         <div class="flex-shrink-1 pr-4">
             <div class="d-flex flex-column">

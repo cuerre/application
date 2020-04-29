@@ -21,17 +21,6 @@ class OutputController extends Controller
         
      }
      
-     
-    /**
-     * 
-     *
-     * @return void
-     *
-     */
-    public static function ViewTest( Request $request )
-    {
-        
-    }
     
     
     
