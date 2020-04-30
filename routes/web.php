@@ -35,6 +35,26 @@ Route::get('/pricing', function () {
     return view('pricing');
 });
 
+/**
+ *
+ * Documentation endpoints
+ *
+ */
+Route::prefix('documentation')->group(function () {
+
+    Route::get('/', function () {
+        return redirect('/documentation/encode');
+    });
+
+    Route::get('/encode', function () {
+        return view('modules.documentation.encode');
+    });
+
+    Route::get('/decode', function () {
+        return view('modules.documentation.decode');
+    });
+});
+
 
 
 /**

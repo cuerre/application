@@ -80,6 +80,9 @@
                                 value="Detailed stats about visits">
                             </x-action-list-item>
                             <x-action-list-item
+                                value="Set different targets">
+                            </x-action-list-item>
+                            <x-action-list-item
                                 value="Technical support">
                             </x-action-list-item>
                         </x-action-list>
@@ -93,7 +96,7 @@
             <div class="col-lg">
                 <p class="text-uppercase font-weight-bolder">ENTERPRISE SOLUTION</p>
                 <p>
-                    Need more than 20k requests per hour or have custom needs?
+                    Need more or have custom needs?
                 </p>
                 <x-link-button
                     content="CONTACT US"

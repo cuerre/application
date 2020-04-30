@@ -21,6 +21,7 @@
     {{-- Static styles CSS --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.css" rel="stylesheet" />
 
     {{-- Embeded CSS --}}
     <style>
@@ -64,7 +65,7 @@
             
                 {{-- Logo --}}
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 2.5rem; " class="align-middle mr-3"/>
+                    <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 2rem; " class="align-middle mr-3"/>
                 </a>
                 
                 {{-- Menu toggler --}}                
@@ -75,23 +76,23 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item ">
                             <a class="nav-link" href="#">
                                 Use cases
                             </a>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item ">
                             <a class="nav-link" href="#">
                                 About 
                             </a>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item ">
                             <a class="nav-link" href="{{ url('pricing') }}">
                                 Pricing 
                             </a>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ url('documentation') }}">
                                 Documentation
                             </a>
                         </li>
@@ -214,6 +215,9 @@
         
         @stack('scripts')
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
     
 </body>
 </html>
