@@ -2,41 +2,49 @@
 
 
 @section('menu')
-    {{-- Navigation --}}
-    <x-dashboard-menu header="Documentation">
+    {{-- Documentation --}}
+    <x-dashboard-menu header="Introduction">
         <x-dashboard-menu-item 
             icon="label"
-            content="introduction" 
-            :link="url('documentation/introduction')">
-        </x-dashboard-menu-item>
-        <x-dashboard-menu-item 
-            icon="label"
-            content="Tools" 
-            :link="url('documentation/tools')">
+            content="FAQ" 
+            :link="url('documentation/faq')">
         </x-dashboard-menu-item>
     </x-dashboard-menu>
 
-    {{-- Navigation --}}
+    {{-- API --}}
     <x-dashboard-menu header="API">
         <x-dashboard-menu-item 
-            icon="label"
-            content="Fair use" 
-            :link="url('documentation/fair-use')">
+            icon="update"
+            content="Releases" 
+            :link="url('documentation/api/releases')">
+        </x-dashboard-menu-item>
+    </x-dashboard-menu>
+
+    {{-- API (v1.x) --}}
+    <x-dashboard-menu header="api · v1">
+        <x-dashboard-menu-item 
+            icon="swap_vertical_circle"
+            content="encode" 
+            :link="url('documentation/api/v1/encode')">
         </x-dashboard-menu-item>
         <x-dashboard-menu-item 
-            icon="label"
-            content="Recommendations" 
-            :link="url('documentation/recommendations')">
+            icon="swap_vertical_circle"
+            content="decode" 
+            :link="url('documentation/api/v1/decode')">
+        </x-dashboard-menu-item>
+    </x-dashboard-menu>
+
+    {{-- Contracts --}}
+    <x-dashboard-menu header="Contracts">
+        <x-dashboard-menu-item 
+            icon="description"
+            content="Terms" 
+            :link="url('documentation/contracts/terms')">
         </x-dashboard-menu-item>
         <x-dashboard-menu-item 
-            icon="label"
-            content="encode QR" 
-            :link="url('documentation/encode')">
-        </x-dashboard-menu-item>
-        <x-dashboard-menu-item 
-            icon="label"
-            content="decode QR" 
-            :link="url('documentation/decode')">
+            icon="security"
+            content="Privacy" 
+            :link="url('documentation/contracts/privacy')">
         </x-dashboard-menu-item>
     </x-dashboard-menu>
 @endsection

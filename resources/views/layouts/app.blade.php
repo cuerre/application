@@ -152,42 +152,38 @@
         </main>
         
         {{-- Footer --}}
-        <footer class="container mt-5 text-muted">
-            <div class="row p-3">
-                <div class="col">
-                    <span class="font-weight-bolder">Company</span>
-                    <a href="/blog" class="d-block">Blog</a>
-                    <a href="/about" class="d-block">About</a>
-                    <a href="/about" class="d-block">Press</a>
-                    
+        
+        <footer class="container-fluid bg-muted mt-5 ">
+            <div class="container text-muted pt-3">
+                <div class="row p-3 justify-content-center">
+                    <div class="col-auto mr-auto">
+                        <span class="font-weight-bolder">Company</span>
+                        <a href="/blog" class="d-block small text-muted">Blog</a>
+                        <a href="/about" class="d-block small text-muted">About</a>
+                        <a href="/press" class="d-block small text-muted">Press</a>
+                    </div>
+                    <div class="col-auto">
+                        <span class="font-weight-bolder">Community</span>
+                        <a href="/documentation/faq" class="d-block small text-muted">FAQ</a>
+                        <a href="/documentation/donations" class="d-block small text-muted">Donations</a>
+                    </div>
+                    <div class="col-auto ml-auto">
+                        <span class="font-weight-bolder">Deeper</span>
+                        <a href="/support" class="d-block small text-muted">Support</a>
+                        <a href="/status" class="d-block small text-muted">Status</a>
+                        <a href="/pricing" class="d-block small text-muted">Pricing</a>
+                        <a href="/documentation/contracts/terms" class="d-block small text-muted">Terms</a>
+                        <a href="/documentation/contracts/privacy" class="d-block small text-muted">Privacy</a>
+                    </div>
                 </div>
-                <div class="col">
-                    <span class="font-weight-bolder">Community</span>
-                    <a href="/faq" class="d-block">FAQ</a>
-                    <a href="/donations" class="d-block">Donations</a>
-                    <a href="/achetronic" class="d-block">Achetronic</a>
-                </div>
-                <div class="col">
-                    <span class="font-weight-bolder">Deeper</span>
-                    <a href="/support" class="d-block">Support</a>
-                    <a href="/status" class="d-block">Status</a>
-                    <a href="/pricing" class="d-block">Pricing</a>
-                    <a href="/terms" class="d-block">Terms</a>
-                    <a href="/privacy" class="d-block">Privacy</a>
-                </div>
-            </div>
-            <div class="row text-muted p-3">
-                <div class="col-md-6 pb-3">
-                    <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 1.5rem;" class="align-middle mr-2"/>
-                    <span class="text-muted font-weight-bold text-uppercase align-middle" style="font-size: 1.5rem;">
-                        {{-- config('app.name') --}}
-                    </span>
-                </div>
-                <div class="col-md-6 pb-3">
-                                        
+                <div class="row text-muted px-3 mb-5">
+                    <div class="col">
+                        <img src="{{ asset('imgs/logo-footer.png') }}" style="max-height: 1rem;" class="align-middle mr-2"/>
+                    </div>
                 </div>
             </div>
         </footer>
+        
 
     </div>
     

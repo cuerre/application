@@ -3,8 +3,8 @@
 
 @section('module')
     <x-card-header
-        title="Encode QR"
-        hint="documentation / api">
+        title="Encode"
+        hint="documentation / api · v1">
     </x-card-header>
 
     <div class="mb-5">
@@ -15,7 +15,7 @@
             In the following sections you can see how to make a request.
         </p>
         <p>
-            By the moment, you should know that all requests have to be sent to <code>api.cuerre.com/encode</code>
+            By the moment, you should know that all requests have to be sent to <code>{version}.api.cuerre.io/encode</code>
         </p>
     </div>
 
@@ -172,7 +172,7 @@
                 Let's include a code into a website using pure HTML code.
             </p>
             <x-code language="html">
-                <img src="https://api.cuerre.com/encode?data={your data}" />
+                <img src="https://{version}.api.cuerre.io/encode?data={your data}" />
             </x-code>
         </div>
 
@@ -182,7 +182,7 @@
                 Do you need a bigger QR embeded in your website?
             </p>
             <x-code language="html">
-                <img src="https://api.cuerre.com/encode?data={your data}&dotsize=5" />
+                <img src="https://{version}.api.cuerre.io/encode?data={your data}&dotsize=5" />
             </x-code>
         </div>
 
@@ -192,7 +192,7 @@
                 Your users need to download the generated QR code, lets put a link
             </p>
             <x-code language="html">
-                <a href="https://api.cuerre.com/encode?data={your data}&download">Link</a>
+                <a href="https://{version}.api.cuerre.io/encode?data={your data}&download">Link</a>
             </x-code>
         </div>
 
@@ -206,10 +206,6 @@
                 snippet="documentation.encode.php-request">
             </x-code>
         </div>
-
-
-
-
     </div>
 
     <div class="mb-5">
@@ -221,9 +217,21 @@
         </p>
         <x-code 
             language="none">
-            https://api.cuerre.com/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
+            https://{version}.api.cuerre.io/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
         </x-code>
+    </div>
 
+    <div class="mb-5">
+        <h4>Errors</h4>
+        <p>
+            All developers need to test the tools to learn how to use them. It is a daily task 
+            to fail. For those cases we answer with HTTP error codes like 4xx, 5xx... and 
+            have an easy-to-understand response like the following.
+        </p>
+        <x-code 
+            language="json"
+            snippet="documentation.encode.json-response">
+        </x-code>
     </div>
 
 

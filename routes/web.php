@@ -43,15 +43,38 @@ Route::get('/pricing', function () {
 Route::prefix('documentation')->group(function () {
 
     Route::get('/', function () {
-        return redirect('/documentation/encode');
+        return redirect('/documentation/faq');
     });
 
-    Route::get('/encode', function () {
-        return view('modules.documentation.encode');
+    Route::get('/faq', function () {
+        return view('modules.documentation.faq');
     });
 
-    Route::get('/decode', function () {
-        return view('modules.documentation.decode');
+    Route::prefix('api')->group(function () {
+        Route::get('/releases', function () {
+            return view('modules.documentation.api.releases');
+        });
+
+        Route::prefix('v1')->group(function () {
+            Route::get('/encode', function () {
+                return view('modules.documentation.api.v1.encode');
+            });
+
+            Route::get('/decode', function () {
+                return view('modules.documentation.api.v1.decode');
+            });
+        });
+    });
+
+    
+    Route::prefix('contracts')->group(function () {
+        Route::get('/terms', function () {
+            return view('modules.documentation.contracts.terms');
+        });
+
+        Route::get('/privacy', function () {
+            return view('modules.documentation.contracts.privacy');
+        });
     });
 });
 
