@@ -15,6 +15,12 @@
             content="Profile" 
             :link="url('dashboard/profile')">
         </x-dashboard-menu-item>
+
+        <x-dashboard-menu-item 
+            icon="vpn_key" 
+            content="Tokens" 
+            :link="url('dashboard/tokens')">
+        </x-dashboard-menu-item>
         
         <x-dashboard-menu-item 
             icon="monetization_on" 
@@ -34,7 +40,7 @@
         <x-dashboard-menu-item 
             icon="code" 
             content="Developers" 
-            link="#">
+            :link="url('documentation/api/releases')">
         </x-dashboard-menu-item>
     </x-dashboard-menu>
 @endsection

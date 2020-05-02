@@ -33,18 +33,26 @@ class SubmitButton extends Component
      * @var string
      */
     public $confirmation;
+
+    /**
+     * The button color
+     *
+     * @var string
+     */
+    public $color;
     
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($content, $size=null, $block=false, $confirmation=null)
+    public function __construct($content, $size=null, $block=false, $confirmation=null, $color='primary')
     {
         $this->content        = $content;
         $this->size           = $size;
         $this->block          = $block;
         $this->confirmation   = $confirmation;
+        $this->color          = $color;
     }
 
     /**
@@ -58,7 +66,8 @@ class SubmitButton extends Component
             'content'        => $this->content,
             'size'           => $this->size,
             'block'          => $this->block,
-            'confirmation'   => $this->confirmation
+            'confirmation'   => $this->confirmation,
+            'color'          => $this->color,
         ]);
     }
 }
