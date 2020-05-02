@@ -13,7 +13,7 @@
         </x-link-button>
     </x-card-header>
 
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Platforms') }}
@@ -27,7 +27,7 @@
         </div>
     </div>
     
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Browsers') }}
@@ -39,7 +39,7 @@
         </div>
     </div>
     
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Device types') }}
@@ -53,7 +53,7 @@
         </div>
     </div>
     
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Browser types') }}
@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Last week') }}
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Last month') }}
@@ -97,7 +97,7 @@
         </div>
     </div>
 
-    <div class="row my-3">
+    <div class="row my-3 shadow-sm">
         <div class="col-lg bg-light p-4">
             <h5 class="text-muted">
                 {{ __('Last year') }}

@@ -26,10 +26,10 @@
             $codeUrl = App\Http\Controllers\CodesController::GetImageUrl($code['id']);
         @endphp
         
-        <div class="row m-0 bg-light rounded mb-4 p-3 justify-content-center">
+        <div class="row m-0 bg-light rounded mb-4 p-3 justify-content-center shadow-sm">
             <div class="col-md-auto p-3">
                 <div class="d-flex justify-content-center">
-                    <img src="{{ $codeUrl }}" class="rounded-lg shadow-sm" style="width: 6rem !important;">
+                    <img src="{{ $codeUrl }}" class="rounded-lg" style="width: 6rem !important;">
                 </div>
             </div>
             <div class="col p-0">
@@ -102,16 +102,10 @@
         </div>
         
     @empty
-        
-        <div class="card border-0">
-            <div class="card-body bg-light rounded text-secondary">
-                <p class="card-text">
-                    Touch <kbd class="mx-2">+ New</kbd> on the top to create 
-                    a new super vitamin code 
-                </p>
-            </div>
-        </div>
-        
+        <x-card-empty-message>
+            Touch <kbd class="mx-2">+ New</kbd> on the top to create 
+            a new super vitamin code 
+        </x-card-empty-message>
     @endforelse
     
     {{-- Paginator --}}
@@ -121,6 +115,5 @@
         </div>
     @endif
     
-
 @endsection
 

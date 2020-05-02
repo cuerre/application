@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 
 
 
+/*Route::domain('api.cuerre.com')->group(function () {
+
+    Route::get('/', function () {
+        //
+        return dd('hola');
+    });
+});
+*/
+Route::get('/help', function () {
+    
+    return config('APP_URL');
+});
+
+
 /**
  *
  * Web endpoints
@@ -106,6 +120,30 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::get('/deletion', 'ProfileController@ViewDeletion'); //->middleware(['password.confirm'])
         
         Route::delete('/', 'ProfileController@Delete');
+    
+    });
+
+    Route::prefix('tokens')->group(function () {
+    
+        Route::get('/', 'TokensController@ViewIndex');
+
+        Route::get('/creation', 'TokensController@ViewCreation');
+
+        Route::post('/', 'TokensController@Create');
+
+        Route::delete('/', 'TokensController@Delete');
+        
+        //Route::get('/change/name', 'ProfileController@ViewChangeName');
+        
+        //Route::put('/name', 'ProfileController@Update');
+        
+        //Route::get('/change/password', 'ProfileController@ViewChangePassword'); //->middleware(['password.confirm'])
+        
+        //Route::put('/password', 'ProfileController@Update');
+        
+        //Route::get('/deletion', 'ProfileController@ViewDeletion'); //->middleware(['password.confirm'])
+        
+        //Route::delete('/', 'ProfileController@Delete');
     
     });
     
