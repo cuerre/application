@@ -29,7 +29,7 @@
             <div class="col">
                 <div>
                     <code>Route</code>
-                    <span class="small">v1.api.cuerre.com</span>
+                    <span class="small">api.{{ request()->getHost() }}/v1</span>
                 </div>
                 <div>
                     <code>Released</code> 

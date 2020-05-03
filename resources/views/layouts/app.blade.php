@@ -158,20 +158,18 @@
                 <div class="row p-3 justify-content-center">
                     <div class="col-auto mr-auto">
                         <span class="font-weight-bolder">Company</span>
-                        <a href="/blog" class="d-block small text-muted">Blog</a>
                         <a href="/about" class="d-block small text-muted">About</a>
                         <a href="/press" class="d-block small text-muted">Press</a>
                     </div>
                     <div class="col-auto">
                         <span class="font-weight-bolder">Community</span>
-                        <a href="/documentation/faq" class="d-block small text-muted">FAQ</a>
                         <a href="/documentation/donations" class="d-block small text-muted">Donations</a>
                     </div>
                     <div class="col-auto ml-auto">
                         <span class="font-weight-bolder">Deeper</span>
                         <a href="/support" class="d-block small text-muted">Support</a>
+                        <a href="/documentation/faq" class="d-block small text-muted">FAQ</a>
                         <a href="/status" class="d-block small text-muted">Status</a>
-                        <a href="/pricing" class="d-block small text-muted">Pricing</a>
                         <a href="/documentation/contracts/terms" class="d-block small text-muted">Terms</a>
                         <a href="/documentation/contracts/privacy" class="d-block small text-muted">Privacy</a>
                     </div>

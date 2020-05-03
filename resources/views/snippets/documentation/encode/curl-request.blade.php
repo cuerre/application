@@ -1,5 +1,7 @@
 @verbatim
 
-curl https://{version}.api.cuerre.io/encode?data={your data} -o {your file}
+curl https://api.cuerre.com/v1/encode?data={your data} -o {your file}
+    -H "Accept: application/json"
+    -H "Authorization: Bearer {API KEY}"
 
 @endverbatim

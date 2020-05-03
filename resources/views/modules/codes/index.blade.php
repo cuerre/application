@@ -23,13 +23,13 @@
     {{-- Code list --}}
     @forelse ($codes->items() as $code)
         @php
-            $codeUrl = App\Http\Controllers\CodesController::GetImageUrl($code['id']);
+            $codeImage = App\Http\Controllers\CodesController::GetEmbededImage($code['id']);
         @endphp
         
         <div class="row m-0 bg-light rounded mb-4 p-3 justify-content-center shadow-sm">
             <div class="col-md-auto p-3">
                 <div class="d-flex justify-content-center">
-                    <img src="{{ $codeUrl }}" class="rounded-lg" style="width: 6rem !important;">
+                    <img src="data:image/png;base64, {{ $codeImage }}" class="rounded-lg" style="width: 6rem !important;">
                 </div>
             </div>
             <div class="col p-0">
@@ -79,9 +79,9 @@
                                 <i class="material-icons align-middle">save_alt</i>
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ $codeUrl }}&output=PNG&dotsize=5&dpi=100&download">.PNG</a>
-                                <a class="dropdown-item" href="{{ $codeUrl }}&output=SVG&download">.SVG</a>
-                                <a class="dropdown-item" href="{{ $codeUrl }}&output=EPS&download">.EPS</a>
+                                <a class="dropdown-item" href="#&output=PNG&dotsize=5&dpi=100&download">.PNG</a>
+                                <a class="dropdown-item" href="#&output=SVG&download">.SVG</a>
+                                <a class="dropdown-item" href="#&output=EPS&download">.EPS</a>
                             </div>
                         </div>
                         

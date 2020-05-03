@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StatsController;
+use GuzzleHttp\Client;
 
 class CodesController extends Controller
 {
@@ -52,26 +53,23 @@ class CodesController extends Controller
         *
         * @return string
         */
-        public static function GetImageUrl( int $codeId )
+        public static function GetEmbededImage( int $codeId )
         {
             try{
-                # Build the content of the code
+                # Set the content of the code
                 $codeContent = Str::of('')
                     ->append(url('redirect?c='))
                     ->append($codeId);
-                
-                # Build the url
-                $codeUrl = Str::of('http://')
-                    ->append(config('services.cuerre.api.host'))
-                    ->append(':')
-                    ->append(config('services.cuerre.api.port'))
-                    ->append('/api/encode?data=')
-                    ->append($codeContent);
-               
-                return $codeUrl;
+
+                return EncodingController::GetImageBase64([
+                    'data' => $codeContent->__toString()
+                ]);
                 
             } catch ( Exception $e ) {
+
                 Log::error($e->getMessage());
+                
+                //return 'placeholder';
             }
         }
         

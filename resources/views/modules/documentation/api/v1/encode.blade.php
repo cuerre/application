@@ -15,7 +15,7 @@
             In the following sections you can see how to make a request.
         </p>
         <p>
-            By the moment, you should know that all requests have to be sent to <code>{version}.api.cuerre.io/encode</code>
+            By the moment, you should know that all requests have to be sent to <code>api.cuerre.com/v1/encode</code>
         </p>
     </div>
 
@@ -172,7 +172,7 @@
                 Let's include a code into a website using pure HTML code.
             </p>
             <x-code language="html">
-                <img src="https://{version}.api.cuerre.io/encode?data={your data}" />
+                <img src="https://api.cuerre.com/v1/encode?data={your data}" />
             </x-code>
         </div>
 
@@ -182,7 +182,7 @@
                 Do you need a bigger QR embeded in your website?
             </p>
             <x-code language="html">
-                <img src="https://{version}.api.cuerre.io/encode?data={your data}&dotsize=5" />
+                <img src="https://api.cuerre.com/v1/encode?data={your data}&dotsize=5" />
             </x-code>
         </div>
 
@@ -192,7 +192,7 @@
                 Your users need to download the generated QR code, lets put a link
             </p>
             <x-code language="html">
-                <a href="https://{version}.api.cuerre.io/encode?data={your data}&download">Link</a>
+                <a href="api.cuerre.com/v1/encode?data={your data}&download">Link</a>
             </x-code>
         </div>
 
@@ -217,7 +217,7 @@
         </p>
         <x-code 
             language="none">
-            https://{version}.api.cuerre.io/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
+            https://api.cuerre.com/v1/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
         </x-code>
     </div>
 

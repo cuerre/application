@@ -15,7 +15,7 @@
             and we only accept that method by the moment.
         </p>
         <p>
-            All requests have to be sent to <code>{version}.api.cuerre.io/decode</code>
+            All requests have to be sent to <code>api.cuerre.com/v1/decode</code>
         </p>
     </div>
 

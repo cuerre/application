@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +14,35 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//auth:sanctum
+Route::middleware(['auth:sanctum','throttle:60,1'])->group(function () {
 
-Route::middleware('auth:sanctum')->middleware('throttle:20|60,1')->group(function () {
+    # Version 1
+    Route::prefix('v1')->group(function () {
 
-    Route::post('/decode', 'DecodingController@DecodeFile');
+        Route::get('/echo', function(){
 
-    Route::get('/encode', 'EncodingController@EncodeString');
+            //$response = Http::withToken('4wH5o3soQZog999BYRHzdPBoayqtFzqDrzc7MeY62JW04BtsyxtFyj8xOsDHnPLRl6hgWlHzdcvZnOqD')
+            //->get('http://api.cuerre.com/v1/encode');
+
+            //$response = Http::get('http://api.cuerre.com');
+
+            //return $response;
+        });
+
+        Route::post('/decode', 'DecodingController@DecodeFile');
+
+        Route::get('/encode', 'EncodingController@EncodeString');
+    });
+
+    # Version 2
+    Route::prefix('v2')->group(function () {
+
+        Route::get('/echo', function(){
+            return 'echo';
+        });
+    });
+    
 
 });
 

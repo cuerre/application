@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\EncodingController;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +28,57 @@ use Illuminate\Support\Facades\Route;
     });
 });
 */
-Route::get('/help', function () {
+Route::get('/he', function (Request $request) {
+
+    /*
+    $input = collect([$input]);
+
+    $defaults = collect([
+        'data'       => config('app.name'),
+        'dotsize'    => 5,
+        'ecc'        => 'L',
+        'marginsize' => 4,
+        'dpi'        => 72,
+        'output'     => 'PNG'
+    ]);
+
+    $rules = [
+        'data'          => 'string',
+        'dotsize'       => 'integer|between:1,5',
+        'ecc'           => ['regex:/[L|M|Q|H]{1}/'],
+        'marginsize'    => 'integer|between:1,5',
+        'dpi'           => 'integer|between:50,100',
+        'output'        => ['regex:/[PNG|EPS|SVG]{1}/'],
+    ];
+
+    # Filter malformed input values
+    $filtered = $input->filter(function($item, $key) use ($rules){
+        $field = [$key => $item];
+
+        $valid = Validator::make($field, $rules);
+        if( !$valid->fails() )
+            return true;
+        return false;
+    });
     
-    return config('APP_URL');
+    # Change the originals with new values
+    $final = $defaults->map(function($item, $key) use ($filtered){
+        if ( $filtered->has($key) )
+            return $filtered[$key];
+        return $item;
+    });
+
+    return $final;*/
+
+ 
+
+
+    //return dd($request->all());
+    return EncodingController::GetImageBase64(['dotsize' => 4]);
+
+    //return EncodingController::BuildImage(['dotsize' => 4]);
+    //return EncodingController::filterParams(['dotsize' => 3]);
+    
 });
 
 

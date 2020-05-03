@@ -15,7 +15,7 @@ $(function(){
         var f = $(this);
         var formData = new FormData(document.getElementById("formuploadajax"));
         $.ajax({
-            url: "https://{version}.api.cuerre.io/encode",
+            url: "https://api.cuerre.com/v1/decode",
             type: "post",
             data: formData,
             cache: false,

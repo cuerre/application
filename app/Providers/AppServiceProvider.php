@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -63,6 +64,36 @@ class AppServiceProvider extends ServiceProvider
                     return collect($value)->recursive();
                 }
                 return $value;
+            });
+        });
+
+
+
+        /**
+         * Validate as negative approach
+         * It rejects items that are NOT valid
+         * 
+         * 
+         */
+        Collection::macro('validate', function (array $rules) {
+            /** @var $this Collection */
+            return $this->values()->reject(function ($array) use ($rules) {
+                return Validator::make($array, $rules)->fails();
+            });
+        });
+
+
+
+        /**
+         * Validate as positive approach
+         * Only keep items that pass validation
+         * 
+         * 
+         */
+        Collection::macro('positiveValidate', function (array $rules) {
+            /** @var $this Collection */
+            return $this->values()->filter(function ($item) use ($rules) {
+                return Validator::make($item, $rules)->passes();
             });
         });
     }
