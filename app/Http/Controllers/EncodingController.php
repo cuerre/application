@@ -10,30 +10,53 @@ use Illuminate\Support\Str;
 
 class EncodingController extends Controller
 {
-    /*
-     *
-     * @param  array    $params
-     *      data                (default=Cuerre)
-     *      dotsize             (default=3)
-     *      ecc                 (default=L {LMQH} )
-     *      marginsize          (default=4 (2 for Micro))
-     *      dpi                 (default=72)
-     *      output              (default=PNG {PNG,PNG32,EPS,SVG,XPM,ANSI,ANSI256,ASCII,ASCIIi,UTF8,ANSIUTF8})
+    /**
+     * Parameters to build the code
      */
-    public static function filterParams ( array $params )
+    protected $params;
+
+    /**
+     * Path to processed image
+     */
+    protected $imagePath;
+
+    /**
+     * Build a new object setting 
+     * its default values
+     *
+     * @default  data            (default=Cuerre)
+     * @default  dotsize         (default=3)
+     * @default  ecc             (default=L {LMQH} )
+     * @default  marginsize      (default=4 (2 for Micro))
+     * @default  dpi             (default=72)
+     * @default  output          (default=PNG {PNG,PNG32,EPS,SVG,XPM,ANSI,ANSI256,ASCII,ASCIIi,UTF8,ANSIUTF8})
+     */
+    public function __Construct()
+    {
+        $this->params = [
+            'data'       => config('app.name'),
+            'dotsize'    => 3,
+            'ecc'        => 'L',
+            'marginsize' => 4,
+            'dpi'        => 72,
+            'output'     => 'PNG'
+        ];
+
+    }
+
+    /**
+     * Set new parameters to 
+     * build a new code
+     * 
+     * @param  array    $params
+     */
+    public function params ( array $params )
     {
         try {
             $input = collect($params);
 
             # Set default values
-            $defaults = collect([
-                'data'       => config('app.name'),
-                'dotsize'    => 5,
-                'ecc'        => 'L',
-                'marginsize' => 4,
-                'dpi'        => 72,
-                'output'     => 'PNG'
-            ]);
+            $defaults = collect($this->params);
 
             # Set filter rules
             $rules = [
@@ -62,26 +85,31 @@ class EncodingController extends Controller
                 return $item;
             });
 
-            # return final collection
-            return $final;
-        }catch ( Exception $e ){
+            # Save final collection
+            $this->params = $final;
 
+            # Return chainable
+            return $this;
+
+        }catch ( Exception $e ){
             Log::error($e->getMessage());
-            return $defaults;
+
+            return $this;
         }
     }
 
 
 
     /*
-     * Generate an image with requested params
+     * Generate an image with 
+     * defined params
      * 
      * @return  String  Path/to/the/image
      */
-    public static function BuildImage ( array $params = []) 
+    public function BuildImage () 
     {
         try {
-            $cmd = self::filterParams($params);
+            $cmd = $this->params;
 
             # Building a random temporary path
             $tmpPath = '/tmp/' . Str::random(40);
@@ -101,57 +129,96 @@ class EncodingController extends Controller
             $process = new Process($cmd);
             $process->run();
 
-            # No failures = return the path
+            # Failures = store empty path
             if ( !$process->isSuccessful() ) {
-                return '';
+                throw new Exception('Image generation failed');
             }
 
-            # Failures = return emptyness
-            return $tmpPath;
+            # No failures = store the path
+            $this->imagePath = $tmpPath;
+
+            # Return chainable
+            return $this;
 
         }catch ( Exception $e ){
             Log::error($e->getMessage());
-            return '';
+            $this->imagePath = '';
+            return $this;
         }
 
     }
 
-
-
     /**
-     * Convert a string into a QR image
+     * Return image content as 
+     * base64 string
      *
-     * @param  Array  $params
      * @return String
      */
-    public static function GetImageBase64 ( array $params = [] )
+    public function GetBase64 ()
     {
         try{
-            # Try to generate an image
-            $imagePath = self::BuildImage( $params );
-            
             # Check if path is right
-            if(Str::of($imagePath)->trim()->isEmpty()){
-                return '';
+            if(Str::of($this->imagePath)->trim()->isEmpty()){
+                throw new Exception('No image path to convert to base64');
             }
 
-            return base64_encode( file_get_contents($imagePath) );
+            # Return content as base64
+            return base64_encode( file_get_contents($this->imagePath) );
+
         }catch( Exception $e ){
-            
+
             Log::error($e->getMessage());
             return '';
         }
     }
 
+    /**
+     * Return image as image
+     *
+     * @return File
+     */
+    public function GetImage ()
+    {
+        try{
+            # Check if path is right
+            if(Str::of($this->imagePath)->trim()->isEmpty()){
+                throw new Exception('No image path to send');
+            }
 
-    /*
-		if ($request->has('download')) {
-            return response()
-                ->download( $tmpPath, Str::random(40) .'.'. $request->input('output') );
+            # Return the image
+            return response()->file( $this->imagePath );
+
+        }catch( Exception $e ){
+
+            Log::error($e->getMessage());
+            return '';
         }
-        */
-        
-		# Return QR image
-		//return response()->file( $tmpPath );
+    }
+
+    /**
+     * Return image as download
+     *
+     * @return File
+     */
+    public function GetDownload ()
+    {
+        try{
+            # Check if path is right
+            if(Str::of($this->imagePath)->trim()->isEmpty()){
+                throw new Exception('No image path to force download');
+            }
+
+            # Return the download
+            return response()->download( 
+                $this->imagePath, 
+                Str::random(40) .'.'. $this->params['output'] 
+            );
+
+        }catch( Exception $e ){
+
+            Log::error($e->getMessage());
+            return '';
+        }
+    }
     
 }

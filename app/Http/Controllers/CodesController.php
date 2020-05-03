@@ -61,14 +61,20 @@ class CodesController extends Controller
                     ->append(url('redirect?c='))
                     ->append($codeId);
 
-                return EncodingController::GetImageBase64([
+                $newCode = new EncodingController;
+
+                $qrCode = $newCode->params([
                     'data' => $codeContent->__toString()
-                ]);
+                ])
+                ->buildImage()
+                ->GetBase64();
+
+                return $qrCode;
                 
             } catch ( Exception $e ) {
 
                 Log::error($e->getMessage());
-                
+
                 //return 'placeholder';
             }
         }
