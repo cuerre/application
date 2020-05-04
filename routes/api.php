@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 |
 */
 //auth:sanctum
-Route::middleware(['auth:sanctum','throttle:60,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
 
     # Version 1
     Route::prefix('v1')->group(function () {
@@ -26,7 +24,7 @@ Route::middleware(['auth:sanctum','throttle:60,1'])->group(function () {
 
         Route::match(['get', 'post'], '/encode', 'ApiV1Controller@EncodeString');
 
-        //Route::post('/decode', 'DecodingController@DecodeFile');
+        Route::post('/decode', 'ApiV1Controller@DecodeFile');
     });
 
     # Version 2

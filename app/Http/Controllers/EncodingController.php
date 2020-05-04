@@ -13,11 +13,15 @@ class EncodingController extends Controller
 {
     /**
      * Parameters to build the code
+     * 
+     * @var Array
      */
     protected $params;
 
     /**
      * Path to processed image
+     * 
+     * @var String
      */
     protected $imagePath;
 
@@ -42,7 +46,6 @@ class EncodingController extends Controller
             'dpi'        => 72,
             'output'     => 'PNG'
         ];
-
     }
 
     /**
@@ -94,7 +97,7 @@ class EncodingController extends Controller
             return $this;
 
         }catch ( Exception $e ){
-            Log::error($e->getMessage());
+            Log::error('Params(): '. $e->getMessage());
 
             return $this;
         }
@@ -143,7 +146,7 @@ class EncodingController extends Controller
             return $this;
 
         }catch ( Exception $e ){
-            Log::error($e->getMessage());
+            Log::error('BuildImage(): '. $e->getMessage());
             $this->imagePath = '';
             return $this;
         }
@@ -169,7 +172,7 @@ class EncodingController extends Controller
 
         }catch( Exception $e ){
 
-            Log::error($e->getMessage());
+            Log::error('GetBase64(): '.$e->getMessage());
             return '';
         }
     }
@@ -192,7 +195,7 @@ class EncodingController extends Controller
 
         }catch( Exception $e ){
 
-            Log::error($e->getMessage());
+            Log::error('GetImage(): '.$e->getMessage());
             return '';
         }
     }
@@ -218,7 +221,7 @@ class EncodingController extends Controller
 
         }catch( Exception $e ){
 
-            Log::error($e->getMessage());
+            Log::error('GetDownload(): ' . $e->getMessage());
             return '';
         }
     }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\EncodingController;
+use App\Http\Controllers\DecodingController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,8 @@ use Illuminate\Http\Request;
 
 
 Route::get('/he', function (Request $request) {
-
+    
+    
     
 });
 
