@@ -1,7 +1,11 @@
-@verbatim
+@php
+echo htmlentities('
 
-curl https://api.cuerre.com/v1/encode?data={your data} -o {your file}
+
+curl '.secure_url("/").'/api/v1/encode?data={your data} -o {your file}
     -H "Accept: application/json"
     -H "Authorization: Bearer {API KEY}"
 
-@endverbatim
+
+');
+@endphp

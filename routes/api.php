@@ -21,18 +21,12 @@ Route::middleware(['auth:sanctum','throttle:60,1'])->group(function () {
     Route::prefix('v1')->group(function () {
 
         Route::get('/echo', function(){
-
-            //$response = Http::withToken('4wH5o3soQZog999BYRHzdPBoayqtFzqDrzc7MeY62JW04BtsyxtFyj8xOsDHnPLRl6hgWlHzdcvZnOqD')
-            //->get('http://api.cuerre.com/v1/encode');
-
-            //$response = Http::get('http://api.cuerre.com');
-
-            //return $response;
+            return 'echo';
         });
 
-        Route::post('/decode', 'DecodingController@DecodeFile');
+        Route::match(['get', 'post'], '/encode', 'ApiV1Controller@EncodeString');
 
-        Route::get('/encode', 'EncodingController@EncodeString');
+        //Route::post('/decode', 'DecodingController@DecodeFile');
     });
 
     # Version 2

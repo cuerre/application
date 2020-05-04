@@ -23,6 +23,11 @@
     {{-- API (v1.x) --}}
     <x-dashboard-menu header="api · v1">
         <x-dashboard-menu-item 
+            icon="notes"
+            content="prologue" 
+            :link="url('documentation/api/v1/prologue')">
+        </x-dashboard-menu-item>
+        <x-dashboard-menu-item 
             icon="swap_vertical_circle"
             content="encode" 
             :link="url('documentation/api/v1/encode')">

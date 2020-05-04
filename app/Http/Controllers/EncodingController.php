@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -65,7 +66,7 @@ class EncodingController extends Controller
                 'ecc'           => ['regex:/[L|M|Q|H]{1}/'],
                 'marginsize'    => 'integer|between:1,5',
                 'dpi'           => 'integer|between:50,100',
-                'output'        => ['regex:/[PNG|EPS|SVG]{1}/'],
+                'output'        => ['regex:/^(\bPNG\b)|(\bEPS\b)|(\bSVG\b){1}$/'],
             ];
 
             # Filter malformed input values
@@ -73,8 +74,9 @@ class EncodingController extends Controller
                 $field = [$key => $item];
 
                 $valid = Validator::make($field, $rules);
-                if( !$valid->fails() )
+                if( !$valid->fails() ){
                     return true;
+                }
                 return false;
             });
             

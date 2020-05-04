@@ -13,7 +13,7 @@
     {{-- Errors --}}
     <x-alert-errors /> 
     
-    <form action="{{ url('dashboard/code') }}" method="POST">
+    <form action="{{ url('dashboard/codes') }}" method="POST">
         @csrf
 
         {{-- Name --}}

@@ -72,9 +72,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        $domain = parse_url( config('app.url') )['host'];
+        # $domain = parse_url( config('app.url') )['host'];
         
-        Route::domain('api.'. $domain )
+        Route::prefix('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\StatBrowscap;
 use App\Code;
 use Exception;
 use Illuminate\Http\Request;
@@ -12,14 +11,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StatsController;
-use GuzzleHttp\Client;
 
 class CodesController extends Controller
 {
         /**
-        * Get 
+        * Get all codes for signed in
+        * user as a Laravel collection
         *
-        * @return 
+        * @return \Illuminate\Support\Collection
         */
         public static function GetAll()
         {
@@ -45,13 +44,11 @@ class CodesController extends Controller
             }
         }
 
-
-        
         /**
-        * Generate the URL to get 
-        * a QR image from the api
+        * Get a Base64 representation
+        * of the given code
         *
-        * @return string
+        * @return String
         */
         public static function GetEmbededImage( int $codeId )
         {
@@ -75,11 +72,62 @@ class CodesController extends Controller
 
                 Log::error($e->getMessage());
 
-                //return 'placeholder';
+                return '';
             }
         }
-        
-        
+
+        /**
+        * Force the download a code according
+        * to the request params
+        *
+        * @param Request $request [
+        *     code
+        *     output   
+        * ]
+        * @return File
+        */
+        public static function GetImageDownload( Request $request )
+        {
+            try{
+                # Retrieve the user
+                $userId = Auth::id();
+
+                # Check the input fields
+                $validator = Validator::make($request->all(), [
+                    'code' => [
+                        'required', 
+                        'integer', 
+                        Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
+                            $query->where('user_id', $userId);
+                        })
+                    ],
+                ]);
+
+                if ($validator->fails())
+                    throw new Exception ('Some field is malformed');
+
+                # Set the content of the code
+                $codeContent = Str::of('')
+                    ->append(url('redirect?c='))
+                    ->append($request->input('code'));
+
+                # Build and download the code
+                $newCode = new EncodingController;
+                
+                $qrCode = $newCode->params([
+                    'data'   => $codeContent->__toString(),
+                    'output' => $request->input('output')
+                ])
+                ->buildImage()
+                ->GetDownload();
+
+                return $qrCode;
+                
+            } catch ( Exception $e ) {
+
+                Log::error($e->getMessage());
+            }
+        }
         
         /**
         * Create new code
@@ -89,7 +137,6 @@ class CodesController extends Controller
         public static function CreateOne( Request $request )
         {
             try{
-                
                 # Retrieve the user
                 $userId = Auth::id();
                 
@@ -100,7 +147,10 @@ class CodesController extends Controller
                 ]);
                 
                 if ($validator->fails())
-                    throw new Exception ('Some field is malformed');
+                    return redirect('dashboard/codes/creation')
+                        ->withErrors([
+                            'message' => __('Some field is malformed')
+                        ]);
                     
                 # Convert target to a collection
                 $targets = collect( $request->input('targets') )->recursive();
@@ -122,13 +172,19 @@ class CodesController extends Controller
                 });
                 
                 if (!$verifyTargets)
-                    throw new Exception ('Some field is malformed');
+                    return redirect('dashboard/codes/creation')
+                        ->withErrors([
+                            'message' => __('Some target is malformed')
+                        ]);
                     
                 # Check if Any target is set
                 $verifyAny = $targets->firstWhere('system', 'any');
                 
                 if ( is_null($verifyAny) )
-                    throw new Exception ('You must define "Any" target. Remember that everything can fail.');
+                    return redirect('dashboard/codes/creation')
+                        ->withErrors([
+                            'message' => __('You must define, at least, the "Any" target')
+                        ]);
                 
                 # Format data field
                 $data = collect([
@@ -142,11 +198,13 @@ class CodesController extends Controller
                 $code->data    = $data->toArray();
                 
                 if ( !$code->save() )
-                    throw new Exception ('Failed to create the code');
+                    return redirect('dashboard/codes/creation')
+                        ->withErrors([
+                            'message' => __('We could not create the code')
+                        ]);
                     
                 # Go to the index
-                return redirect('dashboard/codes')
-                    ->send();
+                return redirect('dashboard/codes');
                 
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
@@ -154,18 +212,15 @@ class CodesController extends Controller
                 # Go to the form with error bag
                 return redirect('dashboard/codes/creation')
                     ->withErrors([
-                        'message' => $e->getMessage()
-                    ])
-                    ->send();
+                        'message' => 'Imposible to create your code'
+                    ]);
             }
         }
-        
-        
         
         /**
         * Remove a code and all associated data
         *
-        * @return bool
+        * @return \Illuminate\Http\RedirectResponse
         */
         public static function DeleteOne( Request $request )
         {
@@ -179,7 +234,10 @@ class CodesController extends Controller
                 ]);
                 
                 if ($validator->fails())
-                    throw new Exception ('Some field is malformed');
+                    return redirect('dashboard/codes/creation')
+                        ->withErrors([
+                            'message' => __('Some filed is malformed')
+                        ]);
                 
                 # Delete asked code
                 $delete = Code::where('user_id', $userId)
@@ -187,28 +245,28 @@ class CodesController extends Controller
                     ->delete();
                     
                 if (!$delete)
-                    throw new Exception ('Code not deleted');
-                    
-                return redirect('dashboard/codes')
-                    ->send();
+                    return redirect('dashboard/codes/creation')
+                        ->withErrors([
+                            'message' => __('We could not delete the code')
+                        ]);
+
+                return redirect('dashboard/codes');
                        
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
                 
                 return redirect('dashboard/codes')
                     ->withErrors([
-                        'message' => $e->getMessage()
-                    ])
-                    ->send();
+                        'message' => __('Impossible to delete your code')
+                    ]);
             }
         }
-     
-     
-     
+
         /**
         * Show the index view with codes
         *
-        * @return 
+        * @param  Request $request
+        * @return Illuminate\Contracts\Support\Renderable
         */
         public static function ViewIndex ()
         {
@@ -226,12 +284,11 @@ class CodesController extends Controller
             }
         }
         
-        
-        
         /**
         * Show the creation view for codes
         *
-        * @return 
+        * @param  Request $request
+        * @return Illuminate\Contracts\Support\Renderable
         */
         public static function ViewCreation ()
         {
@@ -242,11 +299,7 @@ class CodesController extends Controller
             } catch ( Exception $e ) {
                 Log::error($e->getMessage());
 
-                return redirect('dashboard/codes')
-                    ->withErrors([
-                        'message' => $e->getMessage()
-                    ])
-                    ->send();
+                abort(404);
             }
         }
 
@@ -257,7 +310,6 @@ class CodesController extends Controller
         * as URL param (?code=)
         *
         * @param  Request $request
-        * @return Illuminate\Contracts\Support\Renderable
         * @return Illuminate\Http\RedirectResponse
         */
         public static function ViewStats( Request $request )
@@ -278,7 +330,10 @@ class CodesController extends Controller
                 ]);
                 
                 if ($validator->fails())
-                    throw new Exception ('Some field is malformed');
+                    return redirect('dashboard/codes')
+                        ->withErrors([
+                            'message' => __('Some field is malformed')
+                        ]);
 
                 # Get the stats for that code
                 $stats = new StatsController( $request->input('code') );
@@ -298,11 +353,7 @@ class CodesController extends Controller
 
                 Log::error($e->getMessage());
 
-                return redirect('dashboard/codes')
-                    ->withErrors([
-                        'message' => $e->getMessage()
-                    ])
-                    ->send();
+                abort(404);
             }
         }
       

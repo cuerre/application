@@ -66,6 +66,10 @@ Route::prefix('documentation')->group(function () {
         });
 
         Route::prefix('v1')->group(function () {
+            Route::get('/prologue', function () {
+                return view('modules.documentation.api.v1.prologue');
+            });
+
             Route::get('/encode', function () {
                 return view('modules.documentation.api.v1.encode');
             });
@@ -100,7 +104,23 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/', function () {
         return redirect('/dashboard/codes');
     });
-    
+
+    Route::prefix('codes')->group(function () {
+
+        Route::get('/', 'CodesController@ViewIndex');
+
+        Route::get('/download', 'CodesController@GetImageDownload')->middleware(['throttle:60,1']);
+
+        Route::get('/creation', 'CodesController@ViewCreation');
+
+        Route::get('/stats', 'CodesController@ViewStats');
+
+        Route::delete('/', 'CodesController@DeleteOne');
+
+        Route::post('/', 'CodesController@CreateOne');
+
+    });
+
     Route::prefix('profile')->group(function () {
     
         Route::get('/', 'ProfileController@ViewIndex');
@@ -128,34 +148,12 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::post('/', 'TokensController@Create');
 
         Route::delete('/', 'TokensController@Delete');
-        
-        //Route::get('/change/name', 'ProfileController@ViewChangeName');
-        
-        //Route::put('/name', 'ProfileController@Update');
-        
-        //Route::get('/change/password', 'ProfileController@ViewChangePassword'); //->middleware(['password.confirm'])
-        
-        //Route::put('/password', 'ProfileController@Update');
-        
-        //Route::get('/deletion', 'ProfileController@ViewDeletion'); //->middleware(['password.confirm'])
-        
-        //Route::delete('/', 'ProfileController@Delete');
     
     });
+
+    Route::prefix('billing')->group(function () {
     
-    
-
-    Route::get('/codes', 'CodesController@ViewIndex');
-
-    Route::get('/codes/creation', 'CodesController@ViewCreation');
-
-    Route::get('/codes/stats', 'CodesController@ViewStats');
-
-    Route::delete('/code', 'CodesController@DeleteOne');
-
-    Route::post('/code', 'CodesController@CreateOne');
-    
-    
+    });
     
     Route::get('/support', function () {
         return view('modules.support');
@@ -163,8 +161,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
 
     Route::get('/test', 'OutputController@ViewTest');
-        
-
     
 });
 

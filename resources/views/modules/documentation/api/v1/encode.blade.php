@@ -10,12 +10,12 @@
     <div class="mb-5">
         <h4>Methods</h4>
         <p>
-            For convenience, to get a QR code, our service admits just <code>GET</code> method 
+            For convenience, to get a QR code, our service admits <code>GET</code> and <code>POST</code> methods 
             that can be used with cURL, Python, PHP and many other languages.
             In the following sections you can see how to make a request.
         </p>
         <p>
-            By the moment, you should know that all requests have to be sent to <code>api.cuerre.com/v1/encode</code>
+            By the moment, you should know that all requests have to be sent to <code>{{ secure_url('/') }}/api/v1/encode</code>
         </p>
     </div>
 
@@ -166,36 +166,6 @@
             </x-code>
         </div>
 
-        {{-- HTML request --}}
-        <div class="mb-5">
-            <p>
-                Let's include a code into a website using pure HTML code.
-            </p>
-            <x-code language="html">
-                <img src="https://api.cuerre.com/v1/encode?data={your data}" />
-            </x-code>
-        </div>
-
-        {{-- HTML request --}}
-        <div class="mb-5">
-            <p>
-                Do you need a bigger QR embeded in your website?
-            </p>
-            <x-code language="html">
-                <img src="https://api.cuerre.com/v1/encode?data={your data}&dotsize=5" />
-            </x-code>
-        </div>
-
-        {{-- HTML request --}}
-        <div class="mb-5">
-            <p>
-                Your users need to download the generated QR code, lets put a link
-            </p>
-            <x-code language="html">
-                <a href="api.cuerre.com/v1/encode?data={your data}&download">Link</a>
-            </x-code>
-        </div>
-
         {{-- PHP curl --}}
         <div class="mb-5">
             <p>
@@ -217,7 +187,7 @@
         </p>
         <x-code 
             language="none">
-            https://api.cuerre.com/v1/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
+            {{ secure_url('/') }}/api/v1/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
         </x-code>
     </div>
 

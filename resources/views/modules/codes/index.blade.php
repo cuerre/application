@@ -79,14 +79,14 @@
                                 <i class="material-icons align-middle">save_alt</i>
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#&output=PNG&dotsize=5&dpi=100&download">.PNG</a>
-                                <a class="dropdown-item" href="#&output=SVG&download">.SVG</a>
-                                <a class="dropdown-item" href="#&output=EPS&download">.EPS</a>
+                                <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $code['id']) }}&output=PNG">.PNG</a>
+                                <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $code['id']) }}&output=SVG">.SVG</a>
+                                <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $code['id']) }}&output=EPS">.EPS</a>
                             </div>
                         </div>
                         
                         {{-- Delete --}}
-                        <form id="delete-code-form" action="{{ url('dashboard/code') }}" method="POST">
+                        <form id="delete-code-form" action="{{ url('dashboard/codes') }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $code['id'] }}">
