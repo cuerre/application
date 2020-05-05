@@ -9,6 +9,40 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Str;
 
+/** 
+ * EncodingController is a Laravel Controller for encoding data into QR codes
+ * 
+ * EncodingController is a Laravel Controller that uses Symfony's 
+ * Process library and QREncode Linux library (qrencode command) to encode
+ * strings into QR codes and return the the image in different formats
+ * 
+ * Example usage:
+ * $qrCode = new EncodingController ();
+ * 
+ * # Set parameters
+ * $qrCode->Params([
+ *      'data'       => 'Your string to encode',
+ *      'dotsize'    => 3,
+ *      'ecc'        => 'L',
+ *      'marginsize' => 4,
+ *      'dpi'        => 72,
+ *      'output'     => 'PNG'
+ * ]);
+ * 
+ * # Build the image into the filesystem
+ * $qrCode->BuildImage();
+ * 
+ * # Get the result
+ * $qrCode->GetBase65();
+ * $qrCode->GetImage();
+ * $qrCode->GetDownload();
+ * 
+ * @package Cuerre
+ * @author Alby Hernández
+ * @version $Revision: 1.0 $
+ * @access private
+ * @see http://cuerre.com/documentation
+ */
 class EncodingController extends Controller
 {
     /**
@@ -54,7 +88,7 @@ class EncodingController extends Controller
      * 
      * @param  array    $params
      */
-    public function params ( array $params )
+    public function Params ( array $params )
     {
         try {
             $input = collect($params);

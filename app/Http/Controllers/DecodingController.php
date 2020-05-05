@@ -6,9 +6,35 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
+/** 
+ * DecodingController is a Laravel Controller for decoding QR codes
+ * 
+ * DecodingController is a Laravel Controller that uses Symfony's 
+ * Process library and ZBar Linux library (zbarimg command) to decode
+ * QR codes and return the content as a string from a Laravel Request
+ * 
+ * Example usage:
+ * $qrCode = new DecodingController ( Request $request );
+ * 
+ * # Set parameters
+ * $qrCode->AllowedExt(['jpeg', 'png'])->MaxSize(1024);
+ * 
+ * # Validate and check validation
+ * $qrCode->ValidateFile()->IsValid();
+ * 
+ * # Process and get the content
+ * $qrCode->Process()->GetContent();
+ * 
+ * @package Cuerre
+ * @author Alby Hernández
+ * @version $Revision: 1.0 $
+ * @access private
+ * @see http://cuerre.com/documentation
+ */
 class DecodingController extends Controller
 {
     /**
@@ -33,6 +59,14 @@ class DecodingController extends Controller
      * @var Array
      */
     private $allowedExt;
+
+    /**
+     * Allowed maximun 
+     * size for files
+     * 
+     * @var Integer
+     */
+    private $maxSize;
 
     /**
      * Decoded content
@@ -62,6 +96,8 @@ class DecodingController extends Controller
             'jpg'
         ];
 
+        $this->maxSize = 1024;
+
         $this->content = '';
     }
 
@@ -73,12 +109,31 @@ class DecodingController extends Controller
     public function AllowedExt( array $extensions )
     {
         try{
-            $this->$allowedExt = $extensions;
+            $this->allowedExt = $extensions;
 
             return $this;
 
         }catch ( Exception $e ){
             Log::error('AllowedExt(): '. $e->getMessage());
+
+            return $this;
+        }
+    }
+
+    /**
+     * Set max file size
+     * 
+     * @param Int $extensions
+     */
+    public function MaxSize( int $kb )
+    {
+        try{
+            $this->maxSize = $kb;
+
+            return $this;
+
+        }catch ( Exception $e ){
+            Log::error('MaxSize(): '. $e->getMessage());
 
             return $this;
         }
@@ -96,25 +151,21 @@ class DecodingController extends Controller
             # Simplify attribute name
             $request = $this->request;
 
-            # Check if 'file' field is present
-            if ( !$request->hasFile('photo') ) {
-                $this->validFile = false;
-                return $this;
-            }
+            # Join allowed extensions with glue
+            $allowedExt = collect($this->allowedExt)->implode(',');
 
-            # Check for corrupt file
-            if ( !$request->file('photo')->isValid() ) {
-                $this->validFile = false;
-                return $this;
-            }
+            # Check if uploaded file is right
+            $validator = Validator::make($request->all(), [
+                'photo' => [
+                    'required',
+                    'file',
+                    'image',
+                    'mimes:'.$allowedExt,
+                    'max:'.$this->maxSize
+                ],
+            ]);
 
-            # Get file extension (lower case)
-            $extension = $request->photo->extension();
-
-            # Check if extension is allowed     
-            $allowedExt = collect($this->allowedExt);
-            
-            if( !$allowedExt->contains($extension) ){
+            if( $validator->fails() ){
                 $this->validFile = false;
                 return $this;
             }
@@ -170,6 +221,24 @@ class DecodingController extends Controller
             Log::error('Process(): '.$e->getMessage());
             $this->content = '';
             return $this;
+        }
+    }
+
+    /**
+     * Return the valifFile attribute
+     * 
+     * @return Bool
+     */
+    public function IsValid()
+    {
+        try{
+            # Check content filled
+            return $this->validFile;
+
+        }catch( Exception $e ){
+            Log::error('GetContent(): '.$e->getMessage());
+            
+            return false;
         }
     }
 

@@ -21,7 +21,7 @@ $(function(){
             cache: false,
             contentType: false, // Content-Type already included
             processData: false,
-            header : {
+            headers : {
                 "Authorization" : "Bearer {API KEY}",
                 "Accept" : "application/json; charset=utf-8",
                 //"Content-Type" : "multipart/form-data",  NOT NEEDED
