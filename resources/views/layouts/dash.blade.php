@@ -11,8 +11,7 @@
 
 
 @section('content')
-    <div class="container">
-    
+    <div class="container mt-5 pt-4">
         <div class="row">
         
             {{-- Side menu --}}
@@ -26,7 +25,7 @@
                     @yield('module')
                 </x-striped-card>
             </div>
+
         </div>
-        
     </div>
 @endsection

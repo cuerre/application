@@ -147,13 +147,12 @@
         
 
         {{-- Content --}}
-        <main class="container-fluid d-flex py-5" style="min-height: 70vh !important;">
+        <main class="container-fluid d-flex flex-column m-0 px-0" style="min-height: 70vh !important;">
             @yield('content')
         </main>
         
         {{-- Footer --}}
-        
-        <footer class="container-fluid bg-muted mt-5 ">
+        <footer class="container-fluid bg-light mt-5 ">
             <div class="container text-muted pt-3">
                 <div class="row p-3 justify-content-center">
                     <div class="col-auto mr-auto">

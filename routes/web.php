@@ -22,8 +22,6 @@ use Illuminate\Http\Request;
 
 Route::get('/he', function (Request $request) {
     
-    
-    
 });
 
 
@@ -33,7 +31,7 @@ Route::get('/he', function (Request $request) {
  *
  */
 Route::get('/', function () {
-    return view('modules.codes.show');
+    return view('index');
 });
 
 Auth::routes();

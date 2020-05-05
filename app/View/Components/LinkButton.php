@@ -12,6 +12,20 @@ class LinkButton extends Component
      * @var string
      */
     public $icon;
+
+    /**
+     * The button size
+     *
+     * @var string
+     */
+    public $size;
+    
+    /**
+     * The button block mode
+     *
+     * @var string
+     */
+    public $block;
     
     /**
      * The menu content
@@ -26,18 +40,28 @@ class LinkButton extends Component
      * @var string
      */
     public $link;
+
+    /**
+     * The button color
+     *
+     * @var string
+     */
+    public $color;
     
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($icon=null, $content, $link)
+    public function __construct($icon=null, $content, $link, $size=null, $block=false, $color='primary')
     {
         //
         $this->icon    = $icon;
         $this->content = $content;
         $this->link    = $link;
+        $this->size    = $size;
+        $this->block   = $block;
+        $this->color   = $color;
     }
 
     /**
@@ -50,7 +74,10 @@ class LinkButton extends Component
         return view('components.link-button',[
             'icon'    => $this->icon,
             'content' => $this->content,
-            'link'    => $this->link
+            'link'    => $this->link,
+            'size'    => $this->size,
+            'block'   => $this->block,
+            'color'   => $this->color,
         ]);
     }
 }

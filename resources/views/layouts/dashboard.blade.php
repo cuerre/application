@@ -36,6 +36,7 @@
     </x-dashboard-menu>
     
     {{-- Navigation extra --}}
+    {{--
     <x-dashboard-menu header="more">
         <x-dashboard-menu-item 
             icon="code" 
@@ -43,6 +44,7 @@
             :link="url('documentation/api/releases')">
         </x-dashboard-menu-item>
     </x-dashboard-menu>
+    --}}
 @endsection
 
 
