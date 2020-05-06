@@ -232,6 +232,7 @@ class StatsController extends Controller
             $readings = StatBrowscap::select('created_at')
                 ->where('code_id', $this->codeId)
                 ->whereDate('created_at', '>', $date)
+                ->oldest()
                 ->get();
         
             return $readings;

@@ -21,6 +21,19 @@ window.Vue = require('vue');
 
 Vue.component('codes-target-selector', require('./components/CodesTargetSelector.vue').default);
 
+Vue.component('stats-browser', require('./components/StatsBrowser.vue').default);
+
+Vue.component('stats-platform', require('./components/StatsPlatform.vue').default);
+
+Vue.component('stats-device', require('./components/StatsDevice.vue').default);
+
+Vue.component('stats-browser-type', require('./components/StatsBrowserType.vue').default);
+
+Vue.component('stats-last-week', require('./components/StatsLastWeek.vue').default);
+
+Vue.component('stats-last-month', require('./components/StatsLastMonth.vue').default);
+
+Vue.component('stats-last-year', require('./components/StatsLastYear.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

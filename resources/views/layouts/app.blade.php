@@ -21,7 +21,6 @@
     {{-- Static styles CSS --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.css" rel="stylesheet" />
 
     {{-- Embeded CSS --}}
     <style>
@@ -190,27 +189,15 @@
     {{-- On production: npm run dev | npm run production --}}
     <script src="{{ asset('js/app.js') }}"></script>
 
+    {{-- JS Custom --}}
     <script>
         $(function () {
             $('[data-toggle="popover"]').popover()
             $('[data-toggle="tooltip"]').tooltip()
         });
-    </script>
 
-    {{-- JS Charts --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
-
-    {{-- JS Custom --}}
-    <script type="module">
-        import * as ColorController from "{{ asset('js/ColorController.js') }}";
-
-        window.color = new ColorController.ColorController();
-        
         @stack('scripts')
     </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
     
 </body>
 </html>
