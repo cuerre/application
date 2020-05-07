@@ -13,6 +13,25 @@
         {{ config('app.name') }}
     </title>
 
+    {{-- Favicon --}}
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('imgs/favicon/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('imgs/favicon/apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('imgs/favicon/apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('imgs/favicon/apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('imgs/favicon/apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('imgs/favicon/apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('imgs/favicon/apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('imgs/favicon/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('imgs/favicon/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('imgs/favicon/android-icon-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('imgs/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('imgs/favicon/favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('imgs/favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('imgs/favicon/manifest.json') }}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ asset('imgs/favicon/ms-icon-144x144.png') }}">
+    <meta name="theme-color" content="#ffffff">
+
     {{-- Fonts --}}
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -59,80 +78,7 @@
     <div id="app">
     
         {{-- Navbar --}}
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top d-flex flex-column" >
-            <div class="container py-2">
-            
-                {{-- Logo --}}
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('imgs/logo-title.png') }}" style="max-height: 2rem; " class="align-middle mr-3"/>
-                </a>
-                
-                {{-- Menu toggler --}}                
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ url('pricing') }}">
-                                Pricing 
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ url('documentation') }}">
-                                Documentation
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                    
-                        {{-- Authentication Links --}}
-                        @guest
-                            @if(Route::currentRouteName() !== 'login' )
-                                <li class="nav-item">
-                                    <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">
-                                        {{ __('Login') }}
-                                    </a>
-                                </li>
-                            @endif
-                            @if (Route::has('register') && Route::currentRouteName() !== 'register')
-                                <li class="nav-item">
-                                    <a class="btn btn-primary mr-2" href="{{ route('register') }}">
-                                        {{ __('Register') }}
-                                    </a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->email }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('dashboard') }}">
-                                        {{ __('Dashboard') }}
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <x-web-navbar/>
         
 
         {{-- Content --}}
@@ -141,38 +87,8 @@
         </main>
         
         {{-- Footer --}}
-        <footer class="container-fluid bg-light mt-5 ">
-            <div class="container text-muted pt-3">
-                <div class="row p-3 justify-content-center">
-                    <div class="col-auto mr-auto">
-                        <span class="font-weight-bolder">Company</span>
-                        {{--
-                        <a href="/about" class="d-block small text-muted">About</a>
-                        <a href="/press" class="d-block small text-muted">Press</a>
-                        --}}
-                    </div>
-                    <div class="col-auto">
-                        <span class="font-weight-bolder">Community</span>
-                        <a href="/documentation/donations" class="d-block small text-muted">Donations</a>
-                    </div>
-                    <div class="col-auto ml-auto">
-                        <span class="font-weight-bolder">Deeper</span>
-                        <a href="/dashboard/support" class="d-block small text-muted">Support</a>
-                        <a href="/documentation/faq" class="d-block small text-muted">FAQ</a>
-                        <a href="/status" class="d-block small text-muted">Status</a>
-                        <a href="/documentation/contracts/terms" class="d-block small text-muted">Terms</a>
-                        <a href="/documentation/contracts/privacy" class="d-block small text-muted">Privacy</a>
-                    </div>
-                </div>
-                <div class="row text-muted px-3 mb-5">
-                    <div class="col">
-                        <img src="{{ asset('imgs/logo-footer.png') }}" style="max-height: 1rem;" class="align-middle mr-2"/>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <x-web-footer/>
         
-
     </div>
     
 
@@ -184,6 +100,7 @@
     {{-- JS Custom --}}
     <script>
         $(function () {
+            $('.collapse').collapse();
             $('[data-toggle="popover"]').popover()
             $('[data-toggle="tooltip"]').tooltip()
         });

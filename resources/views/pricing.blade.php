@@ -63,6 +63,7 @@
                                 <small>/ month</small>
                             </div>
                         </div>
+                        {{--
                         <div class="py-3">
                             <x-link-button
                                 content="SELECT"
@@ -72,7 +73,7 @@
                                 color="primary">
                             </x-link-button>
                         </div>
-                        
+                        --}}
                         <div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item border-0">
@@ -111,6 +112,7 @@
                                 <small>/ month</small>
                             </div>
                         </div>
+                        {{--
                         <div class="py-3">
                             <x-link-button
                                 content="SELECT"
@@ -120,6 +122,7 @@
                                 color="primary">
                             </x-link-button>
                         </div>
+                        --}}
                         <div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item border-0">
