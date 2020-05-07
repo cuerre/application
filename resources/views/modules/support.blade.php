@@ -12,16 +12,23 @@
     {{-- Errors --}}
     <x-alert-errors /> 
 
+    {{-- Message bag --}}
+    @if( Session::has('message') )
+        <x-alert 
+            type="light">
+            {{ Session::get('message') }}
+        </x-alert>
+    @endif
 
-    <form action="" method="">
-        <div class="row align-items-end m-0 rounded bg-light py-4 px-2">
-            <div class="col-md align-self-stretch">
-                <p class="text-muted font-weight-bolder">
-                    {{ __('Sometimes, the digital world stops') }}
-                </p>
+
+    <form action="{{ url('dashboard/support') }}" method="POST">
+        @csrf
+        <div class="row align-items-end m-0 rounded bg-white py-4">
+            <div class="col-md align-self-stretch px-0">
                 <p class="text-muted">
-                    {{ __('For those moments, we are here for you trying to make it rotate again with ease.') }}
-                    {{ __('That is the reason you can see just a box where you can write and ask for help.') }}
+                    {{ __('Sometimes, the digital world stops.') }}
+                    {{ __('for those moments, we are here for you to make it rotate again.') }}
+                    {{ __('That is the reason you can see just a box where you can scream.') }}
                     {{ __('You are living the experience of big data made simple.') }}
                 </p>
             </div>
@@ -29,7 +36,12 @@
 
         <div class="row align-items-end m-0 rounded bg-light py-4 px-2">
             <div class="col-md align-self-stretch">
-                <textarea class="form-control" rows="5"></textarea>
+                <textarea 
+                    name="text" 
+                    class="form-control" 
+                    rows="5" 
+                    placeholder="{{ __('Write your message here') }}">
+                </textarea>
             </div>
         </div>
 

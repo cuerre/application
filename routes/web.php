@@ -18,12 +18,9 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-Route::get('/he', function (Request $request) {
-    
+Route::get('/test', function (Request $request) {
+    //return new App\Mail\SupportRequest(auth()->user(), 'cachacha');
 });
-
 
 /**
  *
@@ -36,10 +33,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
-
 Route::get('/redirect', 'VisitController@Pipeline');
-    
 
 Route::get('/pricing', function () {
     return view('pricing');
@@ -91,8 +85,6 @@ Route::prefix('documentation')->group(function () {
         });
     });
 });
-
-
 
 /**
  *
@@ -159,9 +151,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         return view('modules.support');
     });
 
-
-    Route::get('/test', 'OutputController@ViewTest');
-    
+    Route::post('/support', 'SupportController@SendRequest');
 });
 
 

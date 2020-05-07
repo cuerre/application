@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.centered')
 
-@section('content')
+@section('module')
 <div class="container d-flex align-items-center p-0">
     <div class="row justify-content-center w-100 m-0">
         <div class="col-lg-6 p-0">

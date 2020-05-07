@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.centered')
 
 
 
@@ -26,7 +26,7 @@
 
 
 
-@section('content')
+@section('module')
 <div class="container d-flex align-items-center p-0">
     <div class="row justify-content-center w-100 m-0">
         <div class="col-lg-6 p-0">
@@ -93,7 +93,7 @@
                     </div>
                     
                     {{-- Terms and conditions --}}
-                    <div class="small">
+                    <div class="small mt-3">
                         {{ __('By registering, you accept our TOS and our Privacy Policy') }}
                     </div>
                 </form>
@@ -123,26 +123,32 @@
         </div>
         <div class="col"></div>
         <div class="col-lg-5 p-3">
-            <img id="registerAnimation" src="{{ asset('imgs/animations/report.gif') }}" class="d-none w-100 align-self-center"/>
+            <!--
+                <img id="registerAnimation" src="{{ asset('imgs/animations/report.gif') }}" class="d-none w-100 align-self-center"/>
+            -->
             <ul class="list-group list-group-flush">
                 <li class="list-group-item bg-light border-0">
                     <h5 class="mb-1">{{ __('What you get with us') }}</h5>
                 </li>
                 <li class="list-group-item bg-light border-0">
-                    <i class="material-icons align-middle">check_circle_outline</i>
-                    {{ __('Generate QR codes') }}
+                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                    {{ __('Create QR codes') }}
                 </li>
                 <li class="list-group-item bg-light border-0">
-                    <i class="material-icons align-middle">check_circle_outline</i>
-                    {{ __('Set targets for your ads') }}
+                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                    {{ __('Read QR codes') }}
                 </li>
                 <li class="list-group-item bg-light border-0">
-                    <i class="material-icons align-middle">check_circle_outline</i>
+                    <i class="material-icons align-middle text-success">check_circle_outline</i>
                     {{ __('Reuse QR between campaigns') }}
                 </li>
                 <li class="list-group-item bg-light border-0">
-                    <i class="material-icons align-middle">check_circle_outline</i>
-                    {{ __('Vitamin stats about your visits') }}
+                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                    {{ __('Detailed stats about visits') }}
+                </li>
+                <li class="list-group-item bg-light border-0">
+                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                    {{ __('Set different targets') }}
                 </li>
             </ul>
         </div>

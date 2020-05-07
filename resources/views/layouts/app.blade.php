@@ -76,16 +76,6 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item ">
-                            <a class="nav-link" href="#">
-                                Use cases
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="#">
-                                About 
-                            </a>
-                        </li>
-                        <li class="nav-item ">
                             <a class="nav-link" href="{{ url('pricing') }}">
                                 Pricing 
                             </a>
@@ -156,8 +146,10 @@
                 <div class="row p-3 justify-content-center">
                     <div class="col-auto mr-auto">
                         <span class="font-weight-bolder">Company</span>
+                        {{--
                         <a href="/about" class="d-block small text-muted">About</a>
                         <a href="/press" class="d-block small text-muted">Press</a>
+                        --}}
                     </div>
                     <div class="col-auto">
                         <span class="font-weight-bolder">Community</span>
@@ -165,7 +157,7 @@
                     </div>
                     <div class="col-auto ml-auto">
                         <span class="font-weight-bolder">Deeper</span>
-                        <a href="/support" class="d-block small text-muted">Support</a>
+                        <a href="/dashboard/support" class="d-block small text-muted">Support</a>
                         <a href="/documentation/faq" class="d-block small text-muted">FAQ</a>
                         <a href="/status" class="d-block small text-muted">Status</a>
                         <a href="/documentation/contracts/terms" class="d-block small text-muted">Terms</a>
