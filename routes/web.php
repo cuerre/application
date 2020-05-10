@@ -1,5 +1,8 @@
 <?php
 
+//use App\User;
+//use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +22,11 @@ use Illuminate\Http\Request;
 |
 */
 Route::get('/test', function (Request $request) {
+    //auth()->SumCredits(2);
+
+    //Auth::user()->SumCredits(0.2);
+
+    return view('test');
     //return new App\Mail\SupportRequest(auth()->user(), 'cachacha');
 });
 
@@ -42,6 +50,14 @@ Route::get('/pricing', function () {
 Route::get('/about', function () {
     return view('about');
 });
+
+/*Route::middleware(['auth'])->prefix('billing')->group(function () {
+    Route::get('payment', 'PaymentController@Payment')->name('payment');
+
+    Route::get('cancel', 'PaymentController@cancel')->name('payment.cancel');
+
+    Route::get('payment/success', 'PaymentController@Success')->name('payment.success');
+});*/
 
 /**
  *
@@ -148,7 +164,16 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     });
 
     Route::prefix('billing')->group(function () {
-    
+
+        Route::get('/', function () {
+            return view('modules.billing');
+        })->name('dashboard.billing');
+
+        Route::post('payment', 'PaymentController@Payment')->name('payment');
+
+        Route::get('payment/cancel', 'PaymentController@cancel')->name('payment.cancel');
+
+        Route::get('payment/success', 'PaymentController@Success')->name('payment.success');
     });
     
     Route::get('/support', function () {
@@ -160,4 +185,12 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
 
 
+/*
+Route::fallback(function () {
+    abort (404);
+});
 
+Route::any('/', function () {
+    abort (404);
+});
+*/

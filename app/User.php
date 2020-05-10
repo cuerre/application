@@ -41,4 +41,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    /**
+     * Add some credits to the user
+     *
+     * @return Bool
+     */
+    public function SumCredits ( float $num )
+    {
+        return ($this->increment('credits', $num) == 1 ? true : false);
+    }
+
+
+
+    /**
+     * Substract some credits to the user
+     *
+     * @return Bool
+     */
+    public function SubCredits ( float $num )
+    {
+        return ($this->decrement('credits', $num) == 1 ? true : false);
+    }
+
+
 }

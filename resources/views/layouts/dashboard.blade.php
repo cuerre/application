@@ -25,7 +25,7 @@
         <x-dashboard-menu-item 
             icon="monetization_on" 
             content="Billing" 
-            link="#">
+            :link="url('dashboard/billing')">
         </x-dashboard-menu-item>
         
         <x-dashboard-menu-item 
