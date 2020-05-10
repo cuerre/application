@@ -63,6 +63,11 @@ class User extends Authenticatable
      */
     public function SubCredits ( float $num )
     {
+        # Never substract more than the current value
+        if ( $num > $this->credits ) {
+            $num = $this->credits;
+        }
+        
         return ($this->decrement('credits', $num) == 1 ? true : false);
     }
 

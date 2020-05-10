@@ -15,7 +15,7 @@
     {{-- Message bag --}}
     @if( Session::has('message') )
         <x-alert 
-            type="light">
+            type="warning">
             {{ Session::get('message') }}
         </x-alert>
     @endif
@@ -34,7 +34,7 @@
                 {{ __('Remaining credits') }}
             </h5>
             <p class="h2 my-3 text-break text-muted">
-                {{ Auth::user()->credits }}
+                {{ Auth::user()->credits }} €
             </p>
         </div>
     </div>
@@ -45,13 +45,10 @@
             <h5 class="text-muted">
                 {{ __('Buy credits') }}
             </h5>
-            <p class="text-break text-muted">
+            <p class="text-break text-muted mb-4">
                 {{ __('We trust PayPal as provider because it is safer than others for our customers.') }} 
                 {{ __('Use your Paypal account or a credit card into PayPal to pay.') }} 
             </p>
-            <div class="mb-4">
-                <code>1 credit = 1€</code>
-            </div>
             <form method="POST" action="{{ route('payment') }}">
                 @csrf
 
@@ -59,7 +56,7 @@
                 <x-input
                     name="credits" 
                     type="text" 
-                    :pre="__('Enter CREDITS amount')">
+                    :pre="__('Enter EUR amount')">
                 </x-input>
 
                 {{-- Submit button --}}
@@ -71,21 +68,17 @@
 
             </form>
 
-            <!--
+            
             <div class="row align-items-center justify-content-end">
                 <div class="col-lg-auto d-flex justify-content-center">
-                    <img src="{{ asset('imgs/payment/paypal.png') }}" class="mx-auto" style="max-width: 3rem !important;" />
-                </div>
-
-                <div class="col-lg-auto d-flex justify-content-center">
-                    <img src="{{ asset('imgs/payment/visa.png') }}" class="mx-auto" style="max-width: 3rem !important;" />
-                </div>
-
-                <div class="col-lg-auto d-flex justify-content-center">
-                    <img src="{{ asset('imgs/payment/master.png') }}" class="mx-auto" style="max-width: 3rem !important;" />
+                    <img 
+                        src="{{ asset('imgs/payment/paypal.png') }}" 
+                        class="mx-auto" 
+                        style="max-width: 5rem !important; filter: opacity(50%);">
+                    </img>
                 </div>
             </div>
-            -->
+            
 
         </div>
     </div>

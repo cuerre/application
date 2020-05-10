@@ -100,7 +100,7 @@
     {{-- JS Custom --}}
     <script>
         $(function () {
-            $('.collapse').collapse();
+            $('.collapse').collapse('hide');
             $('[data-toggle="popover"]').popover()
             $('[data-toggle="tooltip"]').tooltip()
         });

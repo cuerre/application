@@ -20,7 +20,7 @@
         <x-input
             name="name" 
             type="text" 
-            pre="Give it a name">
+            :pre="__('Give it a name')">
         </x-input>
         
         {{-- Buttons --}}
@@ -44,7 +44,7 @@
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
             <x-submit-button 
-                content="Create!">
+                :content="__('Create!')">
             </x-submit-button>
         </div>
         
