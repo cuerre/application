@@ -1,6 +1,6 @@
 <template>
     <div class="my-4">
-        <div class="row align-items-end m-0 rounded bg-light py-4 px-2">
+        <div class="row align-items-end rounded py-4">
             <div class="col-md-4 align-self-stretch">
                 <select 
                     class="form-control form-control-sm mb-3 text-secondary h-100" 

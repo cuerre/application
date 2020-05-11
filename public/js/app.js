@@ -77680,52 +77680,44 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "my-4" }, [
-    _c(
-      "div",
-      { staticClass: "row align-items-end m-0 rounded bg-light py-4 px-2" },
-      [
-        _c("div", { staticClass: "col-md-4 align-self-stretch" }, [
-          _c(
-            "select",
-            {
-              staticClass:
-                "form-control form-control-sm mb-3 text-secondary h-100",
-              attrs: { name: _vm.setTargetSystem() }
-            },
-            [
-              _c(
-                "option",
-                { staticClass: "font-weight-bolder", attrs: { selected: "" } },
-                [_vm._v("Choose a target")]
-              ),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "win10" } }, [
-                _vm._v("Windows 10")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "android" } }, [
-                _vm._v("Android")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "ios" } }, [_vm._v("iOS")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "any" } }, [_vm._v("Any")])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md align-self-stretch" }, [
-          _c("input", {
-            staticClass: "form-control form-control-sm py-4 text-secondary",
-            attrs: {
-              type: "text",
-              name: _vm.setTargetUrl(),
-              placeholder: "http://goto.destination.com"
-            }
-          })
-        ])
-      ]
-    )
+    _c("div", { staticClass: "row align-items-end rounded py-4" }, [
+      _c("div", { staticClass: "col-md-4 align-self-stretch" }, [
+        _c(
+          "select",
+          {
+            staticClass:
+              "form-control form-control-sm mb-3 text-secondary h-100",
+            attrs: { name: _vm.setTargetSystem() }
+          },
+          [
+            _c(
+              "option",
+              { staticClass: "font-weight-bolder", attrs: { selected: "" } },
+              [_vm._v("Choose a target")]
+            ),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "win10" } }, [_vm._v("Windows 10")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "android" } }, [_vm._v("Android")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "ios" } }, [_vm._v("iOS")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "any" } }, [_vm._v("Any")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md align-self-stretch" }, [
+        _c("input", {
+          staticClass: "form-control form-control-sm py-4 text-secondary",
+          attrs: {
+            type: "text",
+            name: _vm.setTargetUrl(),
+            placeholder: "http://goto.destination.com"
+          }
+        })
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
