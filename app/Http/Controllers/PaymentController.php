@@ -54,7 +54,7 @@ class PaymentController extends Controller
             }
 
             # Generate a random ID
-            $invoideId = Str::random(20);
+            $invoideId = mt_rand(); //Str::random(20);
 
             $this->checkout->SetInvoice([
                 'id'   => $invoideId, 

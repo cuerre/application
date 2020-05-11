@@ -32,6 +32,9 @@
 
     {{-- Buy credits --}}
     <x-buy-credits/>
+
+    {{-- History --}}
+    <x-billing-history />
     
 
 @endsection
