@@ -125,11 +125,15 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
         Route::get('/creation', 'CodesController@ViewCreation');
 
+        Route::get('/modification', 'CodesController@ViewModification');
+
         Route::get('/stats', 'CodesController@ViewStats');
 
         Route::delete('/', 'CodesController@DeleteOne');
 
-        Route::post('/', 'CodesController@CreateOne');
+        Route::post('/', 'CodesController@UpdateOrCreateOne');
+
+        Route::put('/', 'CodesController@UpdateOrCreateOne');
 
     });
 
