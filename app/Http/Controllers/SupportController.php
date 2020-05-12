@@ -13,6 +13,21 @@ use Illuminate\Support\Facades\Auth;
 class SupportController extends Controller
 {
     /**
+     * Mail to send support requests
+     */
+    private $to;
+
+    /**
+     * Constructor, asign values
+     * 
+     * @return void
+     */
+    function __Construct()
+    {
+        $this->to = 'support@cuerre.com';
+    }
+
+    /**
      * Check and queue the message of a customer
      * asking for support from the dashboard
      * form
@@ -41,11 +56,14 @@ class SupportController extends Controller
                         ->withInput();
             }
 
-            # Validator passes, send an email
-            Mail::to(Auth::user()->email)->send(new SupportRequest( 
-                Auth::user(), 
-                $request->input('text') 
-            ));
+            # Validator passes, send an email to the team
+            # and a copy to the user
+            Mail::to($this->to)
+                //->cc(Auth::user()->email)
+                ->send(new SupportRequest( 
+                    Auth::user(), 
+                    $request->input('text') 
+                ));
 
             # Message sent
             return redirect()

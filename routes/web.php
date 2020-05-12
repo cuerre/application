@@ -26,8 +26,8 @@ Route::get('/test', function (Request $request) {
 
     //Auth::user()->SumCredits(0.2);
 
-    return view('test');
-    //return new App\Mail\SupportRequest(auth()->user(), 'cachacha');
+    //return view('test');
+    //return new App\Mail\CreditsLow(auth()->user());
 });
 
 /**

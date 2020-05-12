@@ -15,7 +15,7 @@
     {{-- Message bag --}}
     @if( Session::has('message') )
         <x-alert 
-            type="light">
+            type="info">
             {{ Session::get('message') }}
         </x-alert>
     @endif

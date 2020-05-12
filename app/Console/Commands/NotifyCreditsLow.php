@@ -4,31 +4,26 @@ namespace App\Console\Commands;
 
 use App\Code;
 use App\User;
+use App\Mail\CreditsLow;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 //use Illuminate\Support\Facades\DB;
 
-class PayCodes extends Command
+class NotifyCreditsLow extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'pay:codes';
+    protected $signature = 'notify:credits-low';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Substract credits to users for using codes';
-
-    /**
-     * The price of the service in credits
-     *
-     * @var int
-     */
-    protected $price;
+    protected $description = 'Notify users with low credits';
 
     /**
      * The number of users processed 
@@ -47,7 +42,6 @@ class PayCodes extends Command
     {
         parent::__construct();
 
-        $this->price = config('products.codes.price');
         $this->chunk = config('products.codes.chunk');
     }
 
@@ -59,7 +53,7 @@ class PayCodes extends Command
     public function handle()
     {
         # Take all users by chunks
-        User::where('credits', '>', 0)
+        User::whereBetween('credits', [0, 7])
             ->orderBy('id')
             ->chunk($this->chunk, function ($users) {
                 foreach ($users as $user) {
@@ -67,10 +61,12 @@ class PayCodes extends Command
                     # Check if the user has created codes
                     $hasCodes = Code::where('user_id', $user->id)->exists();
 
-                    # Has created codes? substract credits
+                    # Has created codes? 
                     if ( $hasCodes ){
-                        $user->credits -= $this->price;
-                        $user->save();
+
+                        # Notify to buy more
+                        Mail::to($user->email)
+                            ->send(new CreditsLow($user) );
                     }
                 }
             });

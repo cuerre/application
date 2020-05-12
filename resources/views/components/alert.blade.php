@@ -8,6 +8,14 @@
             $color = 'LightSeaGreen';
             break;
 
+        case 'warning':
+            $color = 'LemonChiffon';
+            break;
+
+        case 'info':
+            $color = 'CornflowerBlue';
+            break;
+
         default:
             $color = 'AliceBlue';
     }

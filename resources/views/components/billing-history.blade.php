@@ -4,9 +4,9 @@
     </x-box-header>
 
     @if( count($payments) == 0 )
-        <x-alert type="warning">
+        <p class="text-secondary">
             {{ __('You have not payments yet') }}
-        </x-alert>
+        </p>
     @else
         <table class="table table-borderless text-secondary">
             <thead>
