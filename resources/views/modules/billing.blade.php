@@ -20,13 +20,6 @@
         </x-alert>
     @endif
 
-    <code>{{ __('ATTENTION') }}</code>
-    <p class="mb-5 text-break text-muted">
-        {{ __('Credits are the coins you need to use our premium services.') }} 
-        {{ __('You can buy the amount you need and they will be added to your account.') }} 
-        {{ __('Each day, some of them will be substracted in order to pay.') }} 
-    </p>
-
     {{-- Remaining credits --}}
     <x-remaining-credits/>
 

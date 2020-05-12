@@ -13,6 +13,11 @@
     {{-- Errors --}}
     <x-alert-errors /> 
 
+    <x-attention>
+        {{ __('You are going to change the targets of this QR code.') }}
+        {{ __('Make sure what you are doing because this can be risky on marketing campaigns.') }}
+    </x-attention>
+
     <x-box>
         <form action="{{ url('dashboard/codes') }}" method="POST">
             @csrf
@@ -21,8 +26,9 @@
             {{-- Name --}}
             <x-input
                 name="name" 
-                type="text" 
-                :pre="$code['name']" >
+                type="text"  
+                :pre="__('Give it a name')"
+                :value="$code['name']">
             </x-input>
 
             <input type="hidden" name="code" value="{{ $code['id'] }}" />

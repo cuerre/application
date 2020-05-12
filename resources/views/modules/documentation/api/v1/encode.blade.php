@@ -160,10 +160,10 @@
             <p>
                 With the following code, you will generate a new QR code and will store it into a file.
             </p>
-            <x-code 
+            <x-snippet 
                 language="bash"
                 snippet="documentation.encode.curl-request">
-            </x-code>
+            </x-snippet>
         </div>
 
         {{-- PHP curl --}}
@@ -171,10 +171,10 @@
             <p>
                 Using PHP? let's get the QR as content
             </p>
-            <x-code 
+            <x-snippet 
                 language="php"
                 snippet="documentation.encode.php-request">
-            </x-code>
+            </x-snippet>
         </div>
     </div>
 
@@ -185,10 +185,10 @@
             you have to do is to join them step by step. For example, copy the next URL 
             and open it with your favourite browser.
         </p>
-        <x-code 
+        <x-snippet 
             language="none">
             {{ secure_url('/') }}/api/v1/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
-        </x-code>
+        </x-snippet>
     </div>
 
     <div class="mb-5">
@@ -198,10 +198,10 @@
             to fail. For those cases we answer with HTTP error codes like 4xx, 5xx... and 
             have an easy-to-understand response like the following.
         </p>
-        <x-code 
+        <x-snippet 
             language="json"
             snippet="documentation.encode.json-response">
-        </x-code>
+        </x-snippet>
     </div>
 
 

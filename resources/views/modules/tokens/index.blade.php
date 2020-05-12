@@ -24,12 +24,11 @@
         </x-alert>
     @endif
 
-    <code>{{ __('Attention') }}</code>
-    <p class="mb-5 text-muted">
+    <x-attention>
         {{ __('Tokens are keys that can do actions in your name (they are basically you).') }} 
         {{ __("For security reasons we will show it just one time after creation.") }}
         {{ __("So save it in a safe place and if you think some token can be compromised, delete it.") }}
-    </p>
+    </x-attention>
 
     @if ( count($tokens) > 0 )
         <x-action-list>

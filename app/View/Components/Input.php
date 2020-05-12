@@ -33,19 +33,27 @@ class Input extends Component
      * @var string
      */
     public $label;
+
+    /**
+     * The value.
+     *
+     * @var string
+     */
+    public $value;
     
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $type='text', $pre=null, $label=null)
+    public function __construct($name, $type='text', $pre=null, $label=null, $value=null)
     {
         //
         $this->name   = $name;
         $this->type   = $type;
         $this->pre    = $pre;
         $this->label  = $label;
+        $this->value  = $value;
     }
 
     /**
@@ -59,7 +67,8 @@ class Input extends Component
             'name'  => $this->name,
             'type'  => $this->type,
             'pre'   => $this->pre,
-            'label' => $this->label
+            'label' => $this->label,
+            'value' => $this->value
         ]);
     }
 }

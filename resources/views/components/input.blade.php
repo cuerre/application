@@ -13,7 +13,8 @@
             placeholder="{{ $pre }}"
         @endif
         autocomplete="{{ $name }}"
-        value="{{ old($name) }}">
+        {{-- value="{{ old($name) }}" --}}
+        value="{{ $value }}">
         
     @error($name)
         <span class="invalid-feedback" role="alert">

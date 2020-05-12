@@ -25,21 +25,21 @@
             The only one parameter we need is <code>photo</code>. This parameter is an input field of type 
             'file' called simply 'photo'. The upload can be achieved with a simple HTML form as follows:
         </p>
-        <x-code 
+        <x-snippet 
             class="mb-5"
             language="html"
             snippet="documentation.decode.html-form">
-        </x-code>
+        </x-snippet>
         <p>
             The problem with this is that <code>Authorization</code> header is not included so the example wont work.
             To solve this problem we need make the request with other tools like <code>Ajax</code> or <code>cURL</code>.
             In the following example, the request is made with Ajax to give a useful example for daily purposes.
         </p>
-        <x-code 
+        <x-snippet 
             class="mb-5"
             language="javascript"
             snippet="documentation.decode.ajax-request">
-        </x-code>
+        </x-snippet>
     </div>
     
 

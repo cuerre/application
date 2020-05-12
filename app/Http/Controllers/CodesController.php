@@ -279,14 +279,12 @@ class CodesController extends Controller
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
-
-            return dd($e);
             
             # Go to the form with error bag
             return redirect()
                     ->back()
                     ->withErrors([
-                        'message' => $e->getMessage() //'Imposible to create your code'
+                        'message' => __('Sorry, something went wrong doing that')
                     ]);
         }
     }
@@ -309,10 +307,11 @@ class CodesController extends Controller
             ]);
             
             if ($validator->fails())
-                return redirect('dashboard/codes/creation')
-                    ->withErrors([
-                        'message' => __('Some filed is malformed')
-                    ]);
+                return redirect()
+                        ->back()
+                        ->withErrors([
+                            'message' => __('Some filed is malformed')
+                        ]);
             
             # Delete asked code
             $delete = Code::where('user_id', $userId)
@@ -320,20 +319,22 @@ class CodesController extends Controller
                 ->delete();
                 
             if (!$delete)
-                return redirect('dashboard/codes/creation')
-                    ->withErrors([
-                        'message' => __('We could not delete the code')
-                    ]);
+                return redirect()
+                        ->back()
+                        ->withErrors([
+                            'message' => __('We could not delete the code')
+                        ]);
 
             return redirect('dashboard/codes');
                     
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
             
-            return redirect('dashboard/codes')
-                ->withErrors([
-                    'message' => __('Impossible to delete your code')
-                ]);
+            return redirect()
+                    ->back()
+                    ->withErrors([
+                        'message' => __('Impossible to delete your code')
+                    ]);
         }
     }
 
@@ -405,10 +406,11 @@ class CodesController extends Controller
             ]);
             
             if ($validator->fails())
-                return redirect('dashboard/codes')
-                    ->withErrors([
-                        'message' => __('Some field is malformed')
-                    ]);
+                return redirect()
+                        ->back()
+                        ->withErrors([
+                            'message' => __('Some field is malformed')
+                        ]);
 
             # Get the stats for that code
             $stats = new StatsController( $request->input('code') );
@@ -457,14 +459,15 @@ class CodesController extends Controller
             ]);
 
             if ($validator->fails())
-                return redirect('dashboard/codes')
-                    ->withErrors([
-                        'message' => __('Some field is malformed')
-                    ]);
+                return redirect()
+                        ->back()
+                        ->withErrors([
+                            'message' => __('Some field is malformed')
+                        ]);
 
             # Show index view
             return view('modules.codes.modification', [
-                'code'     => self::GetOne( $request->input('code') )
+                'code' => self::GetOne( $request->input('code') )
             ]);
             
         } catch ( Exception $e ) {

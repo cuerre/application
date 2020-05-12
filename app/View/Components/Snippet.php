@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class Code extends Component
+class Snippet extends Component
 {
     /**
      * 
@@ -43,7 +43,7 @@ class Code extends Component
      */
     public function render()
     {
-        return view('components.code',[
+        return view('components.snippet',[
             'language' => $this->language,
             'snippet'  => $this->snippet,
             'class'    => $this->class

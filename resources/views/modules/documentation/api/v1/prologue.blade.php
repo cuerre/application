@@ -26,11 +26,11 @@
             that must be sent on each request done. The way to send this key is setting 
             it on Authorization header as follows:
         </p>
-        <x-code 
+        <x-snippet 
             class="mb-5"
             language="HTTP">
             Authorization: Bearer {API KEY}
-        </x-code>
+        </x-snippet>
         <p>
             Another header you should know is <code>Content-Type</code>. This header is usually used 
             to say the server the information type you are going to send. We check all parameters you set 
@@ -38,11 +38,11 @@
             <code>application/x-www-form-urlencoded</code> for <code>POST</code> requests and to 
             <code>multipart/form-data</code> when you are trying to <code>POST</code> a picture to process.
         </p>
-        <x-code 
+        <x-snippet 
             class="mb-5"
             language="HTTP">
             Content-Type: multipart/form-data
-        </x-code>
+        </x-snippet>
         <p>
             In the same way we have <code>Accept</code> header. 
             This is used to tell the server what kind of information the client can process.
@@ -52,11 +52,11 @@
             <code>image/svg+xml</code> for SVG and 
             <code>application/postscript</code> for EPS.
         </p>
-        <x-code 
+        <x-snippet 
             class="mb-5"
             language="HTTP">
             Accept: application/json, image/png, image/svg+xml, application/postscript
-        </x-code>
+        </x-snippet>
     </div>
 
     <div class="mb-5">

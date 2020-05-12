@@ -22,17 +22,11 @@
     
     {{-- Code list --}}
     @forelse ($codes->items() as $code)
-        @php
-            $codeImage = App\Http\Controllers\CodesController::GetEmbededImage($code['id']);
-        @endphp
-
         <x-box>
         
             <div class="row justify-content-center">
                 <div class="col-md-auto p-3">
-                    <div class="d-flex justify-content-center">
-                        <img src="data:image/png;base64, {{ $codeImage }}" class="rounded-lg" style="width: 6rem !important;">
-                    </div>
+                    <x-code-image :id="$code['id']" />
                 </div>
                 <div class="col p-0">
                     <div class="d-flex flex-column h-100 w-100">
@@ -63,63 +57,16 @@
                         
                         {{-- Bottom bar container --}}
                         <div class="d-flex flex-row w-100 py-2">
-                        
                             {{-- Stats --}}
                             <a href="{{ url('dashboard/codes/stats?code=' . $code['id']) }}" role="button" class="btn btn-sm text-dark text-decoration-none mr-1">
                                 <i class="material-icons align-middle">bar_chart</i>
                             </a>
 
                             {{-- Download dropdown --}}
-                            <div class="dropdown">
-                                <button 
-                                    class="btn btn-sm dropdown-toggle mr-1" 
-                                    data-display="static" 
-                                    type="button" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
-                                    aria-expanded="false">
-                                    <i class="material-icons align-middle">save_alt</i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $code['id']) }}&output=PNG">.PNG</a>
-                                    <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $code['id']) }}&output=SVG">.SVG</a>
-                                    <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $code['id']) }}&output=EPS">.EPS</a>
-                                </div>
-                            </div>
+                            <x-code-download :id="$code['id']" />
 
                             {{-- Settings dropdown --}}
-                            <div class="dropdown">
-                                <button 
-                                    class="btn btn-sm dropdown-toggle mr-1" 
-                                    data-display="static" 
-                                    type="button" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
-                                    aria-expanded="false">
-                                    <i class="material-icons align-middle">menu</i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    {{-- Modify --}}
-                                    <a class="dropdown-item" href="{{ url('dashboard/codes/modification?code=' . $code['id']) }}">
-                                        {{ __('Modify') }}
-                                    </a>
-
-                                    {{-- Delete --}}
-                                    <form action="{{ url('dashboard/codes') }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="hidden" name="id" value="{{ $code['id'] }}">
-                                        <button 
-                                            type="submit" 
-                                            class="dropdown-item" 
-                                            onclick="return confirm('Are you sure?')">
-                                            {{ __('Delete') }}
-                                        </button>  
-                                    </form>
-                                </div>
-                            </div>
-                            
-
+                            <x-code-options :id="$code['id']" />
                         </div>
 
                     </div>

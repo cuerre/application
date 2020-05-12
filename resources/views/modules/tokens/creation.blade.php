@@ -21,30 +21,26 @@
         </x-alert>
     @endif
 
-    <code>{{ __('Attention') }}</code>
-    <p class="mb-5 text-muted">
+    <x-attention>
         {{ __('Tokens are keys that can do actions in your name (they are basically you).') }} 
         {{ __("For security reasons we will show it just one time after creation.") }}
         {{ __("So save it in a safe place and if you think some token can be compromised, delete it.") }}
-    </p>
+    </x-attention>
     
     <form action="{{ url('dashboard/tokens') }}" method="POST">
         @csrf
-
         {{-- Name --}}
         <x-input
             name="name" 
             type="text" 
             pre="Give it a name">
         </x-input>
-   
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
             <x-submit-button 
                 content="Create!">
             </x-submit-button>
         </div>
-        
     </form>
     
 @endsection
