@@ -13,20 +13,11 @@ use Illuminate\Support\Facades\Auth;
 class SupportController extends Controller
 {
     /**
-     * 
-     * 
-     */
-    function __Construct()
-    {
-        //
-    }
-
-    /**
      * Check and queue the message of a customer
      * asking for support from the dashboard
      * form
      * 
-     * @param Illuminate\Http\Request
+     * @param  Illuminate\Http\Request
      * @return Redirect
      */
     public function SendRequest(Request $request)

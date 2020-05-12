@@ -19,14 +19,13 @@ use Illuminate\Support\Facades\Hash;
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Example usage:
- * 
  * ProfileController::Get()
  * ProfileController::Update( Request )
  * ProfileController::Delete( Request )
- * CodesController::ViewIndex()
- * CodesController::ViewChangeName()
- * CodesController::ViewChangePassword( )
- * CodesController::ViewDeletion()
+ * ProfileController::ViewIndex()
+ * ProfileController::ViewChangeName()
+ * ProfileController::ViewChangePassword( )
+ * ProfileController::ViewDeletion()
  * 
  * @package Cuerre
  * @author Alby Hernández
