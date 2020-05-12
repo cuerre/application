@@ -8,6 +8,9 @@
         :title="__('Change your password')"
         :hint="__('dashboard')">
     </x-card-header>
+
+    {{-- Errros --}}
+    <x-alert-errors />
     
     <form action="{{ url('dashboard/profile/password') }}" method="POST">
         @csrf

@@ -1,4 +1,23 @@
-<div class="alert alert-{{ $type }} border-0 shadow-sm" role="alert">
+@php
+    switch ( $type ){
+        case 'danger':
+            $color = 'LightCoral';
+            break;
+
+        case 'success':
+            $color = 'LightSeaGreen';
+            break;
+
+        default:
+            $color = 'AliceBlue';
+    }
+@endphp
+
+<div 
+    class="alert alert-{{ $type }} bg-light border-top-0 border-right-0 border-bottom-0 text-muted my-5" 
+    role="alert" 
+    style="border-left: .25rem solid {{ $color }} !important;">
+
     <div class="d-flex flex-row w-100">
         <div class="flex-column flex-shrink-1">
             <i class="material-icons align-middle">
@@ -9,5 +28,6 @@
             {{ $slot }}
         </div>
     </div>
+
 </div>
 

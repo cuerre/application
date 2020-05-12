@@ -3,9 +3,11 @@
 
 
 @push('styles.tablet')
+    /*
     #sidePanel {
         display: block !important;
     }
+    */
 @endpush
 
 
@@ -15,7 +17,7 @@
         <div class="row">
         
             {{-- Side menu --}}
-            <div id="sidePanel" class="d-none col-md-4">
+            <div id="sidePanel" class="col-md-4">
                 @yield('menu')
             </div>
             

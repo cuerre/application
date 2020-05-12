@@ -1,11 +1,6 @@
-<div>
-    <!-- Simplicity is an acquired taste. - Katharine Gerould -->
-</div>
-
 <x-box>
     <x-box-header>
         {{ __('Payments history') }}
-        <small class="ml-2"><code>Last 10</code></small>
     </x-box-header>
 
     @if( count($payments) == 0 )
@@ -13,7 +8,7 @@
             {{ __('You have not payments yet') }}
         </x-alert>
     @else
-        <table class="table table-borderless">
+        <table class="table table-borderless text-secondary">
             <thead>
                 <tr>
                     <th scope="col">{{ __('Date') }}</th>

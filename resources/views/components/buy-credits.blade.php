@@ -5,7 +5,7 @@
     
     <p class="text-break text-muted mb-4">
         {{ __('We trust PayPal as provider because it is safer than others for our customers.') }} 
-        {{ __('Use your Paypal account or a credit card into PayPal to pay.') }} 
+        {{ __('Use your Paypal account or a credit card into PayPal to get credits.') }} 
     </p>
 
     <form method="POST" action="{{ route('payment') }}">

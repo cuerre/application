@@ -29,31 +29,34 @@
         {{ __("For security reasons we will show it just one time after creation.") }}
         {{ __("So save it in a safe place and if you think some token can be compromised, delete it.") }}
     </x-attention>
-
+    
     @if ( count($tokens) > 0 )
-        <x-action-list>
-            @foreach ( $tokens as $token)
-                <x-action-list-item
-                    :field="__('Token')" 
-                    :value='$token->name'>
-                    <form action="{{ url('dashboard/tokens') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <input name="id" type="hidden" value="{{ $token->id }}">
-                        <x-submit-button
-                            :content="__('Delete')"
-                            :confirmation="__('Sure deleting this?')" 
-                            color="primary">
-                        </x-submit-button>
-                    </form>
-                </x-action-list-item>
-            @endforeach
-        </x-action-list>
+        <x-box>
+            <x-action-list>
+                @foreach ( $tokens as $token)
+                    <x-action-list-item
+                        :field="__('Token')" 
+                        :value='$token->name'>
+                        <form action="{{ url('dashboard/tokens') }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input name="id" type="hidden" value="{{ $token->id }}">
+                            <x-submit-button
+                                :content="__('Delete')"
+                                :confirmation="__('Sure deleting this?')" 
+                                color="primary">
+                            </x-submit-button>
+                        </form>
+                    </x-action-list-item>
+                @endforeach
+            </x-action-list>
+        </x-box>
     @else
         <x-card-empty-message>
             Touch <kbd class="mx-2">+ New</kbd> on the top to create 
             a new token 
         </x-card-empty-message>
     @endif
+    
     
 @endsection

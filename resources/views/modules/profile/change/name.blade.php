@@ -8,6 +8,9 @@
         :title="__('Change your name')"
         :hint="__('dashboard')">
     </x-card-header>
+
+    {{-- Errros --}}
+    <x-alert-errors />
     
     <form action="{{ url('dashboard/profile/name') }}" method="POST">
         @csrf
