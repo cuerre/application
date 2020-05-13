@@ -4,19 +4,17 @@ namespace App\Console\Commands;
 
 use App\Code;
 use App\User;
-use App\Mail\CreditsLow;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
-//use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\NotificationController;
 
-class NotifyCreditsLow extends Command
+class NotifyLowCredits extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'notify:credits-low';
+    protected $signature = 'notify:lowcredits';
 
     /**
      * The console command description.
@@ -65,8 +63,8 @@ class NotifyCreditsLow extends Command
                     if ( $hasCodes ){
 
                         # Notify to buy more
-                        Mail::to($user->email)
-                            ->send(new CreditsLow($user) );
+                        $notification = new NotificationController( $user );
+                        $notification->NotifyLowCredits();
                     }
                 }
             });

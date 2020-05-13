@@ -2,38 +2,32 @@
 
 namespace App\Mail;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SupportTest extends Mailable
+class LowCredits extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
-     * The user name.
+     * User model instance
      *
-     * @var Authenticator
+     * @var App\User
      */
     public $user;
 
     /**
-     * The user email.
-     *
-     * @var String
-     */
-    public $content;
-
-    /**
      * Create a new message instance.
      *
+     * @param  App\User  $user
      * @return void
      */
-    public function __construct($user, string $content)
+    public function __construct( User $user )
     {
-        $this->user    = $user;
-        $this->content = $content;
+        $this->user = $user;
     }
 
     /**
@@ -43,7 +37,7 @@ class SupportTest extends Mailable
      */
     public function build()
     {
-        return $this->from('dashboard@cuerre.com') 
-                    ->markdown('emails.support.test');
+        return $this->from('notifications@cuerre.com') 
+                    ->markdown('emails.lowcredits');
     }
 }

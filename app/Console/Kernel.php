@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
             ->onOneServer();
 
         # Notify users about low credits by mail
-        $schedule->command('notify:credits-low')
+        $schedule->command('notify:lowcredits')
             ->daily()
             ->runInBackground()
             ->onOneServer();

@@ -2,18 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Code as Code;
 use Exception;
+use App\Code;
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BrowscapController;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\BrowscapController;
 
+/** 
+ * ActionController is who controls what to do after visits
+ * 
+ * ActionController is a Controller that make some type of action
+ * after processing the request into the pipeline. 
+ * For example: redirect to the target
+ * 
+ * Example usage:
+ * ActionController::Redirect( Request )
+ * 
+ * @package Cuerre
+ * @author Alby Hernández
+ * @version $Revision: 1.0 $
+ * @access private
+ * @see http://cuerre.com/documentation
+ */
 class ActionController extends Controller
 {
     /**
      * Perform redirection to the targets in order
      *
+     * @param  Illuminate\Http\Request
      * @return Illuminate\Http\RedirectResponse
      */
     public static function Redirect (Request $request)
@@ -27,60 +45,63 @@ class ActionController extends Controller
             
             # Convert current 'platform' to lowercase
             $platform = Str::of( $browser['platform'] )
-                ->lower()
-                ->__toString();
+                            ->lower()
+                            ->__toString();
             
             # Get requested code as collection from database
             $code = Code::where('id', $codeId)
-                ->limit(1)
-                ->get()
-                ->recursive();
+                        ->first();
+
+            $code = collect($code)->recursive();
             
             # Check for results existance
             if ( $code->isEmpty() )
                 throw new Exception('Code not found for given id');
-                
+
+            # Check if code owner has credits (remember: redirection is premium)
+            $codeOwner = User::where('id', $code['user_id'] )->first();
+
+            if ( !($codeOwner->credits > 0) )
+                throw new Exception('Code owner has not credits');
+              
             # Check fot 'data' field existance
-            if ( !$code[0]->has('data') )
+            if ( !$code->has('data') )
                 throw new Exception('Data field not found for queried code');
-                
-            # Simplify data field var name
-            $data = $code[0]['data'];
-                
-            if ( !$data->has('targets') )
+
+            if ( !$code['data']->has('targets') )
                 throw new Exception('No targets for this code');
-                
+
             # Redirect for platform specific target
-            $data['targets']->each(function ($item, $key) use ($platform) {
-                # http://192.168.0.42:8000/redirect?c=12
+            $code['data']['targets']->each(function ($item, $key) use ($platform) {
+                # http://192.168.0.42:8000/redirect?c=22
                 
                 # Transform 'target' to lower case
                 $target = Str::of( $item['system'] )
-                    ->lower()
-                    ->__toString();
+                            ->lower()
+                            ->__toString();
                 
                 # Go to the promoted site
                 if ( $target === $platform)
                     return redirect()
-                        ->away($item['url'])
-                        ->send();
+                            ->away($item['url'])
+                            ->send();
             });
                 
             # Redirect for target 'any'
-            $data['targets']->each(function ($item, $key){
+            $code['data']['targets']->each(function ($item, $key){
                 # Transform 'target' to lower case
                 $target = Str::of( $item['system'] )
-                    ->lower()
-                    ->__toString();
+                            ->lower()
+                            ->__toString();
                     
                 # Go to the promoted site
                 if ( $target === 'any' ) 
                     return redirect()
-                        ->away($item['url'])
-                        ->send();
+                            ->away($item['url'])
+                            ->send();
             });
             
-            throw new Exception('Target "any" not configured. Redirection failed.'); # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            throw new Exception('Target "any" not configured. Redirection failed.');
             
         } catch ( Exception $e ) {
         
@@ -88,7 +109,7 @@ class ActionController extends Controller
                    
             # Redirect to our fallback page
             return redirect('redirect/failed')
-                ->send();
+                   ->send();
         }
     }
     
