@@ -5,11 +5,11 @@
 @section('module')
     {{-- Top title --}}
     <x-card-header
-        title="Tokens"
-        hint="dashboard">
+        :title="__('Tokens')"
+        :hint="__('dashboard')">
         <x-link-button
             icon="add"
-            content="New"
+            :content="__('New')"
             :link="url('dashboard/tokens/creation')">
         </x-link-button>
     </x-card-header>
@@ -53,8 +53,11 @@
         </x-box>
     @else
         <x-card-empty-message>
-            Touch <kbd class="mx-2">+ New</kbd> on the top to create 
-            a new token 
+            {{ __('Touch') }} 
+            <kbd class="mx-2">
+                + {{ __('New') }}
+            </kbd> 
+            {{ __('on the top to create a new token') }}
         </x-card-empty-message>
     @endif
     

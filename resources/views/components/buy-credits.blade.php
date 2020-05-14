@@ -21,7 +21,7 @@
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
             <x-submit-button 
-                content="Continue to PayPal">
+                :content="__('Continue to PayPal')">
             </x-submit-button>
         </div>
     </form>

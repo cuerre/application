@@ -30,10 +30,10 @@
     <div class="container h-100 pt-5">
         <div class="d-flex flex-column justify-content-center">
             <p class="h1 font-weight-bold mb-4 align-self-center">
-                The right price for you, whoever you are
+                {{ __('The right price for you, whoever you are') }}
             </p>
             <p class="h5 font-weight-normal align-self-center">
-                Just buy credits and enjoy the magic
+                {{ __('Just buy credits and enjoy the magic') }}
             </p>
         </div>
         
@@ -51,7 +51,9 @@
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
-                            <p class="font-weight-bolder text-uppercase">Free</p>
+                            <p class="font-weight-bolder text-uppercase">
+                                {{ __('Free') }}
+                            </p>
                         </div>
                         <div class="d-flex justify-content-center align-items-end">
                             <div>
@@ -60,7 +62,7 @@
                                 </span>
                             </div>
                             <div class="ml-2">
-                                <small>/ month</small>
+                                <small>/ {{ __('month') }}</small>
                             </div>
                         </div>
                         {{--
@@ -86,7 +88,7 @@
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('1k request per hour') }}</small>
+                                    <small>{{ __('1k request per hour / each token') }}</small>
                                 </li>
                             </ul>
                         </div>
@@ -100,7 +102,7 @@
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
-                            <p class="font-weight-bolder text-uppercase">Premium</p>
+                            <p class="font-weight-bolder text-uppercase">{{ __('Premium') }}</p>
                         </div>
                         <div class="d-flex justify-content-center align-items-end">
                             <div>
@@ -109,7 +111,7 @@
                                 </span>
                             </div>
                             <div class="ml-2">
-                                <small>/ month</small>
+                                <small>/ {{ __('month') }}</small>
                             </div>
                         </div>
                         {{--

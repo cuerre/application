@@ -6,8 +6,8 @@
 
     {{-- Top title --}}
     <x-card-header
-        title="New code"
-        hint="dashboard">
+        :title="__('New code')"
+        :hint="__('dashboard')">
     </x-card-header>
     
     {{-- Errors --}}

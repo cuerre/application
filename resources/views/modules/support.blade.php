@@ -5,8 +5,8 @@
 @section('module')
     {{-- Top title --}}
     <x-card-header
-        title="Support"
-        hint="dashboard">
+        :title="__('Support')"
+        :hint="__('dashboard')">
     </x-card-header>
 
     {{-- Errors --}}
@@ -48,7 +48,7 @@
             <div class="row align-items-end rounded py-4">
                 <div class="col-md align-self-stretch">
                     <x-submit-button
-                        content="Send">
+                        :content="__('Send')">
                     </x-submit-button>
                 </div>
             </div>

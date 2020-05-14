@@ -4,8 +4,8 @@
 
 @section('module')
     <x-card-header
-        title="Stats"
-        hint="dashboard">
+        :title="__('Stats')"
+        :hint="__('dashboard')">
         <x-link-button
             icon="refresh"
             :content="__('Refresh')"

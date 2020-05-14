@@ -19,35 +19,38 @@
                 <div class="col-lg py-3">
                     <div>
                         <p class="h1 font-weight-bold">
-                            The perfect place 
+                            {{ __('The perfect place') }} 
                         </p>
                         <p class="h1 font-weight-bold mb-4">
-                            to enjoy QR codes
+                            {{ __('to enjoy QR codes') }}
                         </p>
                         <p class="h5 font-weight-normal">
-                            With Cuerre, you can know information
-                            about the people who enter your QR codes,
-                            generate or decode them, reuse your QR 
-                            between different marketing campaigns, and 
-                            so much more.
+                            {{ __('With Cuerre, you can know information') }}
+                            {{ __('about the people who enter your QR codes') }},
+                            {{ __('generate or decode them, reuse your QR') }} 
+                            {{ __('between different marketing campaigns') }}, 
+                            {{ __('and so much more') }}.
                         </p>
                         <p class="h5 font-weight-normal">
-                            Fast • Simple to use • Developers friendly • Accurate
+                            {{ __('Fast') }} • 
+                            {{ __('Simple to use') }} • 
+                            {{ __('Developers friendly') }} • 
+                            {{ __('Accurate') }}
                         </p>
                         <div class="d-flex mt-5">
                             <div class="mr-3">
                                 <x-link-button
-                                    content="Register for free"
+                                    :content="__('Register for free')"
                                     size="lg" 
-                                    link="#">
+                                    :link="url('register')">
                                 </x-link-button>
                             </div>
                             <div class="mr-3">
                                 <x-link-button
-                                    content="Contact Sales"
+                                    :content="__('Contact Sales')"
                                     size="lg"
                                     color="outline-primary"
-                                    link="#">
+                                    :link="url('contact')">
                                 </x-link-button>   
                             </div>
 
@@ -94,16 +97,16 @@
                 <div class="col-lg offset-lg-1 py-3">
                     <div>
                         <p class="h3 font-weight-bold mb-4">
-                            Powerful easy statistics
+                            {{ __('Powerful easy statistics') }}
                         </p>
                         <p class="h5 font-weight-normal">
-                            Know your customers better by operating system, browser
-                            or device type. Find the best moment to launch a product 
-                            showing visitors of the last week, last month and even last year.
+                            {{ __('Know your customers better by operating system') }}, 
+                            {{ __('browser or device type. Find the best moment to launch a product') }} 
+                            {{ __('showing visitors of the last week, last month and even last year') }}.
                         </p>
                         <p class="h5 font-weight-normal">
-                            Moreover, we have added some easy-to-understand explanations 
-                            to help you interpret the data.
+                            {{ __('Moreover, we have added some easy-to-understand explanations') }} 
+                            {{ __('to help you interpret the data') }}.
                         </p>
                     </div>
                 </div>
@@ -121,12 +124,12 @@
                 <div class="col-lg py-3">
                     <div>
                         <p class="h3 font-weight-bold mb-4">
-                            Segmentate your customers
+                            {{ __('Segmentate your customers') }}
                         </p>
                         <p class="h5 font-weight-normal">
-                            Decide where to send your customers according 
-                            to the operating system they come from or send everyone to 
-                            the same place. It is your decision!
+                            {{ __('Decide where to send your customers according') }} 
+                            {{ __('to the operating system they come from or send everyone to') }} 
+                            {{ __('the same place. It is your decision!') }}'
                         </p>
                     </div>
                 </div>
@@ -149,12 +152,15 @@
                 <div class="col-lg offset-lg-1 py-3">
                     <div>
                         <p class="h3 font-weight-bold mb-4">
-                            Integrations done in minutes
+                            {{ __('Integrations done in minutes') }}
                         </p>
                         <p class="h5 font-weight-normal">
-                            Our API is easy to use and <a href="{{ url('documentation/api/v1/prologue') }}">well documented<a>. 
-                            In about 10 minutes can be integrated in almost 
-                            everything, for example: your application
+                            {{ __('Our API is easy to use and') }} 
+                            <a href="{{ url('documentation/api/v1/prologue') }}">
+                                {{ __('well documented') }}
+                            <a>. 
+                            {{ __('In about 10 minutes can be integrated in almost') }} 
+                            {{ __('everything, for example: your application') }}
                         </p>
                     </div>
                 </div>

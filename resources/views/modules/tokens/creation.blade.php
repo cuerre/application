@@ -6,8 +6,8 @@
 
     {{-- Top title --}}
     <x-card-header
-        title="New token"
-        hint="dashboard">
+        :title="__('New token')"
+        :hint="__('dashboard')">
     </x-card-header>
 
     {{-- Errors --}}
@@ -16,7 +16,7 @@
     {{-- New Token --}}
     @if(Session::has('message'))
         <x-alert type="success">
-            <p class="font-weight-bold">Your new token is:</p>
+            <p class="font-weight-bold">{{ __('Your new token is') }}:</p>
             {{ Session::get('message') }}
         </x-alert>
     @endif
@@ -33,12 +33,12 @@
         <x-input
             name="name" 
             type="text" 
-            pre="Give it a name">
+            :pre="__('Give it a name')">
         </x-input>
         {{-- Submit button --}}
         <div class="d-flex justify-content-end">
             <x-submit-button 
-                content="Create!">
+                :content="__('Create!')">
             </x-submit-button>
         </div>
     </form>

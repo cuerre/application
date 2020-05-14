@@ -5,8 +5,8 @@
 @section('module')
     {{-- Top title --}}
     <x-card-header
-        title="Billing"
-        hint="dashboard">
+        :title="__('Billing')"
+        :hint="__('dashboard')">
     </x-card-header>
 
     {{-- Errors --}}

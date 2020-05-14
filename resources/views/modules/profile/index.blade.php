@@ -5,8 +5,8 @@
 @section('module')
     {{-- Top title --}}
     <x-card-header
-        title="Profile"
-        hint="dashboard">
+        :title="__('Profile')"
+        :hint="__('dashboard')">
     </x-card-header>
     
     <x-alert-errors/>
@@ -21,7 +21,7 @@
                 :value="$profile['name']">
                 <x-link-button
                     icon="edit"
-                    content="Edit"
+                    :content="__('Edit')"
                     :link="url('dashboard/profile/change/name')">
                 </x-link-button>
             </x-action-list-item>
@@ -31,7 +31,7 @@
                 value="******">
                 <x-link-button
                     icon="edit"
-                    content="Edit"
+                    :content="__('Edit')"
                     :link="url('dashboard/profile/change/password')">
                 </x-link-button>
             </x-action-list-item>

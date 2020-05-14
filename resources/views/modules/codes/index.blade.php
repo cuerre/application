@@ -6,12 +6,12 @@
 
     {{-- Top title --}}
     <x-card-header
-        title="Codes"
-        hint="dashboard">
+        :title="__('Codes')"
+        :hint="__('dashboard')">
         <div class="my-auto">
             <x-link-button 
                 icon="add"
-                content="New"
+                :content="__('New')"
                 :link="url('dashboard/codes/creation')">
             </x-link-button >
         </div>
@@ -76,9 +76,38 @@
         </x-box>
         
     @empty
+
+        {{-- Disclaimer --}}
+        <x-attention>
+            <p>
+                {{ __('You can create QR codes for testing purposes.') }}
+            </p>
+            <p>
+                <code>{{ __('As a premium service') }},</code> 
+                {{ __('codes can be used to see the statistics, be downloaded, etc.') }} 
+                {{ __('The scanned codes will not go to the desired targets') }} 
+                {{ __('unless you have credits on your account.') }}
+
+                <p class="mt-3">
+                    {{-- __('Due to each code rise the total cost of the service') --}}
+                    {{-- __('we recomment you to check the prices.') --}}
+                    <x-link-button
+                        :content="__('Check the prices')"
+                        :link="url('pricing')"
+                        size="sm" 
+                        color="light">
+                    </x-link-button>
+                </p>
+            </p>
+        </x-attention>
+
+        {{-- Void placeholder --}}
         <x-card-empty-message>
-            Touch <kbd class="mx-2">+ New</kbd> on the top to create 
-            a new super vitamin code 
+            {{ __('Touch') }} 
+            <kbd class="mx-2">
+                + {{ __('New') }}
+            </kbd> 
+            {{ __('on the top to create a new super vitamin code') }}
         </x-card-empty-message>
     @endforelse
     

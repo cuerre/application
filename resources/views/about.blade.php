@@ -31,13 +31,13 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <p class="h1 font-weight-bold mb-4 align-self-center text-center">
-                    The perfect place to enjoy QR codes
+                    {{ __('The perfect place to enjoy QR codes') }}
                 </p>
                 <p class="h3 font-weight-normal align-self-center text-center">
-                    Founded in 2019 by engineer Alby Hernández, Cuerre has the mission 
-                    to provide the most valuable service for QR codes at global scale.
-                    We process huge amounts of information to produce our accurate statistics, 
-                    QR creation and reading and other super fast tools. 
+                    {{ __('Founded in 2019 by engineer Alby Hernández') }}, 
+                    {{ __('Cuerre has the mission to provide the most valuable service for QR codes at global scale.') }}
+                    {{ __('We process and use big data to produce our accurate statistics') }}, 
+                    {{ __('QR creation and reading and other super fast tools.') }}' 
                 </p>
             </div>
         </div>
@@ -50,23 +50,23 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <p class="h1 font-weight-bold mb-4 align-self-center text-center">
-                    People behind the scene
+                    {{ __('People behind the scene') }}
                 </p>
                 <p class="h3 font-weight-normal align-self-center text-center">
-                    Tiny team doing big things. 
+                    {{ __('Tiny team doing big things.') }} 
                 </p>
             </div>
         </div>
 
         <x-web-people-container>
             <x-web-people
-                picture="face-alby.jpg"
+                picture="face-alby.png"
                 name="Alby Hernández"
                 description="Founder & Developer">
             </x-web-people>
 
             <x-web-people
-                picture="face-placeholder.jpg"
+                picture="face-kevin.png"
                 name="Kevin Machuca"
                 description="Developer">
             </x-web-people>
