@@ -27,6 +27,19 @@
                 {{ __('Delete') }}
             </button>  
         </form>
+
+        {{-- Enable / Disable --}}
+        <form action="{{ url('dashboard/codes/switching') }}" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="code" value="{{ $id }}">
+            <button 
+                type="submit" 
+                class="dropdown-item"
+                onclick="return confirm('Are you sure?')">
+                {{ __('Switch') }}
+            </button>  
+        </form>
         
     </div>
 </div>

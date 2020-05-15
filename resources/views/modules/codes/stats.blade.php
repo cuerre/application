@@ -13,6 +13,12 @@
         </x-link-button>
     </x-card-header>
 
+    {{-- Errors --}}
+    <x-alert-errors />
+
+    {{-- Messages bag --}}
+    <x-alert-messages />
+
     {{-- Platform stats --}}
     <x-box>
         <x-box-header>

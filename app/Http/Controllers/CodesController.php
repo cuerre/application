@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Code;
 use Exception;
+use App\Code;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +25,8 @@ use App\Http\Controllers\StatsController;
  * CodesController::UpdateOrCreateOne( Request )
  * CodesController::GetEmbededImage( int )
  * CodesController::GetImageDownload( Request )
+ * CodesController::ActivateOne( int )
+ * CodesController::DeactivateOne( int )
  * CodesController::ViewIndex()
  * CodesController::ViewCreation()
  * CodesController::ViewModification( Request )
@@ -184,7 +186,80 @@ class CodesController extends Controller
             Log::error($e->getMessage());
         }
     }
-    
+
+    /**
+     * Set a code model as 'active'
+     * 
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function SwitchOne( Request $request )
+    {
+        try {
+            # Retrieve the user
+            $userId = Auth::id();
+
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'code' => [
+                    'required', 
+                    'integer', 
+                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
+                        $query->where('user_id', $userId);
+                    })
+                ],
+            ]);
+
+            if ($validator->fails())
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'message' => __('Some field is malformed')
+                    ]);
+
+            # Take the code and switch it
+            $code = Code::where('user_id', Auth::id())
+                        ->where('id', $request->input('code'))
+                        ->first();
+
+            switch ( $code->active ){
+                case true:
+                    $code->active = false;
+                    break;
+                case false:
+                    $code->active = true;
+                    break;
+            }
+
+            # Check code switching
+            if ( !$code->save() ){
+                return redirect()
+                        ->back()
+                        ->withErrors([
+                            'message' => __('Code could not be switched')
+                        ]);
+            }
+
+            # Go to index page
+            return redirect()
+                    ->back()
+                    ->with([
+                        'message' => __('Code switched successfully')
+                    ]);;
+
+        } catch ( Exception $e ) {
+            Log::error( $e->getMessage() );
+
+            return redirect()
+                    ->back()
+                    ->withErrors([
+                        'message' => __('Sorry, we made a mistake')
+                    ]);
+        }
+    }
+
+
+
     /**
     * Update a Code if its 'id' is present 
     * on the request or create new one

@@ -17,12 +17,8 @@
     {{-- Errors --}}
     <x-alert-errors /> 
 
-    {{-- New Token --}}
-    @if(Session::has('message'))
-        <x-alert type="success">
-            {{ Session::get('message') }}
-        </x-alert>
-    @endif
+    {{-- Messages bag --}}
+    <x-alert-messages />
 
     <x-attention>
         {{ __('Tokens are keys that can do actions in your name (they are basically you).') }} 

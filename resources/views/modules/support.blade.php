@@ -12,13 +12,8 @@
     {{-- Errors --}}
     <x-alert-errors /> 
 
-    {{-- Message bag --}}
-    @if( Session::has('message') )
-        <x-alert 
-            type="info">
-            {{ Session::get('message') }}
-        </x-alert>
-    @endif
+    {{-- Messages bag --}}
+    <x-alert-messages />
 
     <x-box>
         <form action="{{ url('dashboard/support') }}" method="POST">

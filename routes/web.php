@@ -127,6 +127,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
         Route::get('/modification', 'CodesController@ViewModification');
 
+        Route::put('/switching', 'CodesController@SwitchOne');
+
         Route::get('/stats', 'CodesController@ViewStats');
 
         Route::delete('/', 'CodesController@DeleteOne');

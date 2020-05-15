@@ -13,6 +13,9 @@
     {{-- Errors --}}
     <x-alert-errors /> 
 
+    {{-- Messages bag --}}
+    <x-alert-messages />
+
     <x-box>
         <form action="{{ url('dashboard/codes') }}" method="POST">
             @csrf

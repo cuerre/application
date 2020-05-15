@@ -25,4 +25,36 @@ class Code extends Model
     protected $casts = [
         'data' => 'array',
     ];
+
+
+
+    /**
+     * Set 'active' state to false
+     *
+     * @return Bool
+     */
+    public function Unable ()
+    {
+        $this->active = false;
+        if( !$this->save() ){
+            return false;
+        }
+        return true;
+    }
+
+
+
+    /**
+     * Set 'active' state to true
+     *
+     * @return Bool
+     */
+    public function Enable ()
+    {
+        $this->active = true;
+        if( !$this->save() ){
+            return false;
+        }
+        return true;
+    }
 }

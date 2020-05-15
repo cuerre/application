@@ -13,6 +13,9 @@
     {{-- Errors --}}
     <x-alert-errors /> 
 
+    {{-- Messages bag --}}
+    <x-alert-messages />
+
     <x-attention>
         {{ __('You are going to change the targets of this QR code.') }}
         {{ __('Make sure what you are doing because this can be risky on marketing campaigns.') }}

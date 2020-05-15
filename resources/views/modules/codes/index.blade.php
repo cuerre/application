@@ -19,6 +19,9 @@
 
     {{-- Errors --}}
     <x-alert-errors /> 
+
+    {{-- Messages bag --}}
+    <x-alert-messages />
     
     {{-- Code list --}}
     @forelse ($codes->items() as $code)
@@ -32,7 +35,13 @@
                     <div class="d-flex flex-column h-100 w-100">
                         {{-- Top bar container --}}
                         <div class="p-2 text-break mb-auto">
-                            <small class="text-uppercase text-muted">Code name</small>
+                            <small class="text-uppercase text-muted">
+                                Code name
+
+                                {{-- Active badge --}}
+                                <x-code-active :active="$code['active']" />
+                                
+                            </small>
                             <p class="text-dark">{{ $code['name'] }}</p>
                         </div>
                         
