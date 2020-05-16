@@ -40,7 +40,7 @@ class NotifyLowCredits extends Command
     {
         parent::__construct();
 
-        $this->chunk = config('products.codes.chunk');
+        $this->chunk = config('products.chunk');
     }
 
     /**
@@ -51,16 +51,23 @@ class NotifyLowCredits extends Command
     public function handle()
     {
         # Take all users by chunks
-        User::whereBetween('credits', [0, 7])
-            ->orderBy('id')
+        User::orderBy('id')
             ->chunk($this->chunk, function ($users) {
                 foreach ($users as $user) {
 
                     # Check if the user has created codes
-                    $hasCodes = Code::where('user_id', $user->id)->exists();
+                    $numCodes = Code::where('user_id', $user->id)->count();
+                    $sumCodes = $numCodes * config('products.codes.price');
+
+                    # Check if the user has created tokens
+                    $numTokens = $user->tokens()->count();
+                    $sumTokens = $numTokens * config('products.tokens.price');
+
+                    # Total credits needed
+                    $neededCredits = $sumCodes + $sumTokens;
 
                     # Has created codes? 
-                    if ( $hasCodes ){
+                    if ( $user->credits <  $neededCredits ){
 
                         # Notify to buy more
                         $notification = new NotificationController( $user );

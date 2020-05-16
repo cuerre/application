@@ -7,13 +7,20 @@ use Illuminate\View\Component;
 class Attention extends Component
 {
     /**
+     * Flag to expand the attention or not
+     * 
+     * @var bool 
+     */
+    public $show;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($show = false)
     {
-        //
+        $this->show = $show;
     }
 
     /**
@@ -23,6 +30,8 @@ class Attention extends Component
      */
     public function render()
     {
-        return view('components.attention');
+        return view('components.attention', [
+            'show' => $this->show
+        ]);
     }
 }

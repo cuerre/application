@@ -188,7 +188,7 @@ class CodesController extends Controller
     }
 
     /**
-     * Set a code model as 'active'
+     * Set a code as 'active'
      * 
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\RedirectResponse
@@ -227,6 +227,13 @@ class CodesController extends Controller
                     $code->active = false;
                     break;
                 case false:
+                    if ( !Auth::user()->HasCredits() )
+                        return redirect()
+                             ->back()
+                             ->withErrors([
+                                 'message' => __('You need credits to perform this action')
+                             ]);
+                    
                     $code->active = true;
                     break;
             }
@@ -257,8 +264,6 @@ class CodesController extends Controller
                     ]);
         }
     }
-
-
 
     /**
     * Update a Code if its 'id' is present 

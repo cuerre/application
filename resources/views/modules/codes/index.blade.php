@@ -22,6 +22,34 @@
 
     {{-- Messages bag --}}
     <x-alert-messages />
+
+    {{-- Disclaimer --}}
+    <x-attention>
+        <p>
+            {{ __('You can create QR codes for testing purposes.') }}
+        </p>
+        <p>
+            <code>{{ __('As a premium service') }},</code> 
+            {{ __('codes can be used to see the statistics, be downloaded, etc.') }} 
+            {{ __('The scanned codes will not go to the desired targets') }} 
+            {{ __('unless they are active.') }}
+        </p>
+        <p>
+            {{ __('Each night, codes must be paid and it is possible you have not enough') }} 
+            {{ __('credits to pay them all in your account.') }} 
+            {{ __('In that case, the system will try to pay older ones') }} 
+            {{ __('and set as inactive newer ones.') }} 
+
+            <p class="mt-3">
+                <x-link-button
+                    :content="__('Check the prices')"
+                    :link="url('pricing')"
+                    size="sm" 
+                    color="light">
+                </x-link-button>
+            </p>
+        </p>
+    </x-attention>
     
     {{-- Code list --}}
     @forelse ($codes->items() as $code)
@@ -86,29 +114,7 @@
         
     @empty
 
-        {{-- Disclaimer --}}
-        <x-attention>
-            <p>
-                {{ __('You can create QR codes for testing purposes.') }}
-            </p>
-            <p>
-                <code>{{ __('As a premium service') }},</code> 
-                {{ __('codes can be used to see the statistics, be downloaded, etc.') }} 
-                {{ __('The scanned codes will not go to the desired targets') }} 
-                {{ __('unless you have credits on your account.') }}
-
-                <p class="mt-3">
-                    {{-- __('Due to each code rise the total cost of the service') --}}
-                    {{-- __('we recomment you to check the prices.') --}}
-                    <x-link-button
-                        :content="__('Check the prices')"
-                        :link="url('pricing')"
-                        size="sm" 
-                        color="light">
-                    </x-link-button>
-                </p>
-            </p>
-        </x-attention>
+        
 
         {{-- Void placeholder --}}
         <x-card-empty-message>

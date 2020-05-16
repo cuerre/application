@@ -20,10 +20,44 @@
     {{-- Messages bag --}}
     <x-alert-messages />
 
+
     <x-attention>
-        {{ __('Tokens are keys that can do actions in your name (they are basically you).') }} 
-        {{ __("For security reasons we will show it just one time after creation.") }}
-        {{ __("So save it in a safe place and if you think some token can be compromised, delete it.") }}
+        <p>
+            {{ __('Tokens are keys that can do actions in your name (they are basically you).') }} 
+            {{ __("For security reasons we will show it just one time after creation.") }}
+            {{ __("So save it in a safe place and if you think some token can be compromised, delete it.") }}
+        </p>
+        <p>
+            {{ __('Tokens can be used to generate or read QR codes for your application using our API.') }} 
+            {{ __('This service is the easiest way to integrate QR without pain.') }} 
+        </p>
+        <p>
+            <code>{{ __('As a premium service') }},</code> 
+            {{ __('we allow you to generate tokens. They are billed daily.') }}
+            {{ __('This means you only pay for them if they have been used in the last day.') }}
+            <ul>
+                <li>
+                    {{ __('Each token can make a max number of requests per hour (currently 1k).') }} 
+                </li>
+                <li>
+                    {{ __('They will be deleted if not enough credits to pay for it.') }} 
+                </li>
+                <li>
+                    {{ __('The system tries to pay for older ones first, deleting newer when no credits.') }}
+                </li>
+            </ul>
+            
+            
+            
+            <p class="mt-3">
+                <x-link-button
+                    :content="__('Check the prices')"
+                    :link="url('pricing')"
+                    size="sm" 
+                    color="light">
+                </x-link-button>
+            </p>
+        </p>
     </x-attention>
     
     @if ( count($tokens) > 0 )

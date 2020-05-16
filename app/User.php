@@ -72,4 +72,20 @@ class User extends Authenticatable
     }
 
 
+
+    /**
+     * Check if the user has credits
+     *
+     * @return Bool
+     */
+    public function HasCredits ( )
+    {
+        # Never substract more than the current value
+        if ( $this->credits > 0 ) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

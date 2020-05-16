@@ -8,21 +8,21 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 //use Illuminate\Support\Facades\DB;
 
-class PayCodes extends Command
+class PayTokens extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'pay:codes';
+    protected $signature = 'pay:tokens';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Substract credits to users for using codes';
+    protected $description = 'Substract credits to users for using tokens';
 
     /**
      * Grace period. You need at least 
@@ -57,9 +57,9 @@ class PayCodes extends Command
     {
         parent::__construct();
 
-        $this->grace = 8; // hours
-        $this->price = config('products.codes.price');
-        $this->chunk = config('products.codes.chunk');
+        $this->grace = 24; // hours
+        $this->price = config('products.tokens.price');
+        $this->chunk = config('products.tokens.chunk');
     }
 
     /**
@@ -75,27 +75,32 @@ class PayCodes extends Command
                 foreach ( $users as $user ) {
 
                     # Calculate min hour to avoid 
-                    # the bill when deactivated
+                    # the bill
                     $grace = Carbon::now()
-                                   ->subHours($this->grace)
-                                   ->toTimeString();
+                                   ->subHours($this->grace);
 
-                    # Get active and recently deactivated (12h)
-                    $codes = Code::where('user_id', $user->id)
-                                 ->where('active', true)
-                                 ->orWhere(function($query) use ($grace) {
-                                     $query->where('active', false)
-                                         ->whereTime('updated_at', '>', $grace);
-                                 })
-                                 ->orderBy('id')
-                                 ->get();
+                    # Take all the tokens for this user
+                    $tokens = $user->tokens()
+                                   ->whereNotNull('last_used_at')
+                                   ->orderBy('id')
+                                   ->get();
 
-                    # Pay for the code or unable it
-                    $codes->each(function($code) use ($user) {
+                    # Pay for the used tokens or unable it
+                    $tokens->each(function($token) use ($user, $grace) {
+
+                        $lastUsed = Carbon::parse($token->last_used_at);
+                        $lastFree = $grace;
+
+                        # Was used into grace period?
+                        if( ! $lastUsed->isAfter($lastFree) ){
+                            return;
+                        }
+
+                        # Used. Discount credits or delete
                         if( $user->credits > 0 ){
                             $user->SubCredits( $this->price );
                         }else{
-                            $code->Unable();
+                            $token->delete();
                         }
                     });
                 }

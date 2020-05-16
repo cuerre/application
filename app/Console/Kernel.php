@@ -34,17 +34,25 @@ class Kernel extends ConsoleKernel
             ->runInBackground()
             ->onOneServer();
 
+        # Notify users about low credits by mail
+        $schedule->command('notify:lowcredits')
+            ->dailyAt('20:00')
+            ->runInBackground()
+            ->onOneServer();
+
         # Substract the credits for active codes
         $schedule->command('pay:codes')
             ->daily()
             ->runInBackground()
             ->onOneServer();
 
-        # Notify users about low credits by mail
-        $schedule->command('notify:lowcredits')
+        # Substract the credits for active codes
+        $schedule->command('pay:tokens')
             ->daily()
             ->runInBackground()
             ->onOneServer();
+
+        
     }
 
     /**

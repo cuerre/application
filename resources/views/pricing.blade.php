@@ -46,23 +46,23 @@
     <div class="container h-100 py-5">
         <div class="row mb-5">
 
-            {{-- Free offer --}}
+            {{-- Tokens offer --}}
             <div class="col-lg">
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
                             <p class="font-weight-bolder text-uppercase">
-                                {{ __('Free') }}
+                                {{ __('Developer') }}
                             </p>
                         </div>
                         <div class="d-flex justify-content-center align-items-end">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    0€
+                                    1€
                                 </span>
                             </div>
                             <div class="ml-2">
-                                <small>/ {{ __('month') }}</small>
+                                <small>/ {{ __('day') }} ({{ __('each API token') }})</small>
                             </div>
                         </div>
                         {{--
@@ -80,15 +80,19 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Create QR codes') }}</small>
+                                    <small>{{ __('Create any QR code') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Read QR codes') }}</small>
+                                    <small>{{ __('Read any QR code') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
                                     <small>{{ __('1k request per hour / each token') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Prior Technical Support') }}</small>
                                 </li>
                             </ul>
                         </div>
@@ -97,21 +101,23 @@
             </div>
 
 
-            {{-- Premium offer --}}
+            {{-- Codes offer --}}
             <div class="col-lg ">
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
-                            <p class="font-weight-bolder text-uppercase">{{ __('Premium') }}</p>
+                            <p class="font-weight-bolder text-uppercase">
+                                {{ __('Marketing guru') }}
+                            </p>
                         </div>
                         <div class="d-flex justify-content-center align-items-end">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    30€
+                                    1€
                                 </span>
                             </div>
                             <div class="ml-2">
-                                <small>/ {{ __('month') }}</small>
+                                <small>/ {{ __('day') }} ({{ __('each code') }})</small>
                             </div>
                         </div>
                         {{--
@@ -127,6 +133,10 @@
                         --}}
                         <div>
                             <ul class="list-group list-group-flush">
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Create QR that redirects') }}</small>
+                                </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
                                     <small>{{ __('Reuse QR between campaigns') }}</small>
@@ -159,7 +169,7 @@
                     {{ __('ENTERPRISE SOLUTION') }}
                 </p>
                 <p class="text-light">
-                    {{ __('Need more or have custom needs?') }}
+                    {{ __('Need more or have custom needs? Need to bill by year?') }}
                 </p>
                 <x-link-button
                     content="CONTACT US"
@@ -189,18 +199,18 @@
                     <x-action-list>
                         <x-action-list-item
                             :field="__('Is there a minimum subscription period?')" 
-                            :value="__('No, you just buy credits that are used monthly, there is no lock in.')">
+                            :value="__('No, you just buy credits that are used daily, there is no lock in.')">
                         </x-action-list-item>
                         <x-action-list-item
-                            :field="__('Why a free plan?')" 
+                            :field="__('Why a developers plan?')" 
                             :value="__('This is done thinking on app makers who need working with QR codes without hard coding solutions')">
                         </x-action-list-item>
                         <x-action-list-item
-                            :field="__('Why just one premium plan?')" 
+                            :field="__('Why a marketing plan?')" 
                             :value="
-                                __('QR codes have been hard to use by enterprises for years.') . ' '. 
-                                __('We try to keep them as simple as possible.') . ' ' . 
-                                __('Just one paid plan let us to concentrate into the important: make it better')">
+                                __('QR codes have been useless and hard to use for years.') . ' '. 
+                                __('We vitamin them and build enterprise solutions for marketing campaigns.') . ' ' . 
+                                __('Just pay and use them, let us make them better.')">
                         </x-action-list-item>
                     </x-action-list>
                 </div>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Code;
-use App\User;
+//use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BrowscapController;
 use Illuminate\Support\Str;
@@ -58,11 +58,9 @@ class ActionController extends Controller
             if ( $code->isEmpty() )
                 throw new Exception('Code not found for given id');
 
-            # Check if code owner has credits (remember: redirection is premium)
-            $codeOwner = User::where('id', $code['user_id'] )->first();
-
-            if ( !($codeOwner->credits > 0) )
-                throw new Exception('Code owner has not credits');
+            # Check the status of the code
+            if ( $code['active'] == false )
+                throw new Exception('Code not active');
               
             # Check fot 'data' field existance
             if ( !$code->has('data') )
