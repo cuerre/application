@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Code;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Command;
 //use Illuminate\Support\Facades\DB;
 
@@ -57,9 +59,9 @@ class PayCodes extends Command
     {
         parent::__construct();
 
-        $this->grace = 8; // hours
-        $this->price = config('products.codes.price');
-        $this->chunk = config('products.codes.chunk');
+        $this->chunk = config('cuerre.processing.chunk');
+        $this->grace = config('cuerre.products.codes.grace'); // hours
+        $this->price = config('cuerre.products.codes.price');
     }
 
     /**
@@ -69,26 +71,27 @@ class PayCodes extends Command
      */
     public function handle()
     {
-        # Take all users by chunks
-        User::orderBy('id')
+        try{
+            # Take all users by chunks
+            User::orderBy('id')
             ->chunk($this->chunk, function ($users) {
                 foreach ( $users as $user ) {
 
                     # Calculate min hour to avoid 
                     # the bill when deactivated
                     $grace = Carbon::now()
-                                   ->subHours($this->grace)
-                                   ->toTimeString();
+                                ->subHours($this->grace)
+                                ->toTimeString();
 
                     # Get active and recently deactivated (12h)
                     $codes = Code::where('user_id', $user->id)
-                                 ->where('active', true)
-                                 ->orWhere(function($query) use ($grace) {
-                                     $query->where('active', false)
-                                         ->whereTime('updated_at', '>', $grace);
-                                 })
-                                 ->orderBy('id')
-                                 ->get();
+                                ->where('active', true)
+                                ->orWhere(function($query) use ($grace) {
+                                    $query->where('active', false)
+                                        ->whereTime('updated_at', '>', $grace);
+                                })
+                                ->orderBy('id')
+                                ->get();
 
                     # Pay for the code or unable it
                     $codes->each(function($code) use ($user) {
@@ -100,5 +103,10 @@ class PayCodes extends Command
                     });
                 }
             });
+
+        } catch ( Exception $e ){
+            Log::error( $e );
+        }
+        
     }
 }

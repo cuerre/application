@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Code;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Command;
 //use Illuminate\Support\Facades\DB;
 
@@ -57,9 +59,9 @@ class PayTokens extends Command
     {
         parent::__construct();
 
-        $this->grace = 24; // hours
-        $this->price = config('products.tokens.price');
-        $this->chunk = config('products.tokens.chunk');
+        $this->chunk = config('cuerre.processing.chunk');
+        $this->grace = config('cuerre.products.tokens.grace'); // hours
+        $this->price = config('cuerre.products.tokens.price');
     }
 
     /**
@@ -69,21 +71,22 @@ class PayTokens extends Command
      */
     public function handle()
     {
-        # Take all users by chunks
-        User::orderBy('id')
+        try {
+            # Take all users by chunks
+            User::orderBy('id')
             ->chunk($this->chunk, function ($users) {
                 foreach ( $users as $user ) {
 
                     # Calculate min hour to avoid 
                     # the bill
                     $grace = Carbon::now()
-                                   ->subHours($this->grace);
+                                ->subHours($this->grace);
 
                     # Take all the tokens for this user
                     $tokens = $user->tokens()
-                                   ->whereNotNull('last_used_at')
-                                   ->orderBy('id')
-                                   ->get();
+                                ->whereNotNull('last_used_at')
+                                ->orderBy('id')
+                                ->get();
 
                     # Pay for the used tokens or unable it
                     $tokens->each(function($token) use ($user, $grace) {
@@ -105,5 +108,9 @@ class PayTokens extends Command
                     });
                 }
             });
+
+        } catch ( Exception $e ) {
+            Log::error( $e );
+        }
     }
 }

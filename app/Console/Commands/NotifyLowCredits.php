@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Code;
 use App\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Command;
 use App\Http\Controllers\NotificationController;
 
@@ -40,7 +42,7 @@ class NotifyLowCredits extends Command
     {
         parent::__construct();
 
-        $this->chunk = config('products.chunk');
+        $this->chunk = config('cuerre.processing.chunk');
     }
 
     /**
@@ -50,18 +52,19 @@ class NotifyLowCredits extends Command
      */
     public function handle()
     {
-        # Take all users by chunks
-        User::orderBy('id')
+        try {
+            # Take all users by chunks
+            User::orderBy('id')
             ->chunk($this->chunk, function ($users) {
                 foreach ($users as $user) {
 
                     # Check if the user has created codes
                     $numCodes = Code::where('user_id', $user->id)->count();
-                    $sumCodes = $numCodes * config('products.codes.price');
+                    $sumCodes = $numCodes * config('cuerre.products.codes.price');
 
                     # Check if the user has created tokens
                     $numTokens = $user->tokens()->count();
-                    $sumTokens = $numTokens * config('products.tokens.price');
+                    $sumTokens = $numTokens * config('cuerre.products.tokens.price');
 
                     # Total credits needed
                     $neededCredits = $sumCodes + $sumTokens;
@@ -75,5 +78,9 @@ class NotifyLowCredits extends Command
                     }
                 }
             });
+        }catch( Exception $e ){
+            Log::error($e);
+        }
+        
     }
 }
