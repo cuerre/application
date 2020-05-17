@@ -41,13 +41,9 @@
                 </li>
                 <li>
                     {{ __('They will be deleted if not enough credits to pay for it.') }} 
-                </li>
-                <li>
                     {{ __('The system tries to pay for older ones first, deleting newer when no credits.') }}
                 </li>
             </ul>
-            
-            
             
             <p class="mt-3">
                 <x-link-button
@@ -60,28 +56,34 @@
         </p>
     </x-attention>
     
-    @if ( count($tokens) > 0 )
+
+    @forelse ( $tokens as $token )
         <x-box>
-            <x-action-list>
-                @foreach ( $tokens as $token)
-                    <x-action-list-item
-                        :field="__('Token')" 
-                        :value='$token->name'>
-                        <form action="{{ url('dashboard/tokens') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input name="id" type="hidden" value="{{ $token->id }}">
-                            <x-submit-button
-                                :content="__('Delete')"
-                                :confirmation="__('Sure deleting this?')" 
-                                color="primary">
-                            </x-submit-button>
-                        </form>
-                    </x-action-list-item>
-                @endforeach
-            </x-action-list>
+            <div class="row">
+                <div class="col-sm text-muted">
+                    <div class="d-inline">
+                        <strong>{{ __('Token') }}</strong>
+                        <x-token-used-badge :last="$token->last_used_at" />
+                    </div>
+                    <div>
+                        {{ $token->name }}
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <form action="{{ url('dashboard/tokens') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input name="id" type="hidden" value="{{ $token->id }}">
+                        <x-submit-button
+                            :content="__('Delete')"
+                            :confirmation="__('Sure deleting this?')" 
+                            color="primary">
+                        </x-submit-button>
+                    </form>
+                </div>
+            </div>
         </x-box>
-    @else
+    @empty
         <x-card-empty-message>
             {{ __('Touch') }} 
             <kbd class="mx-2">
@@ -89,7 +91,6 @@
             </kbd> 
             {{ __('on the top to create a new token') }}
         </x-card-empty-message>
-    @endif
-    
+    @endforelse
     
 @endsection

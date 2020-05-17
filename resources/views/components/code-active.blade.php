@@ -3,13 +3,13 @@
         <span 
             class="badge badge-primary rounded-pill" 
             style="background-color: LightSeaGreen !important;">
-            {{ __('active') }}
+            {{ __('Active') }}
         </span>
     @else
         <span 
             class="badge badge-secondary rounded-pill"
             style="background-color: LightCoral !important;">
-            {{ __('inactive') }}
+            {{ __('Inactive') }}
         </span>
     @endif
 </div>

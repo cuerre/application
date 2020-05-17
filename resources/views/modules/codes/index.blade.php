@@ -64,12 +64,12 @@
                         {{-- Top bar container --}}
                         <div class="p-2 text-break mb-auto">
                             <small class="text-uppercase text-muted">
-                                Code name
-
-                                {{-- Active badge --}}
-                                <x-code-active :active="$code['active']" />
-                                
+                                {{ __('Code name') }}
                             </small>
+
+                            {{-- Active badge --}}
+                            <x-code-active :active="$code['active']" />
+                            
                             <p class="text-dark">{{ $code['name'] }}</p>
                         </div>
                         
