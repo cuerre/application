@@ -21,11 +21,17 @@
             style="background-color: LightSeaGreen !important;">
             {{ __('Used') . ': '. $lastUsed->calendar() }}
         </span>
-    @else
+    @elseif( !$used && !is_null($last) )
         <span 
             class="badge badge-secondary rounded-pill"
             style="background-color: LightCoral !important;">
             {{ __('Inactive') }}
+        </span>
+    @else
+        <span 
+            class="badge badge-secondary rounded-pill"
+            style="background-color: CornflowerBlue !important;">
+            {{ __('Never used') }}
         </span>
     @endif
 </div>

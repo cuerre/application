@@ -2,7 +2,7 @@
 
 # {{ __('Hello') }}, {{ $user->name }}
 {{ __('You have some premium service with us and we have detected low amount of credits.') }}
-{{ __('Please, remember that if you have not credits during a week, premium services will be automatically cancelled.') }}
+{{ __('Please, remember that if you have not credits when billing, some premium services will be automatically cancelled.') }}
 <br>
 <br>
 
