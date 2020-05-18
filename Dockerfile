@@ -12,6 +12,7 @@ RUN apt-get install -y -qq --force-yes \
 	php7.3-zip \
 	zbar-tools \ 
 	qrencode \ 
+	cron \
 	--no-install-recommends > /dev/null
 
 # Creating a temporary folder for our app
@@ -60,6 +61,7 @@ RUN echo "service php7.3-fpm start" >> /init.sh
 RUN echo "shopt -s dotglob" >> /init.sh
 RUN echo "mkdir -p /var/www/" >> /init.sh
 RUN echo "mv /app/* /var/www/" >> /init.sh
+RUN echo "(crontab -l; echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1';) | crontab -" >> /init.sh
 RUN echo "php /var/www/artisan config:cache" >> /init.sh
 RUN echo "/bin/bash" >> /init.sh
 RUN chown root:root /init.sh
