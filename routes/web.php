@@ -4,12 +4,14 @@
 //use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\EncodingController;
-use App\Http\Controllers\DecodingController;
-use Illuminate\Support\Facades\Validator;
+//use Illuminate\Http\File;
+//use Illuminate\Support\Facades\Storage;
+//use App\Http\Controllers\EncodingController;
+//use App\Http\Controllers\DecodingController;
+//use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Cache;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,13 +23,40 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware(['custom.throttle'])->group(function () {
+    Route::get('/trot', function () {
+        // Uses first & second Middleware
+        return dd('hola');
+    });
+});
+
 Route::get('/test', function (Request $request) {
-    //auth()->SumCredits(2);
 
-    //Auth::user()->SumCredits(0.2);
+    $value = Cache::get('key');
 
-    //return view('test');
-    //return new App\Mail\CreditsLow(auth()->user());
+    //return dd($value);
+
+    Cache::store('redis')->put('key', [
+        'hola' => 'pepe',
+        'como' => 'estas' 
+    ], 600); // 10 Minutes
+
+    /*
+    $value = Cache::get('key', function () {
+        //return DB::table(...)->get();
+    });
+    */
+
+    if (Cache::has('key')) {
+        $value = Cache::get('key');
+        return dd($value);
+    }
+
+    // dame del cache y si no, los sacas de db y lo metes en redis
+    $value = Cache::remember('users', $seconds, function () {
+        return DB::table('users')->get();
+    });
+
 });
 
 /**
