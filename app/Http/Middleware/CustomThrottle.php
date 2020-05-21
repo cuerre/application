@@ -101,47 +101,40 @@ class CustomThrottle
         try {
 
             # Check the request looking for the API key
-            if( !self::CheckApikey($request) ){
+            if( !$this->CheckApikey($request) ){
                 return dd('No api key');
             }
 
             # Refresh cache if not cached
+            # and store them into the instance
             if( !Cache::has( $this->apikey ) ) {
-                if( !self::RefreshCache() ){
+                if( !$this->RefreshCache() ){
                     return dd('No se pudo cachear la petición');
                 }
             }
-
-            # Get the cached data and store 
-            # them into the instance
-            if( !self::GetCachedData() ){
+            
+            # If cached, get the cached data 
+            # and store them into the instance
+            if( !$this->GetCachedData() ){
                 return dd('El cache está jodido');
             }
 
-            # Check expiracy
-            
-            //Cache::forget( $this->apikey );
-            /*
-            if( self::isExpired() ){
-                //return dd([Carbon::now(), $this->expiredAt]);
-                
+            # If expired, refresh cache data
+            # and store them into the instance
+            if( $this->isExpired() ){
                 Cache::forget( $this->apikey );
-                if( !self::RefreshCache() ){
+                if( ! $this->RefreshCache() ){
                     return dd('No se pudo cachear la petición');
                 }
-            }*/
-
-            //return dd(get_object_vars ( $this ));
-            
+            }
 
             # Check request rate
-            /*
             if( !self::isUnderRate() ){
                 return dd('limit reached');
-            }*/
+            }
 
             # Increase rate counter
-            if( !self::increaseRate() ){
+            if( !$this->increaseRate() ){
                 return dd('no se pudo aumentar el rate');
             }
 
@@ -362,13 +355,13 @@ class CustomThrottle
 
             # Take data from database and set
             # them into cache
-            if( !self::SetCacheFromDatabase() ){
+            if( !$this->SetCacheFromDatabase() ){
                 throw new Exception ('Impossible to update cache from db');
             }
 
             # Get the cached data and store 
             # them into the instance attributes
-            if( !self::GetCachedData() ){
+            if( !$this->GetCachedData() ){
                 throw new Exception ('Impossible to update instance attributes from cache');
             }
 
