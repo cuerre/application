@@ -2,23 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use Exception;
 use Closure;
-use App\User;
 use App\Token;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
-class CustomThrottle
+class CustomThrottle 
 {
-    /**
-     * Duration in seconds
-     * of data stored in cache
-     * 
-     * @var int 
-     */
-    public $cacheDuration;
-
-
-
     /**
      * API key given 
      * in the request
@@ -30,12 +22,53 @@ class CustomThrottle
 
 
     /**
-     * Data stored into
-     * 'apikey' cache key
+     * Flag to know if the token 
+     * is was active into DB when 
+     * stored in cache
      * 
-     * @var array 
+     * @var bool 
      */
-    public $apikeyData;
+    public $isActive;
+
+
+
+    /**
+     * The moment the apikey
+     * was stores into cache
+     * 
+     * @var Carbon\Carbon
+     */
+    public $createdAt;
+
+
+
+    /**
+     * The moment the apikey
+     * will be expired from 
+     * the moment it was stored
+     * 
+     * @var Carbon\Carbon
+     */
+    public $expiredAt;
+
+
+
+    /**
+     * Number of requests done
+     * 
+     * @var int 
+     */
+    public $rateCurrent;
+
+
+
+    /**
+     * Number of maximun
+     * possible requests
+     * 
+     * @var int 
+     */
+    public $rateLimit;
 
 
 
@@ -46,9 +79,12 @@ class CustomThrottle
      */
     public function __Construct()
     {
-        $this->cacheDuration = now()->addMinutes(60);
         $this->apikey        = null;
-        $this->apikeyData    = null;
+        $this->isActive      = false;
+        $this->createdAt     = null;
+        $this->expiredAt     = null;
+        $this->rateCurrent   = null;
+        $this->rateLimit     = null;
     }
 
 
@@ -65,60 +101,61 @@ class CustomThrottle
         try {
 
             # Check the request looking for the API key
-            self::CheckApikey($request);
+            if( !self::CheckApikey($request) ){
+                return dd('No api key');
+            }
 
-            # Save the key
-            self::SetApikey($request);
-
-            # Look for the key into cache
-            if ( !Cache::has( $this->apikey ) ) {
-
-                # Check db existance
-                if( !Token::Exists($this->apikey) ){
-                    # @@@@@@@@@@@@@@
-                    return dd('key dont exist');
+            # Refresh cache if not cached
+            if( !Cache::has( $this->apikey ) ) {
+                if( !self::RefreshCache() ){
+                    return dd('No se pudo cachear la petición');
                 }
+            }
 
-                # Take it from db
-                $token = Token::where('token', $this->apikey)
-                              ->first();
+            # Get the cached data and store 
+            # them into the instance
+            if( !self::GetCachedData() ){
+                return dd('El cache está jodido');
+            }
 
-                # Check if we could get token
-                if( is_null($token) ) {
-                    throw new Exception ("Impossible to retrieve token data");
+            # Check expiracy
+            
+            //Cache::forget( $this->apikey );
+            /*
+            if( self::isExpired() ){
+                //return dd([Carbon::now(), $this->expiredAt]);
+                
+                Cache::forget( $this->apikey );
+                if( !self::RefreshCache() ){
+                    return dd('No se pudo cachear la petición');
                 }
+            }*/
 
-                # Throw it into cache during a time
-                $this->apikeyData = [
-                    'active'       => $token->active,
-                    'rate_limit'   => $token->rate_limit,
-                    'rate_current' => 0,
-                ];
+            //return dd(get_object_vars ( $this ));
+            
 
-                Cache::add($this->apikey, $this->apikeyData, $this->cacheDuration);
+            # Check request rate
+            /*
+            if( !self::isUnderRate() ){
+                return dd('limit reached');
+            }*/
+
+            # Increase rate counter
+            if( !self::increaseRate() ){
+                return dd('no se pudo aumentar el rate');
             }
 
-            # Take apikey data from cache to test
-            $this->apikeyData = Cache::get( $this->apikey );
+            return dd([ Cache::get($this->apikey) ]);
 
-            if( is_null($this->apikeyData) ) {
-                throw new Exception ("Impossible to get data from cache");
-            }
+            # Add some custom headers
+            /*
+            response()
+                ->header('X-Rate-Limit-Limit', 5)
+                ->header('X-Rate-Limit-Remaining', 2)
+                ->header('X-Rate-Limit-Reset', 10);
+            */
 
-            # Reject requests when no more quota
-            $rate_current = $this->apikeyData['rate_current'];
-            $rate_limit   = $this->apikeyData['rate_limit'];
-
-            if ( $rate_current >= $rate_limit) {
-                # @@@@@@@@@@@@@@
-                return dd('RATE MEH');
-            }
-
-            # Update the values on cache
-            $this->apikeyData['rate_current'] += 1;
-            Cache::put($this->apikey, $this->apikeyData);
-
-            return dd($this->apikeyData);
+            //return dd($this->rateCurrent);
 
             # Go to the next layer
             return $next($request);
@@ -131,39 +168,215 @@ class CustomThrottle
 
 
     /**
-     * Check if 'apikey' is present
+     * Check if 'apikey' is present 
+     * and save it into attributes
      * 
      * @return bool
      */
-    public static function CheckApikey( $request )
+    public function CheckApikey( $request )
     {
         try{
 
             if ( !$request->filled('apikey') ){
-                # @@@@@@@@@@@@@@
-                return dd('no apikey');
+                return false;
             }
 
-        } catch (Exception $e ){
+            $this->apikey = $request->input('apikey');
+            return true;
 
+        } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
         }
     }
 
 
 
     /**
-     * Set 'apikey'
+     * C
      * 
      * @return bool
      */
-    public function SetApikey( $request )
+    public function SetCacheFromDatabase()
     {
         try{
 
-            $this->apikey = $request->query('apikey');
+            # Take it from db
+            $token = Token::where('token', $this->apikey)->first();
+
+            # Check if we could get token
+            if( is_null($token) ) {
+                return false;
+            }
+
+            # Process data a bit
+            $data = [
+                'isActive'     => $token->active,
+                'createdAt'    => Carbon::now(),
+                'expiredAt'    => Carbon::now()->addMinutes(2),
+                'rateCurrent'  => 0,
+                'rateLimit'    => $token->rate_limit,
+            ];
+
+            # Throw it into cache
+            //Cache::forget( $this->apikey );
+            $cached = Cache::put($this->apikey, $data);
+
+            # Cache failed to store the data
+            if ( !$cached ){
+                throw new Exception ( "Cache failed when using Cache:add()" );
+            }
+            
+            return true;
 
         } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
+        }
+    }
 
+
+
+    /**
+     * C
+     * 
+     * @return bool
+     */
+    public function GetCachedData()
+    {
+        try {
+            # Take data from cache
+            $data = Cache::get( $this->apikey );
+
+            # No data stored for that key
+            if( is_null($data) ) {
+                return false;
+            }
+
+            # Store values on the current instance
+            $this->isActive      = $data['isActive'];
+            $this->createdAt     = Carbon::parse($data['createdAt']);
+            $this->expiredAt     = Carbon::parse($data['expiredAt']);
+            $this->rateCurrent   = $data['rateCurrent'];
+            $this->rateLimit     = $data['rateLimit'];
+
+            return true;
+
+        } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
+        }
+    }
+
+
+
+    /**
+     * C
+     * 
+     * @return bool
+     */
+    public function isExpired()
+    {
+        try {
+            # Reject requests when expired
+            if ( Carbon::now()->isAfter($this->expiredAt) ) {
+                return true;
+            }
+
+            return false;
+
+        } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return true;
+        }
+    }
+
+
+
+    /**
+     * C
+     * 
+     * @return bool
+     */
+    public function isUnderRate()
+    {
+        try {
+
+            # Reject requests when no more quota
+            if ( $this->rateCurrent >= $this->rateLimit ) {
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
+        }
+    }
+
+
+
+    /**
+     * C
+     * 
+     * @return bool
+     */
+    public function increaseRate()
+    {
+        try {
+
+            # Update the values on cache
+            $this->rateCurrent++;
+
+            $data = [
+                'isActive'     => $this->isActive,
+                'createdAt'    => $this->createdAt,
+                'expiredAt'    => $this->expiredAt,
+                'rateCurrent'  => $this->rateCurrent,
+                'rateLimit'    => $this->rateLimit,
+            ];
+
+            if( !Cache::put($this->apikey, $data) ){
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
+        }
+    }
+
+
+
+    /**
+     * 
+     * 
+     * @return bool
+     */
+    public function RefreshCache ()
+    {
+        try {
+
+            # Take data from database and set
+            # them into cache
+            if( !self::SetCacheFromDatabase() ){
+                throw new Exception ('Impossible to update cache from db');
+            }
+
+            # Get the cached data and store 
+            # them into the instance attributes
+            if( !self::GetCachedData() ){
+                throw new Exception ('Impossible to update instance attributes from cache');
+            }
+
+            return true;
+
+        } catch ( Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
         }
     }
 
