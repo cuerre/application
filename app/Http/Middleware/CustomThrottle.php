@@ -105,25 +105,22 @@ class CustomThrottle
                 return dd('No api key');
             }
 
-            # Refresh cache if not cached
-            # and store them into the instance
+            # If not cached, generate cache
             if( !Cache::has( $this->apikey ) ) {
-                if( !$this->RefreshCache() ){
+                if( !$this->RegenerateCache() ){
                     return dd('No se pudo cachear la petición');
                 }
             }
             
             # If cached, get the cached data 
-            # and store them into the instance
             if( !$this->GetCachedData() ){
                 return dd('El cache está jodido');
             }
 
-            # If expired, refresh cache data
-            # and store them into the instance
+            # If expired, regenerate cache data
             if( $this->isExpired() ){
                 Cache::forget( $this->apikey );
-                if( ! $this->RefreshCache() ){
+                if( ! $this->RegenerateCache() ){
                     return dd('No se pudo cachear la petición');
                 }
             }
@@ -154,7 +151,7 @@ class CustomThrottle
             return $next($request);
 
         } catch( Exception $e ) {
-
+            return dd('algo fue mal');
         }
     }
 
@@ -162,7 +159,8 @@ class CustomThrottle
 
     /**
      * Check if 'apikey' is present 
-     * and save it into attributes
+     * on the request and save it 
+     * into the instance
      * 
      * @return bool
      */
@@ -186,7 +184,9 @@ class CustomThrottle
 
 
     /**
-     * C
+     * Take data for the requested 
+     * Apikey from database and store 
+     * them into the cache
      * 
      * @return bool
      */
@@ -231,7 +231,9 @@ class CustomThrottle
 
 
     /**
-     * C
+     * Take cached data for the 
+     * requested 'Apikey' and store 
+     * them into the instance
      * 
      * @return bool
      */
@@ -264,7 +266,8 @@ class CustomThrottle
 
 
     /**
-     * C
+     * Check if an Apikey stored into 
+     * the instance is expired 
      * 
      * @return bool
      */
@@ -287,7 +290,8 @@ class CustomThrottle
 
 
     /**
-     * C
+     * Check if the Apitoken stored 
+     * in the instance admits more requests
      * 
      * @return bool
      */
@@ -311,7 +315,9 @@ class CustomThrottle
 
 
     /**
-     * C
+     * Increase one request on the 
+     * 'rateCurrent' value into cache
+     * and into the instance
      * 
      * @return bool
      */
@@ -345,11 +351,13 @@ class CustomThrottle
 
 
     /**
-     * 
+     * Take the data from database,
+     * store them into cache and into
+     * the instance
      * 
      * @return bool
      */
-    public function RefreshCache ()
+    public function RegenerateCache ()
     {
         try {
 
