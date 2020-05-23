@@ -6,8 +6,8 @@ use Exception;
 use Closure;
 use App\Token;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class CustomThrottle 
 {
@@ -100,66 +100,58 @@ class CustomThrottle
     {
         try {
 
-            # Check the request for the API key 
-            if( !$this->GetApikey($request) ){
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => 'apikey is missing'
-                ], 400);
+            # Check the request looking for the API key
+            if( !$this->CheckApikey($request) ){
+                return dd('No api key');
             }
 
-            # Dump data from database to cache
-            if( !Redis::exists($this->apikey) ) {
-                if( !$this->SetCacheFromDatabase() ){
-                    throw new Exception ('Error dumping data from db to cache');
+            # If not cached, generate cache
+            if( !Cache::has( $this->apikey ) ) {
+                if( !$this->RegenerateCache() ){
+                    return dd('No se pudo cachear la petición');
                 }
             }
             
-            # Get the cached data 
-            if( !$this->GetDataFromCache() ){
-                throw new Exception ('Error setting attributes from cache');
+            # If cached, get the cached data 
+            if( !$this->GetCachedData() ){
+                return dd('El cache está jodido');
+            }
+
+            # If expired, regenerate cache data
+            if( $this->isExpired() ){
+                Cache::forget( $this->apikey );
+                if( ! $this->RegenerateCache() ){
+                    return dd('No se pudo cachear la petición');
+                }
             }
 
             # Check request rate
-            if( !$this->isUnderRate() ){
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => 'apikey is missing'
-                ], 400)->header();
+            if( !self::isUnderRate() ){
+                return dd('limit reached');
             }
 
             # Increase rate counter
             if( !$this->increaseRate() ){
-                throw new Exception ('Error increasing rate into cache');
+                return dd('no se pudo aumentar el rate');
             }
 
-            # Get the cached data 
-            if( !$this->GetDataFromCache() ){
-                throw new Exception ('Error setting attributes from cache');
-            }
+            return dd([ Cache::get($this->apikey) ]);
 
             # Add some custom headers
-            $remaining = $this->rateLimit - $this->rateCurrent;
-            header('X-Rate-Limit-Limit: ' . $this->rateLimit);
-            header('X-Rate-Limit-Remaining: ' . $remaining );
-            //header('X-Rate-Limit-Reset: ' . 10);
-            
-            
+            /*
+            response()
+                ->header('X-Rate-Limit-Limit', 5)
+                ->header('X-Rate-Limit-Remaining', 2)
+                ->header('X-Rate-Limit-Reset', 10);
+            */
 
-            return dd( Redis::get($this->apikey) );
+            //return dd($this->rateCurrent);
 
             # Go to the next layer
             return $next($request);
 
         } catch( Exception $e ) {
-            Log::error( $e->getMessage() );
-
-            # Send feedback to the user
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'we made a mistake'
-            ], 500);
-
+            return dd('algo fue mal');
         }
     }
 
@@ -172,11 +164,13 @@ class CustomThrottle
      * 
      * @return bool
      */
-    public function GetApikey( $request )
+    public function CheckApikey( $request )
     {
         try{
-            if ( !$request->filled('apikey') )
+
+            if ( !$request->filled('apikey') ){
                 return false;
+            }
 
             $this->apikey = $request->input('apikey');
             return true;
@@ -199,32 +193,32 @@ class CustomThrottle
     public function SetCacheFromDatabase()
     {
         try{
+
             # Take it from db
             $token = Token::where('token', $this->apikey)->first();
 
             # Check if we could get token
-            if( is_null($token) )
+            if( is_null($token) ) {
                 return false;
+            }
 
-            # Throw data into cache
-            $expiracyMoment = Carbon::now()->addMinutes(1);
-            $cached = Redis::set(
-                $this->apikey, 
-                json_encode([
-                    'isActive'     => $token->active,
-                    'createdAt'    => Carbon::now()->toDateTimeString(),
-                    'expiredAt'    => $expiracyMoment->toDateTimeString(),
-                    'rateCurrent'  => 0,
-                    'rateLimit'    => $token->rate_limit,
-                ]) 
-            );
+            # Process data a bit
+            $data = [
+                'isActive'     => $token->active,
+                'createdAt'    => Carbon::now(),
+                'expiredAt'    => Carbon::now()->addMinutes(2),
+                'rateCurrent'  => 0,
+                'rateLimit'    => $token->rate_limit,
+            ];
 
-            # Set expiracy
-            $expiracy = Redis::expireAt($this->apikey, $expiracyMoment->timestamp);
+            # Throw it into cache
+            //Cache::forget( $this->apikey );
+            $cached = Cache::put($this->apikey, $data);
 
             # Cache failed to store the data
-            if ( !$cached || !$expiracy )
+            if ( !$cached ){
                 throw new Exception ( "Cache failed when using Cache:add()" );
+            }
             
             return true;
 
@@ -243,18 +237,16 @@ class CustomThrottle
      * 
      * @return bool
      */
-    public function GetDataFromCache()
+    public function GetCachedData()
     {
         try {
             # Take data from cache
-            $cached = Redis::get( $this->apikey );
+            $data = Cache::get( $this->apikey );
 
             # No data stored for that key
-            if( !$cached )
+            if( is_null($data) ) {
                 return false;
-
-            # Cast data from JSON to array
-            $data = json_decode($cached, true);
+            }
 
             # Store values on the current instance
             $this->isActive      = $data['isActive'];
@@ -274,6 +266,30 @@ class CustomThrottle
 
 
     /**
+     * Check if an Apikey stored into 
+     * the instance is expired 
+     * 
+     * @return bool
+     */
+    public function isExpired()
+    {
+        try {
+            # Reject requests when expired
+            if ( Carbon::now()->isAfter($this->expiredAt) ) {
+                return true;
+            }
+
+            return false;
+
+        } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return true;
+        }
+    }
+
+
+
+    /**
      * Check if the Apitoken stored 
      * in the instance admits more requests
      * 
@@ -282,11 +298,13 @@ class CustomThrottle
     public function isUnderRate()
     {
         try {
-            # Reject requests when no more quota
-            if ( !($this->rateCurrent < $this->rateLimit) )
-                return false;
 
-            return true; 
+            # Reject requests when no more quota
+            if ( $this->rateCurrent >= $this->rateLimit ) {
+                return false;
+            }
+
+            return true;
 
         } catch (Exception $e ){
             Log::error( $e->getMessage() );
@@ -306,35 +324,58 @@ class CustomThrottle
     public function increaseRate()
     {
         try {
+
             # Update the values on cache
             $this->rateCurrent++;
 
-            # Save new values into the cache
-            $reCached = Redis::set(
-                $this->apikey, 
-                json_encode([
-                    'isActive'     => $this->isActive,
-                    'createdAt'    => $this->createdAt->toDateTimeString(),
-                    'expiredAt'    => $this->expiredAt->toDateTimeString(),
-                    'rateCurrent'  => $this->rateCurrent,
-                    'rateLimit'    => $this->rateLimit,
-                ]) 
-            );
+            $data = [
+                'isActive'     => $this->isActive,
+                'createdAt'    => $this->createdAt,
+                'expiredAt'    => $this->expiredAt,
+                'rateCurrent'  => $this->rateCurrent,
+                'rateLimit'    => $this->rateLimit,
+            ];
 
-            # Set the expiracy again
-            $expiracy = Redis::expireAt(
-                $this->apikey, 
-                $this->expiredAt->timestamp
-            );
-
-            $refresh = $this->GetDataFromCache();
-
-            if( !$reCached || !$expiracy )
+            if( !Cache::put($this->apikey, $data) ){
                 return false;
+            }
 
             return true;
 
         } catch (Exception $e ){
+            Log::error( $e->getMessage() );
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Take the data from database,
+     * store them into cache and into
+     * the instance
+     * 
+     * @return bool
+     */
+    public function RegenerateCache ()
+    {
+        try {
+
+            # Take data from database and set
+            # them into cache
+            if( !$this->SetCacheFromDatabase() ){
+                throw new Exception ('Impossible to update cache from db');
+            }
+
+            # Get the cached data and store 
+            # them into the instance attributes
+            if( !$this->GetCachedData() ){
+                throw new Exception ('Impossible to update instance attributes from cache');
+            }
+
+            return true;
+
+        } catch ( Exception $e ){
             Log::error( $e->getMessage() );
             return false;
         }
