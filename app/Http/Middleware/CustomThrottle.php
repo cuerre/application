@@ -83,8 +83,8 @@ class CustomThrottle
         $this->isActive      = false;
         $this->createdAt     = null;
         $this->expiredAt     = null;
-        $this->rateCurrent   = null;
-        $this->rateLimit     = null;
+        $this->rateCurrent   = 0;
+        $this->rateLimit     = 0;
     }
 
 
@@ -111,53 +111,42 @@ class CustomThrottle
             # Dump data from database to cache
             if( !Redis::exists($this->apikey) ) {
                 if( !$this->SetCacheFromDatabase() ){
-                    throw new Exception ('Error dumping data from db to cache');
+                    throw new Exception ('error dumping data from db to cache');
                 }
             }
             
             # Get the cached data 
             if( !$this->GetDataFromCache() ){
-                throw new Exception ('Error setting attributes from cache');
+                throw new Exception ('error setting attributes from cache');
             }
 
             # Check request rate
             if( !$this->isUnderRate() ){
+                $this->setHeaders();
                 return response()->json([
                     'status'  => 'error',
-                    'message' => 'apikey is missing'
-                ], 400)->header();
+                    'message' => 'rate limit reached'
+                ], 400);
             }
 
             # Increase rate counter
             if( !$this->increaseRate() ){
-                throw new Exception ('Error increasing rate into cache');
-            }
-
-            # Get the cached data 
-            if( !$this->GetDataFromCache() ){
-                throw new Exception ('Error setting attributes from cache');
+                throw new Exception ('error increasing rate of a request');
             }
 
             # Add some custom headers
-            $remaining = $this->rateLimit - $this->rateCurrent;
-            header('X-Rate-Limit-Limit: ' . $this->rateLimit);
-            header('X-Rate-Limit-Remaining: ' . $remaining );
-            //header('X-Rate-Limit-Reset: ' . 10);
-            
-            
-
-            return dd( Redis::get($this->apikey) );
+            $this->setHeaders();
 
             # Go to the next layer
             return $next($request);
 
         } catch( Exception $e ) {
-            Log::error( $e->getMessage() );
+            Log::error($e);
 
             # Send feedback to the user
             return response()->json([
                 'status'  => 'error',
-                'message' => 'we made a mistake'
+                'message' => 'we made a mistake. please, try again later'
             ], 500);
 
         }
@@ -224,12 +213,12 @@ class CustomThrottle
 
             # Cache failed to store the data
             if ( !$cached || !$expiracy )
-                throw new Exception ( "Cache failed when using Cache:add()" );
+                throw new Exception ( "cache failed when adding information" );
             
             return true;
 
         } catch (Exception $e ){
-            Log::error( $e->getMessage() );
+            Log::error($e);
             return false;
         }
     }
@@ -266,7 +255,7 @@ class CustomThrottle
             return true;
 
         } catch (Exception $e ){
-            Log::error( $e->getMessage() );
+            Log::error($e);
             return false;
         }
     }
@@ -289,7 +278,7 @@ class CustomThrottle
             return true; 
 
         } catch (Exception $e ){
-            Log::error( $e->getMessage() );
+            Log::error($e);
             return false;
         }
     }
@@ -335,8 +324,43 @@ class CustomThrottle
             return true;
 
         } catch (Exception $e ){
-            Log::error( $e->getMessage() );
+            Log::error($e);
             return false;
+        }
+    }
+
+
+
+    /**
+     * Remove custom headers and 
+     * set some custom ones with
+     * rate data information 
+     * 
+     * @return void
+     */
+    public function setHeaders()
+    {
+        try {
+
+            # Remove custom headers
+            foreach ( headers_list() as $header ) {
+
+                if (preg_match('/^(x-){1}(.*)$/i', $header) ){
+                    $headerName = explode(':', $header)[0];
+                    header_remove($headerName);
+                }
+            }
+
+            # Add some custom headers
+            $remaining = $this->rateLimit - $this->rateCurrent;
+            $reset = $this->expiredAt->timestamp - Carbon::now()->timestamp;
+
+            header('x-rate-limit-limit: ' . $this->rateLimit);
+            header('x-rate-limit-remaining: ' . $remaining );
+            header('x-rate-limit-reset: ' . $reset);
+
+        } catch ( Exception $e ) {
+            Log::error($e);
         }
     }
 
