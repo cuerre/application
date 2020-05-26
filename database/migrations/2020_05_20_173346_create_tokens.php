@@ -20,7 +20,7 @@ class CreateTokens extends Migration
             $table->string('token')->unique(); # Hashed key
             $table->boolean('active')->default(true);
             $table->json('abilities')->nullable();
-            $table->integer('rate_limit')->default(1000); # Max requests per hour
+            $table->integer('rate_limit')->default(3000); # Max requests per hour
             $table->timestamps();
         });
     }
