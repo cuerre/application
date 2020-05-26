@@ -1,37 +1,41 @@
 @php
-    try {
-        $used       = false;
-        $grace      = config('cuerre.products.tokens.grace');
-        $lastFree   = \Carbon\Carbon::now()->subHours($grace);
-        $lastUsed   = \Carbon\Carbon::parse($last);
 
-        if( $lastUsed->isAfter($lastFree) && !is_null($last) ){
-            $used = true;
+    use \Illuminate\Support\Facades\Redis;
+
+    try {
+
+        # Try to get current wasted rate from cache
+        $rateCurrent = 0;
+        if( Redis::exists($token) ){
+
+            $key = Redis::get($token);
+
+            if( !is_null($key) ){
+                $key = json_decode( $key, true);
+                $rateCurrent = $key['rateCurrent'];
+            }
         }
+
+        # Calculate background color
+        $usedPercent = $rateCurrent / $rateLimit;
+
+        $bgColor = 'LightSeaGreen';
+        if( $usedPercent >= 0.9 ){
+            $bgColor = 'LightCoral';
+        }
+
     } catch ( Exception $e ){
-        $used = false;
+        
+        $usedPercent = 1;
+        $bgColor     = 'LightCoral';
     }
 @endphp
 
 
 <div class="d-inline ml-2">
-    @if( $used )
-        <span 
-            class="badge badge-primary rounded-pill" 
-            style="background-color: LightSeaGreen !important;">
-            {{ __('Used') . ': '. $lastUsed->calendar() }}
-        </span>
-    @elseif( !$used && !is_null($last) )
-        <span 
-            class="badge badge-secondary rounded-pill"
-            style="background-color: LightCoral !important;">
-            {{ __('Inactive') }}
-        </span>
-    @else
-        <span 
-            class="badge badge-secondary rounded-pill"
-            style="background-color: CornflowerBlue !important;">
-            {{ __('Never used') }}
-        </span>
-    @endif
+    <span 
+        class="badge badge-primary rounded-pill" 
+        style="background-color: {{ $bgColor }} !important;">
+        {{ $rateCurrent }} / {{ $rateLimit }}
+    </span>
 </div>

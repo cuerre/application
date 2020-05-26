@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Exception;
-use App\Code;
 use App\User;
+use App\Token;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Command;
@@ -83,27 +83,22 @@ class PayTokens extends Command
                                 ->subHours($this->grace);
 
                     # Take all the tokens for this user
-                    $tokens = $user->tokens()
-                                ->whereNotNull('last_used_at')
-                                ->orderBy('id')
-                                ->get();
+                    $tokens = Token::where('user_id', $user->id)
+                                   ->where('active', true)
+                                   ->orWhere(function($query) use ($grace) {
+                                         $query->where('active', false)
+                                         ->whereTime('updated_at', '>', $grace);
+                                     })
+                                   ->orderBy('id')
+                                   ->get();
 
                     # Pay for the used tokens or unable it
-                    $tokens->each(function($token) use ($user, $grace) {
-
-                        $lastUsed = Carbon::parse($token->last_used_at);
-                        $lastFree = $grace;
-
-                        # Was used into grace period?
-                        if( ! $lastUsed->isAfter($lastFree) ){
-                            return;
-                        }
-
+                    $tokens->each(function($token) use ($user) {
                         # Used. Discount credits or delete
                         if( $user->credits > 0 ){
                             $user->SubCredits( $this->price );
                         }else{
-                            $token->delete();
+                            $token->Unable();
                         }
                     });
                 }

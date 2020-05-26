@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\StatBrowscap as StatBrowscap;
+use Exception;
+use App\Exceptions\StatsException;
+use App\StatBrowscap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -50,17 +52,17 @@ class StatsController extends Controller
             
             # Take a sample of browser's stats
             $browsersSample = StatBrowscap::select('data')
-                ->where('code_id', $codeId)
-                ->limit($this->sampleMax)
-                ->get();
+                                          ->where('code_id', $codeId)
+                                          ->limit($this->sampleMax)
+                                          ->get();
                
             # Save the sample into the right atribute and clean memory
             $this->sample->put('browscap', $browsersSample);
             unset($browsersSample);
             
         } catch (Exception $e){
-            Log::error($e->getMessage());
-            abort(404); #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            Log::error( $e );
+            abort(404);
         }
     }
     
@@ -71,9 +73,9 @@ class StatsController extends Controller
      *
      * @return Illuminate\Support\Collection
      */
-     public function GetSample(){
-        return $this->sample;
-     }
+    public function GetSample(){
+    return $this->sample;
+    }
     
     
     
@@ -105,8 +107,7 @@ class StatsController extends Controller
             return $platforms;
         
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             return collect([]);
         }
     }
@@ -141,8 +142,7 @@ class StatsController extends Controller
             return $browsers;
         
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error($e);
             return collect([]);
         }
     }
@@ -177,8 +177,7 @@ class StatsController extends Controller
             return $devices;
         
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error($e);
             return collect([]);
         }
     }
@@ -212,13 +211,13 @@ class StatsController extends Controller
             return $devices;
         
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error($e);
             return collect([]);
         }
     }
     
     
+
     /**
      * Retrieves a collection of data
      * that were stored after an input date
@@ -229,17 +228,14 @@ class StatsController extends Controller
     private function GetAfterDate(Carbon $date)
     {
         try {
-            $readings = StatBrowscap::select('created_at')
-                ->where('code_id', $this->codeId)
-                ->whereDate('created_at', '>', $date)
-                ->oldest()
-                ->get();
-        
-            return $readings;
+            return StatBrowscap::select('created_at')
+                               ->where('code_id', $this->codeId)
+                               ->whereDate('created_at', '>', $date)
+                               ->oldest()
+                               ->get();
 
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             return collect([]);
         }
     }
@@ -273,8 +269,7 @@ class StatsController extends Controller
 
             return $readings;
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             return collect([]);
         }
     }
@@ -307,9 +302,9 @@ class StatsController extends Controller
             });
 
             return $readings;
-        } catch (Exception $e){
-            Log::error($e->getMessage());
 
+        } catch (Exception $e){
+            Log::error( $e );
             return collect([]);
         }
     }
@@ -343,8 +338,7 @@ class StatsController extends Controller
 
             return $readings;
         } catch (Exception $e){
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             return collect([]);
         }
     }

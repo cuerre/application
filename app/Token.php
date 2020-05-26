@@ -14,6 +14,7 @@ class Token extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'name', 
         'token', 
         'active', 

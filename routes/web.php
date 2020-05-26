@@ -23,41 +23,19 @@ use Illuminate\Support\Facades\Cache;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['custom.throttle'])->group(function () {
+/*
+Route::middleware(['cerbero'])->group(function () {
     Route::get('/trot', function () {
         // Uses first & second Middleware
         return dd('hola');
     });
 });
-
+*/
 Route::get('/test', function (Request $request) {
 
-    $value = Cache::get('key');
-
-    //return dd($value);
-
-    Cache::store('redis')->put('key', [
-        'hola' => 'pepe',
-        'como' => 'estas' 
-    ], 600); // 10 Minutes
-
-    /*
-    $value = Cache::get('key', function () {
-        //return DB::table(...)->get();
-    });
-    */
-
-    if (Cache::has('key')) {
-        $value = Cache::get('key');
-        return dd($value);
-    }
-
-    // dame del cache y si no, los sacas de db y lo metes en redis
-    $value = Cache::remember('users', $seconds, function () {
-        return DB::table('users')->get();
-    });
-
 });
+
+
 
 /**
  *
@@ -195,6 +173,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::post('/', 'TokensController@Create');
 
         Route::delete('/', 'TokensController@Delete');
+
+        Route::put('/switching', 'TokensController@Switch');
     
     });
 

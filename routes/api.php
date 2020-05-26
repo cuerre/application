@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//auth:sanctum
-Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
+
+Route::middleware(['cerbero'])->group(function () {
 
     # Version 1
     Route::prefix('v1')->group(function () {

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Exceptions\CodeException;
 use App\Code;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StatsController;
 
@@ -25,8 +26,7 @@ use App\Http\Controllers\StatsController;
  * CodesController::UpdateOrCreateOne( Request )
  * CodesController::GetEmbededImage( int )
  * CodesController::GetImageDownload( Request )
- * CodesController::ActivateOne( int )
- * CodesController::DeactivateOne( int )
+ * CodesController::SwitchOne( int )
  * CodesController::ViewIndex()
  * CodesController::ViewCreation()
  * CodesController::ViewModification( Request )
@@ -44,69 +44,61 @@ class CodesController extends Controller
     * Get all QR codes for signed in
     * user as a Laravel collection
     *
-    * @return \Illuminate\Support\Collection
+    * @return \Illuminate\Support\Collection  
     */
     public static function GetAll()
     {
         try {
-            # We need the user ID
-            $userId = Auth::id();
-            
+
             # Retrieve all codes
-            $codes = Code::where('user_id', $userId)
-                ->get();
+            $codes = Code::where('user_id', Auth::id())
+                         ->get();
             
             # Convert results to collections
-            $codes = collect( $codes )
-                ->recursive();
-            
-            return $codes;
+            return collect( $codes )
+                 ->recursive();
             
         } catch ( Exception $e ){
-
-            Log::error($e->getMessage());
-
+            Log::error($e);
             return collect([]);
         }
     }
 
+
+
     /**
     * Get one QR code for signed in user
     *
-    * @param  int  $codeId  The code id into database
+    * @param  int  $codeId  The code id into database 
     * @return  \Illuminate\Support\Collection
     */
     public static function GetOne( int $codeId )
     {
         try {
-            # We need the user ID
-            $userId = Auth::id();
             
             # Retrieve the code
-            $codes = Code::where('user_id', $userId)
+            $codes = Code::where('user_id', Auth::id())
                 ->where('id', $codeId)
                 ->first();
             
             # Convert results to collections
-            $codes = collect( $codes )
-                ->recursive();
-            
-            return $codes;
+            return collect( $codes )
+                 ->recursive();
             
         } catch ( Exception $e ){
-
-            Log::error( $e->getMessage() );
-
+            Log::error( $e );
             return collect([]);
         }
     }
+
+
 
     /**
     * Get a Base64 representation
     * of the given code
     * 
     * @param  int  $codeId  The code id into database
-    * @return String
+    * @return string
     */
     public static function GetEmbededImage( int $codeId )
     {
@@ -118,21 +110,19 @@ class CodesController extends Controller
 
             $newCode = new EncodingController;
 
-            $qrCode = $newCode->params([
+            return $newCode->params([
                 'data' => $codeContent->__toString()
             ])
             ->buildImage()
             ->GetBase64();
-
-            return $qrCode;
             
         } catch ( Exception $e ) {
-
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             return '';
         }
     }
+
+
 
     /**
     * Force the download a code according
@@ -147,22 +137,19 @@ class CodesController extends Controller
     public static function GetImageDownload( Request $request )
     {
         try{
-            # Retrieve the user
-            $userId = Auth::id();
-
             # Check the input fields
             $validator = Validator::make($request->all(), [
                 'code' => [
                     'required', 
                     'integer', 
-                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
-                        $query->where('user_id', $userId);
+                    Rule::exists('codes', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
                     })
                 ],
             ]);
 
             if ($validator->fails())
-                throw new Exception ('Some field is malformed');
+                throw new CodeException ('Some field is malformed');
 
             # Set the content of the code
             $codeContent = Str::of('')
@@ -172,20 +159,19 @@ class CodesController extends Controller
             # Build and download the code
             $newCode = new EncodingController;
             
-            $qrCode = $newCode->params([
+            return $newCode->params([
                 'data'   => $codeContent->__toString(),
                 'output' => $request->input('output')
             ])
             ->buildImage()
             ->GetDownload();
-
-            return $qrCode;
             
-        } catch ( Exception $e ) {
-
-            Log::error($e->getMessage());
+        } catch ( CodeException $e ) {
+            Log::error( $e );
         }
     }
+
+
 
     /**
      * Set a code as 'active'
@@ -196,26 +182,20 @@ class CodesController extends Controller
     public static function SwitchOne( Request $request )
     {
         try {
-            # Retrieve the user
-            $userId = Auth::id();
 
             # Check the input fields
             $validator = Validator::make($request->all(), [
                 'code' => [
                     'required', 
                     'integer', 
-                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
-                        $query->where('user_id', $userId);
+                    Rule::exists('codes', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
                     })
                 ],
             ]);
 
             if ($validator->fails())
-                return redirect()
-                    ->back()
-                    ->withErrors([
-                        'message' => __('Some field is malformed')
-                    ]);
+                throw new CodeException ('Some field is malformed');
 
             # Take the code and switch it
             $code = Code::where('user_id', Auth::id())
@@ -228,11 +208,7 @@ class CodesController extends Controller
                     break;
                 case false:
                     if ( !Auth::user()->HasCredits() )
-                        return redirect()
-                             ->back()
-                             ->withErrors([
-                                 'message' => __('You need credits to perform this action')
-                             ]);
+                        throw new CodeException ('You need credits to perform this action');
                     
                     $code->active = true;
                     break;
@@ -240,11 +216,7 @@ class CodesController extends Controller
 
             # Check code switching
             if ( !$code->save() ){
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Code could not be switched')
-                        ]);
+                throw new CodeException ('Code could not be switched');
             }
 
             # Go to index page
@@ -254,16 +226,18 @@ class CodesController extends Controller
                         'message' => __('Code switched successfully')
                     ]);;
 
-        } catch ( Exception $e ) {
-            Log::error( $e->getMessage() );
+        } catch ( CodeException $e ) {
+            Log::error( $e );
 
             return redirect()
                     ->back()
                     ->withErrors([
-                        'message' => __('Sorry, we made a mistake')
+                        'message' => __($e->getMessage())
                     ]);
         }
     }
+
+
 
     /**
     * Update a Code if its 'id' is present 
@@ -293,11 +267,7 @@ class CodesController extends Controller
             ]);
             
             if ($validator->fails())
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Some field is malformed')
-                        ]);
+                throw new CodeException ('Some field is malformed');
 
             # Convert targets to a collection
             $targets = collect( $request->input('targets') )->recursive();
@@ -319,21 +289,13 @@ class CodesController extends Controller
             });
             
             if (!$verifyTargets)
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Some target is malformed')
-                        ]);
+                throw new CodeException ('Some target is malformed');
                 
             # Check if 'Any' target is set
             $verifyAny = $targets->firstWhere('system', 'any');
             
             if ( is_null($verifyAny) )
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('You must define, at least, the "Any" target')
-                        ]);
+                throw new CodeException ('You must define, at least, the "Any" target');
 
             $code = Code::updateOrCreate(
                 [
@@ -357,18 +319,20 @@ class CodesController extends Controller
             # Go to the index
             return redirect('dashboard/codes');
             
-        } catch ( Exception $e ) {
-            Log::error($e->getMessage());
+        } catch ( CodeException $e ) {
+            Log::error($e);
             
             # Go to the form with error bag
             return redirect()
                     ->back()
                     ->withErrors([
-                        'message' => __('Sorry, something went wrong doing that')
+                        'message' => __( $e->getMessage() )
                     ]);
         }
     }
-        
+
+
+
     /**
     * Remove a Code and all associated data
     *
@@ -378,8 +342,6 @@ class CodesController extends Controller
     public static function DeleteOne( Request $request )
     {
         try{
-            # We need the user ID
-            $userId = Auth::id();
                 
             # Check input data
             $validator = Validator::make($request->all(), [
@@ -387,28 +349,20 @@ class CodesController extends Controller
             ]);
             
             if ($validator->fails())
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Some filed is malformed')
-                        ]);
+                throw new CodeException ('Some field is malformed');
             
             # Delete asked code
-            $delete = Code::where('user_id', $userId)
-                ->where('id', $request->input('id'))
-                ->delete();
+            $delete = Code::where('user_id', Auth::id())
+                          ->where('id', $request->input('id'))
+                          ->delete();
                 
             if (!$delete)
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('We could not delete the code')
-                        ]);
+                throw new CodeException ('We could not delete the code');
 
             return redirect('dashboard/codes');
                     
-        } catch ( Exception $e ) {
-            Log::error($e->getMessage());
+        } catch ( CodeException $e ) {
+            Log::error( $e );
             
             return redirect()
                     ->back()
@@ -417,6 +371,8 @@ class CodesController extends Controller
                     ]);
         }
     }
+
+
 
     /**
     * Show the index view with codes
@@ -434,8 +390,7 @@ class CodesController extends Controller
             return view('modules.codes.index', ['codes' => $codes]);
             
         } catch ( Exception $e ) {
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             abort(404);
         }
     }
@@ -453,8 +408,7 @@ class CodesController extends Controller
             return view('modules.codes.creation');
             
         } catch ( Exception $e ) {
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             abort(404);
         }
     }
@@ -471,26 +425,20 @@ class CodesController extends Controller
     public static function ViewStats( Request $request )
     {
         try {
-            # We need the user ID and code ID
-            $userId = Auth::id();
 
             # Check the input fields
             $validator = Validator::make($request->all(), [
                 'code' => [
                     'required', 
                     'integer',
-                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
-                        $query->where('user_id', $userId);
+                    Rule::exists('codes', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
                     }),
                 ],
             ]);
             
             if ($validator->fails())
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Some field is malformed')
-                        ]);
+                throw new CodeException ('Some field is malformed');
 
             # Get the stats for that code
             $stats = new StatsController( $request->input('code') );
@@ -507,12 +455,12 @@ class CodesController extends Controller
             ]);
             
         } catch ( Exception $e ){
-
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             abort(404);
         }
     }
+
+
 
     /**
     * Show the modification view for a given Code
@@ -524,26 +472,19 @@ class CodesController extends Controller
     {
         try {
 
-            # We need the user ID and code ID
-            $userId = Auth::id();
-
             # Check the input code
             $validator = Validator::make($request->all(), [
                 'code' => [
                     'required', 
                     'integer',
-                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
-                        $query->where('user_id', $userId);
+                    Rule::exists('codes', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
                     }),
                 ],
             ]);
 
             if ($validator->fails())
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Some field is malformed')
-                        ]);
+                throw new CodeException ('Some field is malformed');
 
             # Show index view
             return view('modules.codes.modification', [
@@ -551,8 +492,7 @@ class CodesController extends Controller
             ]);
             
         } catch ( Exception $e ) {
-            Log::error($e->getMessage());
-
+            Log::error( $e );
             abort(404);
         }
     }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Middleware;
 
-use Exception;
 use Closure;
+use Exception;
+use App\Exceptions\CerberoException;
 use App\Token;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
 
-class CustomThrottle 
+class Cerbero 
 {
     /**
      * API key given 
@@ -111,13 +112,13 @@ class CustomThrottle
             # Dump data from database to cache
             if( !Redis::exists($this->apikey) ) {
                 if( !$this->SetCacheFromDatabase() ){
-                    throw new Exception ('error dumping data from db to cache');
+                    throw new CerberoException ('error dumping data from db to cache');
                 }
             }
             
             # Get the cached data 
             if( !$this->GetDataFromCache() ){
-                throw new Exception ('error setting attributes from cache');
+                throw new CerberoException ('error setting attributes from cache');
             }
 
             # Check request rate
@@ -131,7 +132,7 @@ class CustomThrottle
 
             # Increase rate counter
             if( !$this->increaseRate() ){
-                throw new Exception ('error increasing rate of a request');
+                throw new CerberoException ('error increasing rate of a request');
             }
 
             # Add some custom headers
@@ -140,13 +141,13 @@ class CustomThrottle
             # Go to the next layer
             return $next($request);
 
-        } catch( Exception $e ) {
+        } catch( CerberoException $e ) {
             Log::error($e);
 
             # Send feedback to the user
             return response()->json([
                 'status'  => 'error',
-                'message' => 'we made a mistake. please, try again later'
+                'message' => __('we made a mistake. please, try again later')
             ], 500);
 
         }
@@ -170,8 +171,8 @@ class CustomThrottle
             $this->apikey = $request->input('apikey');
             return true;
 
-        } catch (Exception $e ){
-            Log::error( $e->getMessage() );
+        } catch ( CerberoException $e ){
+            Log::error( $e );
             return false;
         }
     }
@@ -189,14 +190,16 @@ class CustomThrottle
     {
         try{
             # Take it from db
-            $token = Token::where('token', $this->apikey)->first();
+            $token = Token::where('token', $this->apikey)
+                          ->where('active', 1)
+                          ->first();
 
             # Check if we could get token
             if( is_null($token) )
                 return false;
 
             # Throw data into cache
-            $expiracyMoment = Carbon::now()->addMinutes(1);
+            $expiracyMoment = Carbon::now()->addMinutes( config('cerbero.session.lifetime') );
             $cached = Redis::set(
                 $this->apikey, 
                 json_encode([
@@ -213,11 +216,11 @@ class CustomThrottle
 
             # Cache failed to store the data
             if ( !$cached || !$expiracy )
-                throw new Exception ( "cache failed when adding information" );
+                throw new CerberoException ( "cache failed when adding information" );
             
             return true;
 
-        } catch (Exception $e ){
+        } catch ( CerberoException $e ){
             Log::error($e);
             return false;
         }
@@ -254,7 +257,7 @@ class CustomThrottle
 
             return true;
 
-        } catch (Exception $e ){
+        } catch ( CerberoException $e ){
             Log::error($e);
             return false;
         }
@@ -277,7 +280,7 @@ class CustomThrottle
 
             return true; 
 
-        } catch (Exception $e ){
+        } catch ( CerberoException $e ){
             Log::error($e);
             return false;
         }
@@ -323,7 +326,7 @@ class CustomThrottle
 
             return true;
 
-        } catch (Exception $e ){
+        } catch ( CerberoException $e ){
             Log::error($e);
             return false;
         }
@@ -359,7 +362,7 @@ class CustomThrottle
             header('x-rate-limit-remaining: ' . $remaining );
             header('x-rate-limit-reset: ' . $reset);
 
-        } catch ( Exception $e ) {
+        } catch ( CerberoException $e ) {
             Log::error($e);
         }
     }

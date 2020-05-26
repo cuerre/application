@@ -60,26 +60,18 @@
     @forelse ( $tokens as $token )
         <x-box>
             <div class="row">
-                <div class="col-sm text-muted">
+                <div class="col text-muted">
                     <div class="d-inline">
                         <strong>{{ __('Token') }}</strong>
-                        <x-token-used-badge :last="$token->last_used_at" />
+                        <x-token-active :active="$token->active"/>
+                        <x-token-used-badge :token="$token->token" :rateLimit="$token->rate_limit"/>
                     </div>
                     <div>
                         {{ $token->name }}
                     </div>
                 </div>
-                <div class="col-auto">
-                    <form action="{{ url('dashboard/tokens') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <input name="id" type="hidden" value="{{ $token->id }}">
-                        <x-submit-button
-                            :content="__('Delete')"
-                            :confirmation="__('Sure deleting this?')" 
-                            color="primary">
-                        </x-submit-button>
-                    </form>
+                <div class="col-xs-auto my-auto">
+                    <x-token-options :id="$token->id" />
                 </div>
             </div>
         </x-box>

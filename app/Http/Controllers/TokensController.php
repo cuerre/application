@@ -2,210 +2,265 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Exception;
-use App\Exceptions\CuerreException;
+use App\Exceptions\TokenException;
+use App\Token;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/** 
+ * TokensController is a Laravel Controller for managing App\Token Models and Views
+ * 
+ * TokensController is a Laravel Controller for managing App\Token data Models 
+ * and renderable Views. This means that everything related to url('dashboard/tokens')
+ * can be found here. This controller tries to keep all methods as static.
+ * 
+ * Example usage:
+ * self::Get()
+ * self::Create( Request )
+ * self::Delete( Request )
+ * self::Switch( int )
+ * self::ViewIndex()
+ * self::ViewCreation()
+ * 
+ * @package Cuerre
+ * @author Alby Hernández
+ * @version $Revision: 1.0 $
+ * @access private
+ * @see http://cuerre.com/documentation
+ */
 class TokensController extends Controller
 {
-        /**
-        * Get all tokens of the signed user
-        *
-        * @return 
-        */
-        public static function Get()
-        {
-            try {
+    /**
+     * Get all tokens of the signed user
+     *
+     * @return Collection
+     */
+    public static function Get()
+    {
+        try {
+            return Token::where('user_id', Auth::id())
+                        ->get();
+            
+        } catch ( Exception $e ){
 
-                # Get all the tokens
-                $tokens = Auth::user()->tokens;
-
-                # Convert them into collection
-                return collect($tokens);
-                
-            } catch ( CuerreException $e ){
-
-                return collect([]);
-            }
+            return collect([]);
         }
+    }
         
         
         
-        /**
-        * Create a token for signed user
-        *
-        * @return 
-        */
-        public static function Create( Request $request )
-        {           
-            try{
-                # Retrieve the user
-                $user = Auth::user();
-                
-                # Check the input fields
-                $validator = Validator::make($request->all(), [
-                    'name'     => ['required', 'alpha_dash', 'max:100'],
-                ]);
-                
-                if ($validator->fails())
-                    throw new CuerreException ('Name is malformed');
-                
-                # Try create the token
-                $token = $user->createToken($request->input('name'));
+    /**
+     * Create a token for signed user
+     * CAUTION: Not encoded tokens yet
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function Create( Request $request )
+    {           
+        try{
+            
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'name' => [
+                    'required', 
+                    'alpha_dash', 
+                    'max:100'
+                ],
+            ]);
+            
+            if ($validator->fails())
+                throw new TokenException ('Name is malformed');
+            
+            # Try create the token
+            $token             = new Token;
+            $token->user_id    = Auth::id();
+            $token->name       = $request->input('name');
+            $token->token      = Str::random(32);
+            $token->active     = true;
+            $token->rate_limit = 3000;
 
-                # Go to the form with error bag
-                return redirect()
+            if (!$token->save() ){
+                throw new TokenException ('Impossible to create a token');
+            }
+
+            # Go to the form with error bag
+            return redirect()
                     ->back()
                     ->with([
-                        'message' => $token->plainTextToken
-                    ])
-                    ->send();
-                
-            } catch ( CuerreException $e ) {
+                        'message' => $token->token
+                    ]);
+            
+        } catch ( TokenException $e ) {
 
-                # Go to the form with error bag
-                return redirect()
+            # Go to the form with error bag
+            return redirect()
                     ->back()
                     ->withErrors([
-                        'message' => $e->getMessage()
-                    ])
-                    ->send();
-            }
+                        'message' => __($e->getMessage())
+                    ]);
         }
+    }
         
         
         
-        /**
-        * Remove a profile
-        *
-        * @return bool
-        */
-        public static function Delete( Request $request )
-        {
-            try{
-                # We need the user ID
-                $user = Auth::user();
+    /**
+     * Remove a token
+     *
+     * @param  \Illuminate\Http\Request
+     * @return bool
+     */
+    public static function Delete( Request $request )
+    {
+        try{
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'id' => [
+                    'required', 
+                    'integer', 
+                    'exists:tokens,id'
+                ],
+            ]);
 
-                # Check the input fields
-                $validator = Validator::make($request->all(), [
-                    'id'     => ['required', 'integer', 'exists:personal_access_tokens,id'],
-                ]);
+            if ($validator->fails())
+                throw new TokenException ('We could not find your token');
 
-                if ($validator->fails())
-                    throw new CuerreException ('We could not find your token');
-
-                # Delete the token
-                $delete = $user->tokens()->where('id', $request->input('id'))->delete();
+            # Delete the token
+            $deleted = Token::where('user_id', Auth::id())
+                            ->where('id', $request->input('id'))
+                            ->limit(1)
+                            ->delete();
+                
+            if (!$deleted)
+                throw new TokenException ('We could not delete your token');
+            
+            # Go to tokens index
+            return redirect()
+                    ->back()
+                    ->with([
+                        'message' => __('Your token has been deleted')
+                    ]);
                     
-                if (!$delete)
-                    throw new CuerreException ('We could not delete your token');
-                
-                # Go to tokens index
-                return redirect()
-                    ->back()
-                    ->with([
-                        'message' => 'Your token has been deleted'
-                    ])
-                    ->send();
-                       
-            } catch ( CuerreException $e ) {
-                
-                return redirect()
+        } catch ( TokenException $e ) {
+            
+            return redirect()
                     ->back()
                     ->withErrors([
-                        'message' => $e->getMessage()
-                    ])
-                    ->send();
-            }
+                        'message' => __($e->getMessage())
+                    ]);
         }
+    }
+
+
+
+    /**
+     * Switch a token 'active' field
+     * 
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function Switch( Request $request )
+    {
+        try {
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'token' => [
+                    'required', 
+                    'integer', 
+                    Rule::exists('tokens', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
+                    })
+                ],
+            ]);
+
+            if ($validator->fails())
+                throw new TokenException ('Some field is malformed');
+
+            # Take the token and switch it
+            $code = Token::where('user_id', Auth::id())
+                         ->where('id', $request->input('token'))
+                         ->first();
+
+            switch ( $code->active ){
+                case true:
+                    $code->active = false;
+                    break;
+                case false:
+                    if ( !Auth::user()->HasCredits() )
+                        throw new TokenException ('You need credits to perform this action');
+                    
+                    $code->active = true;
+                    break;
+            }
+
+            # Check code switching
+            if ( !$code->save() ){
+                throw new TokenException ('Code could not be switched');
+            }
+
+            # Go to index page
+            return redirect()
+                    ->back()
+                    ->with([
+                        'message' => __('Code switched successfully')
+                    ]);;
+
+        } catch ( TokenException $e ) {
+
+            return redirect()
+                    ->back()
+                    ->withErrors([
+                        'message' => __($e->getMessage())
+                    ]);
+        }
+    }
         
      
      
-        /**
-        * Show the index view for profile
-        *
-        * @return 
-        */
-        public static function ViewIndex ()
-        {
-            try {
-                # Get the codes collection and paginate them
-                $tokens = self::Get();
+    /**
+     * Show the index view for profile
+     *
+     * @return 
+     */
+    public static function ViewIndex ()
+    {
+        try {
+            # Get the codes collection and paginate them
+            $tokens = self::Get();
 
-                # Show index view
-                return view('modules.tokens.index', ['tokens' => $tokens]);
-                
-            } catch ( CuerreException $e ) {
-
-                abort(404);
-            }
+            # Show index view
+            return view('modules.tokens.index', ['tokens' => $tokens]);
+            
+        } catch ( Exception $e ) {
+            Log::error($e);
+            abort(404);
         }
+    }
 
 
 
-        /**
-        * Show the creation view for tokens
-        *
-        * @return 
-        */
-        public static function ViewCreation ()
-        {
-            try {
+    /**
+     * Show the creation view for tokens
+     *
+     * @return 
+     */
+    public static function ViewCreation ()
+    {
+        try {
+            # Show creation view
+            return view('modules.tokens.creation');
 
-                # Show index view
-                return view('modules.tokens.creation');
-                
-            } catch ( CuerreException $e ) {
-
-                abort(404);
-            }
+        } catch ( Exception $e ) {
+            Log::error($e);
+            abort(404);
         }
-        
-        
-        
-        /**
-        * Show the view to change name
-        *
-        * @return 
-        */
-        /*public static function ViewChangeName ()
-        {
-            try {
-                # Show index view
-                return view('modules.profile.change.name');
-                
-            } catch ( Exception $e ) {
-                Log::error($e->getMessage());
-
-                abort(404);
-            }
-        }*/
-        
-
-        
-        /**
-        * Show the view to delete the account
-        *
-        * @return 
-        */
-        public static function ViewDeletion ()
-        {
-            try {
-                # Show index view
-                return view('modules.profile.delete');
-                
-            } catch ( Exception $e ) {
-                Log::error($e->getMessage());
-
-                abort(404);
-            }
-        }
+    }
       
       
       

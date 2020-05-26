@@ -12,7 +12,10 @@ class Code extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'data', 'data->targets',
+        'user_id', 
+        'name', 
+        'data', 
+        'data->targets',
     ];
     
     

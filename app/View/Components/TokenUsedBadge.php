@@ -7,21 +7,28 @@ use Illuminate\View\Component;
 class TokenUsedBadge extends Component
 {
     /**
-     * The date when token was used
-     * for last time
+     * The token to check
      * 
      * @var string
      */
-    public $last;
+    public $token;
+
+    /**
+     * The token's rate limit
+     * 
+     * @var string
+     */
+    public $rateLimit;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct( $last = null )
+    public function __construct( $token = null, $rateLimit = null )
     {
-        $this->last = $last;
+        $this->token     = $token;
+        $this->rateLimit = $rateLimit;
     }
 
     /**
@@ -32,7 +39,8 @@ class TokenUsedBadge extends Component
     public function render()
     {
         return view('components.token-used-badge',[
-            'last' => $this->last,
+            'token'     => $this->token,
+            'rateLimit' => $this->rateLimit,
         ]);
     }
 }
