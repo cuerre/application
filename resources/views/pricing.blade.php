@@ -88,7 +88,7 @@
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('1k request per hour / each token') }}</small>
+                                    <small>{{ __('3k request per hour / each token') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
