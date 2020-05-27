@@ -18,7 +18,7 @@
     <div class="mb-5">
         <h4>Headers</h4>
         <p>
-            Looking for ease, we work with only few headers like <code>Authorization</code>, 
+            Looking for ease, we work with only few headers like 
             <code>Content-Type</code> or <code>Accept</code> and need no more of them. Let us to explain.
         </p>
         <p>
@@ -29,7 +29,7 @@
         <x-snippet 
             class="mb-5"
             language="HTTP">
-            Authorization: Bearer {API KEY}
+            {{ secure_url("/") }}/api/v1/encode?apikey={API KEY}
         </x-snippet>
         <p>
             Another header you should know is <code>Content-Type</code>. This header is usually used 

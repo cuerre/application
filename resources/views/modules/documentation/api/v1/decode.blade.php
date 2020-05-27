@@ -31,8 +31,6 @@
             snippet="documentation.decode.html-form">
         </x-snippet>
         <p>
-            The problem with this is that <code>Authorization</code> header is not included so the example wont work.
-            To solve this problem we need make the request with other tools like <code>Ajax</code> or <code>cURL</code>.
             In the following example, the request is made with Ajax to give a useful example for daily purposes.
         </p>
         <x-snippet 

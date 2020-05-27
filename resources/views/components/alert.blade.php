@@ -22,7 +22,7 @@
 @endphp
 
 <div 
-    class="alert alert-{{ $type }} bg-light border-top-0 border-right-0 border-bottom-0 text-muted my-5" 
+    class="alert alert-{{ $type }} bg-light border-top-0 border-right-0 border-bottom-0 text-muted my-4" 
     role="alert" 
     style="border-left: .25rem solid {{ $color }} !important;">
 

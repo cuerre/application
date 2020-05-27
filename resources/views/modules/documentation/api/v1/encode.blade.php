@@ -187,7 +187,7 @@
         </p>
         <x-snippet 
             language="none">
-            {{ secure_url('/') }}/api/v1/encode?data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
+            {{ secure_url('/') }}/api/v1/encode?apikey={API KEY}&data=Hola&dotsize=5&output=PNG&marginsize=5&ecc=L
         </x-snippet>
     </div>
 

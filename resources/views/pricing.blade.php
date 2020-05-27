@@ -65,17 +65,17 @@
                                 <small>/ {{ __('day') }} ({{ __('each API token') }})</small>
                             </div>
                         </div>
-                        {{--
+
                         <div class="py-3">
                             <x-link-button
                                 content="SELECT"
-                                link="#"
+                                :link="url('register')"
                                 size="md" 
                                 block
                                 color="primary">
                             </x-link-button>
                         </div>
-                        --}}
+
                         <div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item border-0">
@@ -120,17 +120,17 @@
                                 <small>/ {{ __('day') }} ({{ __('each code') }})</small>
                             </div>
                         </div>
-                        {{--
+                        
                         <div class="py-3">
                             <x-link-button
                                 content="SELECT"
-                                link="#"
+                                :link="url('register')"
                                 size="md" 
                                 block
                                 color="primary">
                             </x-link-button>
                         </div>
-                        --}}
+                        
                         <div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item border-0">
@@ -173,7 +173,7 @@
                 </p>
                 <x-link-button
                     content="CONTACT US"
-                    link="#" 
+                    :link="url('sales')" 
                     color="outline-light">
                 </x-link-button>
             </div>

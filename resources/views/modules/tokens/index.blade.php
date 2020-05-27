@@ -37,7 +37,7 @@
             {{ __('This means you only pay for them if they have been used in the last day.') }}
             <ul>
                 <li>
-                    {{ __('Each token can make a max number of requests per hour (currently 1k).') }} 
+                    {{ __('Each token can make a max number of requests per hour (currently 3k).') }} 
                 </li>
                 <li>
                     {{ __('They will be deleted if not enough credits to pay for it.') }} 

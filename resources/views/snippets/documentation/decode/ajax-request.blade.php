@@ -15,14 +15,13 @@ $(function(){
         var f = $(this);
         var formData = new FormData(document.getElementById("formuploadajax"));
         $.ajax({
-            url: "'.secure_url("/").'/api/v1/decode",
+            url: "'.secure_url("/").'/api/v1/decode?apikey={API KEY}",
             type: "post",
             data: formData,
             cache: false,
             contentType: false, // Content-Type already included
             processData: false,
             headers : {
-                "Authorization" : "Bearer {API KEY}",
                 "Accept" : "application/json; charset=utf-8",
                 //"Content-Type" : "multipart/form-data",  NOT NEEDED
             },

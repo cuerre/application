@@ -58,13 +58,13 @@ Route::get('/about', function () {
     return view('about');
 });
 
-/*Route::middleware(['auth'])->prefix('billing')->group(function () {
-    Route::get('payment', 'PaymentController@Payment')->name('payment');
+Route::get('/sales', function () {
+    return view('sales');
+});
 
-    Route::get('cancel', 'PaymentController@cancel')->name('payment.cancel');
+Route::post('/sales', 'ContactController@SendSalesRequest');
 
-    Route::get('payment/success', 'PaymentController@Success')->name('payment.success');
-});*/
+
 
 /**
  *
@@ -195,7 +195,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         return view('modules.support');
     });
 
-    Route::post('/support', 'SupportController@SendRequest');
+    Route::post('/support', 'ContactController@SendSupportRequest');
 });
 
 

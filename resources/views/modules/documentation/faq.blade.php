@@ -27,7 +27,7 @@
 
         <h4>What if I have custom needs?</h4>
         <p class="mb-5">
-            Contact us in the support area and let's organize a meeting. We can adapt the service to our
+            Contact us in the sales form and let's organize a meeting. We can adapt the service to our
             customers' needs.
         </p>
 

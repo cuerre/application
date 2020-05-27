@@ -43,7 +43,7 @@ class SupportRequest extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('support@cuerre.com') 
+        return $this->from('noreply@cuerre.com') 
                     ->markdown('emails.support.request');
     }
 }
