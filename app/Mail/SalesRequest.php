@@ -59,7 +59,7 @@ class SalesRequest extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('noreply@cuerre.com') 
+        return $this->from(config('mail.from.address')) 
                     ->markdown('emails.sales.request');
     }
 }
