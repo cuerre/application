@@ -172,7 +172,7 @@
                     {{ __('Need more or have custom needs? Need to bill by year?') }}
                 </p>
                 <x-link-button
-                    content="CONTACT US"
+                    content="CONTACT SALES"
                     :link="url('sales')" 
                     color="outline-light">
                 </x-link-button>

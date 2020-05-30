@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Payment;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ExpressCheckoutController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
@@ -63,10 +62,7 @@ class PaymentController extends Controller
                      ->withErrors($validator);
             }
 
-            # Generate a random ID
-            //$invoideId = mt_rand(); //Str::random(20);
-
-
+            # Go to get an authorization
             $this->checkout->SetItem([
                 'name'  => 'Credits package', 
                 'price' => $request->input('credits'), 

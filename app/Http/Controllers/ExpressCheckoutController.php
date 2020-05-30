@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Exception\ExpressCheckoutException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Srmklive\PayPal\Services\ExpressCheckout;
@@ -271,14 +271,12 @@ class ExpressCheckoutController extends Controller
             }
 
             # Go to payment
-            return redirect()->away($response['paypal_link']);
+            return redirect()->away($response['paypal_link'])->send();
 
         } catch ( ExpressCheckoutException $e ){
             Log::error( $e );
 
             # Payment error, go to safe callback
-            //return dd($response); //redirect();
-            //return dd('fallaste wey:' . $e->getMessage()); //redirect();
         }
     }
 

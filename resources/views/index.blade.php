@@ -50,7 +50,7 @@
                                     :content="__('Contact Sales')"
                                     size="lg"
                                     color="outline-primary"
-                                    :link="url('contact')">
+                                    :link="url('sales')">
                                 </x-link-button>   
                             </div>
 

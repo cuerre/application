@@ -1,17 +1,7 @@
 <?php
 
-//use App\User;
-//use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Route;
-//use Illuminate\Http\File;
-//use Illuminate\Support\Facades\Storage;
-//use App\Http\Controllers\EncodingController;
-//use App\Http\Controllers\DecodingController;
-//use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Cache;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,14 +12,6 @@ use Illuminate\Support\Facades\Cache;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
-/*
-Route::middleware(['cerbero'])->group(function () {
-    Route::get('/trot', function () {
-        // Uses first & second Middleware
-        return dd('hola');
-    });
-});
 */
 Route::get('/test', function (Request $request) {
 
