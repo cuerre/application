@@ -12,7 +12,8 @@ RUN apt-get install -y -qq --force-yes \
 	php7.3-zip \
 	zbar-tools \ 
 	qrencode \ 
-	cron \
+	cron \ 
+	php-curl \ 
 	--no-install-recommends > /dev/null
 
 # Creating a temporary folder for our app
