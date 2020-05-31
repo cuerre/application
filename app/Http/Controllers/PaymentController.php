@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
-use App\Http\Controllers\ExpressCheckoutController;
+use App\Http\Controllers\MolliePaymentController;
+use App\Exceptions\PaymentException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -13,27 +14,30 @@ use Illuminate\Support\Facades\Log;
 class PaymentController extends Controller
 {
     /**
-     * CheckoutController instance
+     * MolliePaymentController instance
      * 
-     * @var CheckoutController
+     * @var MolliePaymentController
      */
-    private $checkout;
+    private $payment;
 
 
 
     /**
+     * Create a new payment 
+     * or try to retrieve the url's one
+     * if present
      * 
-     * 
+     * @param Illuminate\Http\Request $request
      */
     function __Construct( Request $request )
     {
         # Generate Paypal instance (express checkout)
-        if ( $request->has('transaction') ){
-            $this->checkout = new ExpressCheckoutController(
-                $request->input('transaction')
+        if ( $request->has('payment') ){
+            $this->payment = new MolliePaymentController(
+                $request->input('payment')
             );
         }else{
-            $this->checkout = new ExpressCheckoutController();
+            $this->payment = new MolliePaymentController();
         }
     }
 
@@ -41,7 +45,7 @@ class PaymentController extends Controller
 
     /**
      * Recieves an amount of credits as input and 
-     * goes to PayPal to finish transaction
+     * goes to Mollie to finish payment
      * 
      * @param   Request  $request
      * @return  RedirectResponse
@@ -62,17 +66,14 @@ class PaymentController extends Controller
                      ->withErrors($validator);
             }
 
-            # Go to get an authorization
-            $this->checkout->SetItem([
-                'name'  => 'Credits package', 
-                'price' => $request->input('credits'), 
-                'desc'  => 'Package of credits for using ' . config('app.name'), 
-                'qty'   => 1
-            ])->GetPaymentAuthorization();
+            # Go to do the payment
+            $this->payment
+                 ->SetTotal( $request->input('credits') )
+                 ->GetPayment();
 
         } catch ( PaymentException $e ) {
 
-            Log::error( $e->getMessage() );
+            Log::error( $e );
 
             # Go to billing page
             return redirect()
@@ -86,31 +87,19 @@ class PaymentController extends Controller
 
 
     /**
-     * Just redirect the user with
-     * a message 
+     * This is 
      * 
+     * @param   Request $request
      * @return  RedirectResponse
      */
-    public function Cancel()
+    public function Webhook( Request $request )
     {
         try {
-            return redirect()
-                 ->route('dashboard.billing')
-                 ->with([
-                     'message' => __('Sorry, your payment was cancelled')
-                 ]);
 
-        } catch ( PaymentException $e ) {
-
+        } catch ( PaymentException $e ){
             Log::error( $e );
-            return redirect()
-                 ->route('dashboard.billing')
-                 ->with([
-                     'message' => __('Imposible to go to payment page')
-                 ]);
         }
     }
-
 
 
     /**
@@ -120,76 +109,45 @@ class PaymentController extends Controller
      * @param   Request $request
      * @return  RedirectResponse
      */
-    public function Success( Request $request )
+    public function Callback( Request $request )
     {
         try {
-            # Check token existance
-            if( !$request->has('token') ){
+
+            # Get payment details
+            $payment = $this->payment->GetPaymentDetails();
+
+            # Check if we have details
+            if ( is_null($payment) ){
                 throw new PaymentException (
-                    'TOKEN field was not found in response'
+                    'Could not get the payment details'
                 );
             }
 
-            # Get the transaction details
-            $response = $this->checkout->GetPaymentDetails($request->token);
-
-            # Convert response into a collection
-            $response = collect($response);
-    
-            # Check if ACK field is present
-            if( !$response->has('ACK') ){
+            # Check if credits were paid
+            if ( !$payment->isPaid() ){
                 throw new PaymentException (
-                    'ACK field was not found in response'
-                );
-            }
-
-            # Check if payment failed
-            $ack = strtoupper($response['ACK']);
-            if ( !in_array($ack, ['SUCCESS', 'SUCCESSWITHWARNING']) ) {
-                throw new PaymentException (
-                    'ACK field is not "SUCCESS" or "SUCCESSWITHWARNING"'
-                );
-            }
-
-            # Check if TOKEN and PAYERID fields are present
-            if( !$response->has('TOKEN') || !$response->has('PAYERID')){
-                throw new PaymentException (
-                    'TOKEN or PAYERID field was not found in response'
-                );
-            }
-
-            # Execute the real payment
-            $paymentResult = $this->checkout->ExecutePayment( 
-                $response['TOKEN'], 
-                $response['PAYERID'] 
-            );
-
-            # Check if payment was done
-            if ( empty($paymentResult) ){
-                throw new PaymentException (
-                    'Payment was not executed and failed'
+                    'Credits are not paid'
                 );
             }
 
             # Join all information
             $paymentData = [
-                'details' => $response->toArray(),
-                'result'  => $paymentResult 
+                'result'  => collect($payment)->toArray()
             ];
     
             # Store the transaction into DB
-            $payment           = new Payment;
-            $payment->user_id  = Auth::id();
-            $payment->data     = $paymentData;
+            $newPayment           = new Payment;
+            $newPayment->user_id  = Auth::id();
+            $newPayment->data     = $paymentData;
             
-            if( !$payment->save() ){
+            if( !$newPayment->save() ){
                 throw new PaymentException (
                     'Payment not saved into database'
                 );
             }
 
             # Sum the credits to the user
-            Auth::user()->SumCredits($response['AMT']);
+            Auth::user()->SumCredits($payment->amount->value);
 
             # Go to billing index
             return redirect()

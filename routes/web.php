@@ -168,9 +168,9 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
         Route::post('payment', 'PaymentController@Payment')->name('payment');
 
-        Route::get('payment/cancel', 'PaymentController@cancel')->name('payment.cancel');
+        Route::get('payment/callback', 'PaymentController@Callback')->name('payment.callback');
 
-        Route::get('payment/success', 'PaymentController@Success')->name('payment.success');
+        Route::get('payment/webhook', 'PaymentController@Webhook')->name('payment.webhook');
     });
     
     Route::get('/support', function () {
