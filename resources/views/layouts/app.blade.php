@@ -95,6 +95,7 @@
     
     <!-- Scripts -->
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    @include('cookieConsent::index')
     
     {{-- On production: npm run dev | npm run production --}}
     <script src="{{ asset('js/app.js') }}"></script>
@@ -109,6 +110,6 @@
 
         @stack('scripts')
     </script>
-    
+
 </body>
 </html>
