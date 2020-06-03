@@ -1,0 +1,54 @@
+version: '1.0'
+stages:
+  - approval
+  - clonning
+  - building
+  - testing
+  - pushing
+steps:
+  # Approval stage
+  Approve:
+    stage: approval
+    title: Wait for approval
+    type: pending-approval
+
+  # Repository clonning stage
+  Clone:
+    stage: clonning
+    title: Clonning repository
+    type: git-clone
+    fail_fast: false
+    arguments:
+      # git: gitlab
+      repo: alojamiento-alby/application
+      #revision: master
+      revision: master
+
+  # Building stage
+  Build:
+    stage: building
+    title: Building docker image
+    type: build
+    working_directory: '${{Clone}}'
+    arguments:
+      dockerfile: Dockerfile
+      image_name: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
+      tag: '${{CF_BUILD_ID}}-${{CF_BUILD_TIMESTAMP}}'
+
+
+  # Testing stage (future feature)
+
+  # Pushing stage (to DockerHub)
+  Push:
+    stage: pushing
+    type: push
+    arguments:
+      candidate: '${{Build}}'
+      tags: 
+      - latest
+      - '${{CF_BUILD_ID}}-${{CF_BUILD_TIMESTAMP}}'
+      image_name: alojamiento-alby/application
+      registry: gitlab
+
+
+
