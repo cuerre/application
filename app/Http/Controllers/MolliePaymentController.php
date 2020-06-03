@@ -61,7 +61,7 @@ class MolliePaymentController extends Controller
         try{
             # Init and store the payment provider
             $this->mollie = new MollieApiClient;
-            $this->mollie->setApiKey("test_FQnhF3fTQKgUw6JbN9JxpqSr9bGD9n");
+            $this->mollie->setApiKey(config('mollie.apikey'));
 
             # Define $checkoutData attribute as array
             $this->paymentData = [];

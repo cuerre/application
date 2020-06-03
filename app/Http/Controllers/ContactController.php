@@ -42,8 +42,8 @@ class ContactController extends Controller
         $this->to['sales']   = 'sales@cuerre.com';
         $this->to['support'] = 'support@cuerre.com';
 
-        $this->recaptcha['secret'] = '6Ldx_fwUAAAAAKiru101v3-oOQzQuh2ku_egodPe';
-        $this->recaptcha['public'] = '6Ldx_fwUAAAAAEzAKkjJE1slKqJI0ImcORaBCtq2';
+        $this->recaptcha['secret'] = config('recaptcha.secret');
+        $this->recaptcha['public'] = config('recaptcha.public');
     }
 
 
@@ -181,7 +181,7 @@ class ContactController extends Controller
                 ),
             );
             $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
+            $result   = file_get_contents($url, false, $context);
 
             if( is_null(json_decode($result, true)) ){
                 return false;

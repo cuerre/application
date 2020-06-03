@@ -18,7 +18,6 @@
         "laravel/ui": "^2.0",
         "mollie/mollie-api-php": "^2.0",
         "spatie/laravel-cookie-consent": "^2.12",
-        "srmklive/paypal": "^1.7",
         "symfony/process": "^5.0"
     },
     "require-dev": {
