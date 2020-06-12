@@ -44,6 +44,9 @@ RUN apt-get install -y -qq --force-yes \
 	zip \ 
 	unzip \ 
 	php7.3-zip \
+	php7.3-dev \ 
+	g++ \ 
+	make \ 
 	--no-install-recommends > /dev/null
 
 # Creating a temporary folder for our app
