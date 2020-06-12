@@ -1,19 +1,49 @@
-FROM achetronic/laravel-php:latest
+# Reference: https://laravel-news.com/laravel-swoole
+# Reference: https://github.com/swooletw/laravel-swoole
+# Reference: (Laravel-Swoole alternative) https://github.com/hhxsv5/laravel-s
+
+#FROM achetronic/laravel-php:latest
+FROM debian:buster-slim
 
 
 
 #### LARAVEL OPERATIONS
-# Installing system temporary packages
+RUN apt-get update
+
+# Installing system packages
+RUN apt-get install -y -qq --force-yes \
+	nano \
+    lsb-base \
+	php7.3-cgi \
+	--no-install-recommends > /dev/null
+
+# Installing packages for Laravel
+RUN apt-get install -y -qq --force-yes \
+    php7.3-bcmath \
+    php7.3-json \
+    php7.3-mbstring \
+    php7.3-tokenizer \
+    php7.3-xml \
+    php7.3-mysql \
+    php-redis \
+	--no-install-recommends > /dev/null
+
+# Installing packages for our application
+RUN apt-get install -y -qq --force-yes \
+	php-pear \
+	php-curl \ 
+	zbar-tools \ 
+	qrencode \ 
+	cron \ 
+	--no-install-recommends > /dev/null
+	
+# Installing temporary packages
 RUN apt-get install -y -qq --force-yes \
 	composer \ 
 	git \ 
 	zip \ 
 	unzip \ 
 	php7.3-zip \
-	zbar-tools \ 
-	qrencode \ 
-	cron \ 
-	php-curl \ 
 	--no-install-recommends > /dev/null
 
 # Creating a temporary folder for our app
