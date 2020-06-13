@@ -49,6 +49,9 @@ RUN apt-get install -y -qq --force-yes \
 	make \ 
 	--no-install-recommends > /dev/null
 
+# Compiling the Swoole PHP extension
+RUN yes '' | pecl install swoole
+
 # Creating a temporary folder for our app
 RUN mkdir -p /tmp/laravel
 
