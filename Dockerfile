@@ -51,6 +51,7 @@ RUN apt-get install -y -qq --force-yes \
 
 # Compiling the Swoole PHP extension
 RUN yes | pecl install swoole
+RUN echo "extension=swoole.so" >> /etc/php/7.3/cli/php.ini
 
 # Creating a temporary folder for our app
 RUN mkdir -p /tmp/laravel
@@ -110,6 +111,7 @@ RUN echo "mkdir -p /var/www/" >> /init.sh
 RUN echo "mv /app/* /var/www/" >> /init.sh
 RUN echo "(crontab -l; echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1';) | crontab -" >> /init.sh
 RUN echo "php /var/www/artisan config:cache" >> /init.sh
+RUN echo "php /var/www/artisan swoole:http start" >> /init.sh
 RUN echo "/bin/bash" >> /init.sh
 RUN chown root:root /init.sh
 RUN chmod +x /init.sh
