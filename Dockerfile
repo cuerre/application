@@ -30,7 +30,6 @@ RUN apt-get install -y -qq --force-yes \
 
 # Installing packages for our application
 RUN apt-get install -y -qq --force-yes \
-	php-pear \
 	php-curl \ 
 	zbar-tools \ 
 	qrencode \ 
@@ -45,6 +44,7 @@ RUN apt-get install -y -qq --force-yes \
 	unzip \ 
 	php7.3-zip \
 	php7.3-dev \ 
+	php-pear \
 	g++ \ 
 	make \ 
 	--no-install-recommends > /dev/null
@@ -76,7 +76,17 @@ RUN touch /app/.env
 RUN cd /app && composer dump-autoload
 
 # Deleting system temporary packages
-RUN apt-get purge -y -qq --force-yes composer git zip unzip php7.3-zip > /dev/null
+RUN apt-get purge -y -qq --force-yes \
+	composer \ 
+	git \ 
+	zip \ 
+	unzip \ 
+	php7.3-zip \
+	php7.3-dev \ 
+	php-pear \
+	g++ \ 
+	make \ 
+	> /dev/null
 
 # Cleaning the system
 RUN apt-get -y -qq --force-yes autoremove > /dev/null
