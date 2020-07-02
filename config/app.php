@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        SwooleTW\Http\LaravelServiceProvider::class,
         
         //
 

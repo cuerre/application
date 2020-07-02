@@ -1,9 +1,11 @@
-# Reference: https://laravel-news.com/laravel-swoole
-# Reference: https://github.com/swooletw/laravel-swoole
-# Reference: (Laravel-Swoole alternative) https://github.com/hhxsv5/laravel-s
-
-#FROM achetronic/laravel-php:latest
 FROM debian:buster-slim
+
+
+
+#### DEFINING VARS
+ARG php_version=7.3
+ARG php_fpm_path="/etc/php/${php_version}/fpm/"
+ARG php_fpm_pool_path="/etc/php/${php_version}/fpm/pool.d/"
 
 
 
@@ -12,19 +14,19 @@ RUN apt-get update
 
 # Installing system packages
 RUN apt-get install -y -qq --force-yes \
-	nano \
+    nano \
     lsb-base \
-	php7.3-cgi \
-	--no-install-recommends > /dev/null
+    php${php_version}-fpm \
+        --no-install-recommends > /dev/null
 
 # Installing packages for Laravel
 RUN apt-get install -y -qq --force-yes \
-    php7.3-bcmath \
-    php7.3-json \
-    php7.3-mbstring \
-    php7.3-tokenizer \
-    php7.3-xml \
-    php7.3-mysql \
+    php${php_version}-bcmath \
+    php${php_version}-json \
+    php${php_version}-mbstring \
+    php${php_version}-tokenizer \
+    php${php_version}-xml \
+    php${php_version}-mysql \
     php-redis \
 	--no-install-recommends > /dev/null
 
@@ -42,17 +44,25 @@ RUN apt-get install -y -qq --force-yes \
 	git \ 
 	zip \ 
 	unzip \ 
-	php7.3-zip \
-	php7.3-dev \ 
-	php-pear \
-	g++ \ 
-	make \ 
+	php${php_version}-zip \
 	--no-install-recommends > /dev/null
+	
 
-# Compiling the Swoole PHP extension
-RUN yes | pecl install swoole
-RUN echo "extension=swoole.so" >> /etc/php/7.3/cli/php.ini
 
+#### CONFIGURING PHP-FPM
+# CONFIGURING POOL
+COPY .build/www.conf ${php_fpm_pool_path}/www.conf
+RUN chown root:root ${php_fpm_pool_path}/www.conf
+RUN chmod 644 ${php_fpm_pool_path}/www.conf
+
+# CONFIGURING BASE
+COPY .build/php.ini ${php_fpm_path}/php.ini
+RUN chown root:root ${php_fpm_path}/php.ini
+RUN chmod 644 ${php_fpm_path}/php.ini
+
+
+
+####
 # Creating a temporary folder for our app
 RUN mkdir -p /tmp/laravel
 
@@ -85,11 +95,7 @@ RUN apt-get purge -y -qq --force-yes \
 	git \ 
 	zip \ 
 	unzip \ 
-	php7.3-zip \
-	php7.3-dev \ 
-	php-pear \
-	g++ \ 
-	make \ 
+	php${php_version}-zip \
 	> /dev/null
 
 # Cleaning the system
@@ -105,13 +111,12 @@ RUN find /app -type d -exec chmod 755 {} \;
 #### FINAL OPERATIONS
 RUN rm -rf /init.sh && touch /init.sh
 RUN echo "#!/bin/bash" >> /init.sh
-RUN echo "service php7.3-fpm start" >> /init.sh
+RUN echo "service php${php_version}-fpm start" >> /init.sh
 RUN echo "shopt -s dotglob" >> /init.sh
 RUN echo "mkdir -p /var/www/" >> /init.sh
 RUN echo "mv /app/* /var/www/" >> /init.sh
 RUN echo "(crontab -l; echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1';) | crontab -" >> /init.sh
 RUN echo "php /var/www/artisan config:cache" >> /init.sh
-RUN echo "php /var/www/artisan swoole:http start" >> /init.sh
 RUN echo "/bin/bash" >> /init.sh
 RUN chown root:root /init.sh
 RUN chmod +x /init.sh
