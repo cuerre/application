@@ -2,8 +2,18 @@
 
 namespace App;
 
+use App\Exceptions\CodeException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Code model
+ * 
+ * Methods:
+ * $this->enable() : bool
+ * $this->unable() : bool
+ * 
+ */
 class Code extends Model
 {
     /**
@@ -34,15 +44,25 @@ class Code extends Model
     /**
      * Set 'active' state to false
      *
-     * @return Bool
+     * @return bool
      */
-    public function Unable ()
+    public function unable ()
     {
-        $this->active = false;
-        if( !$this->save() ){
+        try{
+            if( is_null($this) ){
+                return false;
+            }
+
+            $this->active = false;
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( CodeException $e ){
+            Log::error($e);
             return false;
         }
-        return true;
     }
 
 
@@ -50,14 +70,24 @@ class Code extends Model
     /**
      * Set 'active' state to true
      *
-     * @return Bool
+     * @return bool
      */
-    public function Enable ()
+    public function enable ()
     {
-        $this->active = true;
-        if( !$this->save() ){
+        try{
+            if( is_null($this) ){
+                return false;
+            }
+
+            $this->active = true;
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( CodeException $e ){
+            Log::error($e);
             return false;
         }
-        return true;
     }
 }

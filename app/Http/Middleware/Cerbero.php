@@ -10,6 +10,16 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * This middleware check for the abilities of a token
+ * before allowwing to enter: It can check one of several ones.
+ * Moreover, this middleware take data from the DB and store
+ * them into the cache to count the requests per hour
+ * 
+ * How to use:
+ * Route::middleware(['cerbero:ability|another'])->group(function () { });
+ * 
+ */
 class Cerbero 
 {
     /**
@@ -97,7 +107,7 @@ class Cerbero
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, string $abilities = null)
     {
         try {
 
@@ -107,6 +117,11 @@ class Cerbero
                     'status'  => 'error',
                     'message' => 'apikey is missing'
                 ], 400);
+            }
+
+            # Check if allowed by abilities
+            if( !$this->CheckAbilities($abilities) ){
+                throw new CerberoException ('this token is now allowed here');
             }
 
             # Dump data from database to cache
@@ -173,6 +188,49 @@ class Cerbero
 
         } catch ( CerberoException $e ){
             Log::error( $e );
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Check defined ability into database
+     * 
+     * @param string $abilities
+     * @return bool
+     */
+    public function CheckAbilities( string $abilities = null )
+    {
+        try{
+
+            # Empty abilities means you can enter
+            if( empty($abilities) ){
+                return true;
+            }
+
+            # Take the token from db
+            $token = Token::where('token', $this->apikey)
+                          ->where('active', 1)
+                          ->first();
+
+            # Check if we could get token
+            if( is_null($token) )
+                return false;
+
+            # Check abilities step by step
+            $abilities = explode('|', $abilities );
+            foreach( $abilities as $ability ){
+                if( !$token->can($ability) ){
+                    continue;
+                }
+                return true;
+            }
+
+            return false;
+
+        }catch( CerberoException $e ){
+            Log::error($e);
             return false;
         }
     }

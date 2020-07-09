@@ -2,10 +2,23 @@
 
 namespace App;
 
+use App\Exceptions\TokenException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Token model
+ * 
+ * Methods:
+ * $this->can($ability) : bool
+ * $this->setAbility($ability) : bool
+ * $this->removeAbility($ability) : bool
+ * $this->enable() : bool
+ * $this->unable() : bool
+ * $this->setLimit($limit) : bool
+ * self::exists($token) : bool
+ * 
+ */
 class Token extends Model
 {      
     /**
@@ -38,14 +51,105 @@ class Token extends Model
     /**
      * Check an ability
      *
-     * @return Bool
+     * @param string $ability
+     * @return bool
      */
-    public function Can ( string $ability )
+    public function can ( string $ability = null )
     {
-        if( is_null($this) ){
+        try{
+
+            if( is_null($this) ){
+                return false;
+            }
+
+            $abilities = collect($this->abilities);
+            $result = $abilities->values()->search($ability);
+
+            if( $result === false ){
+                return false;
+            }
+
+            return true;
+
+        }catch( TokenException $e ){
+            Log::error($e);
             return false;
         }
-        return Arr::has($this->abilities, $ability);
+    }
+
+
+
+    /**
+     * Set an ability
+     * into a token
+     *
+     * @param string $ability
+     * @return bool
+     */
+    public function setAbility ( string $ability ) : bool
+    {
+        try{
+
+            if( is_null($this) ){
+                return false;
+            }
+
+            if( $this->can($ability) ){
+                return true;
+            }
+
+            $abilities = collect($this->abilities);
+            $abilities->push($ability);
+
+            $this->abilities = $abilities->toArray();
+
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( TokenException $e ){
+            Log::error($e);
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Remove an ability
+     *
+     * @param string $ability
+     * @return bool
+     */
+    public function removeAbility ( string $ability ) : bool
+    {
+        try{
+
+            if( is_null($this) ){
+                return false;
+            }
+
+            if( $this->can($ability) ){
+                return true;
+            }
+
+            $abilities = collect($this->abilities);
+            $abilities = $abilities->filter(function ($value, $key) use($ability){
+                return $value != $ability;
+            })->values();
+            
+            $this->abilities = $abilities->toArray();
+
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( TokenException $e ){
+            Log::error($e);
+            return false;
+        }
     }
 
 
@@ -53,15 +157,25 @@ class Token extends Model
     /**
      * Set 'active' state to false
      *
-     * @return Bool
+     * @return bool
      */
-    public function Unable ()
+    public function unable ()
     {
-        $this->active = false;
-        if( !$this->save() ){
+        try{
+            if( is_null($this) ){
+                return false;
+            }
+
+            $this->active = false;
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( TokenException $e ){
+            Log::error($e);
             return false;
         }
-        return true;
     }
 
 
@@ -69,56 +183,76 @@ class Token extends Model
     /**
      * Set 'active' state to true
      *
-     * @return Bool
+     * @return bool
      */
-    public function Enable ()
+    public function enable ()
     {
-        $this->active = true;
-        if( !$this->save() ){
+        try{
+            if( is_null($this) ){
+                return false;
+            }
+
+            $this->active = true;
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( TokenException $e ){
+            Log::error($e);
             return false;
         }
-        return true;
     }
-
-
-
-    /**
-     * Set an ability
-     *
-     * @return Bool
-     */
-
-
-
-    /**
-     * Remove an ability
-     *
-     * @return Bool
-     */
 
 
 
     /**
      * Set new rate limit
      *
-     * @return Bool
+     * @param int $limit
+     * @return bool
      */
+    public function setLimit ( int $limit ) : bool
+    {
+        try{
+            if( is_null($this) ){
+                return false;
+            }
 
+            $this->rate_limit = abs($limit);
+            if( !$this->save() ){
+                return false;
+            }
+            return true;
+
+        }catch( TokenException $e ){
+            Log::error($e);
+            return false;
+        }
+    }
+    
 
 
     /**
      * Check if a token
      * exists
      *
-     * @return Bool
+     * @param string $token
+     * @return bool
      */
-    public static function Exists ( string $token )
+    public static function exists ( string $token )
     {
-        $token = self::where('token', $token)->first();
+        try{
+            $token = self::where('token', $token)->first();
 
-        if ( is_null($token) )
+            if ( is_null($token) )
+                return false;
+
+            return true;
+        }catch( TokenException $e ){
+            Log::error($e);
             return false;
-
-        return true;
+        }
+        
     }
 }
