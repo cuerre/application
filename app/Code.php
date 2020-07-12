@@ -42,6 +42,21 @@ class Code extends Model
 
 
     /**
+     * The allowed targets 
+     * to send traffic to
+     * 
+     * @var const array
+     */
+    const ALLOWED_TARGETS = [
+        'any',
+        'ios',
+        'android',
+        'win10'
+    ];
+
+
+
+    /**
      * Set 'active' state to false
      *
      * @return bool

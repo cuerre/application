@@ -21,16 +21,16 @@ use App\Http\Controllers\StatsController;
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Example usage:
- * CodesController::GetAll()
- * CodesController::GetOne( int )
- * CodesController::UpdateOrCreateOne( Request )
- * CodesController::GetEmbededImage( int )
- * CodesController::GetImageDownload( Request )
- * CodesController::SwitchOne( int )
- * CodesController::ViewIndex()
- * CodesController::ViewCreation()
- * CodesController::ViewModification( Request )
- * CodesController::ViewStats( Request )
+ * self::GetAll()
+ * self::GetOne( int )
+ * self::UpdateOrCreateOne( Request )
+ * self::GetEmbededImage( int )
+ * self::GetImageDownload( Request )
+ * self::SwitchOne( int )
+ * self::ViewIndex()
+ * self::ViewCreation()
+ * self::ViewModification( Request )
+ * self::ViewStats( Request )
  * 
  * @package Cuerre
  * @author Alby Hernández
@@ -40,6 +40,138 @@ use App\Http\Controllers\StatsController;
  */
 class CodesController extends Controller
 {
+    /**
+    * Delete a Code from the system
+    *
+    * @return bool
+    */
+    public static function DeleteOne( int $id ) : bool
+    {
+        try {
+            # Get the code model from DB
+            $code = Code::find($id);
+
+            if ( empty($code) ){
+                throw new CodeException('code not found');
+            }
+
+            if( !$code->delete() ){
+                throw new CodeException('not possible to delete the code');
+            }
+           
+            return true;
+            
+        } catch ( Exception $e ){
+            Log::error($e);
+            return false;
+        }
+    }
+
+
+
+    /**
+    * Update a Code into the system
+    *
+    * @return Model|null
+    */
+    public static function UpdateOrCreateOne( array $fields )
+    {
+        try {
+
+            # Check the input fields
+            $validator = Validator::make($fields, [
+                'id' => [
+                    'sometimes',
+                    'required', 
+                    'integer', 
+                ],
+                'name' => [
+                    'sometimes', 
+                    'required',
+                    'filled',
+                    'string'
+                ],
+                'targets' => [
+                    'sometimes', 
+                    'required',
+                    'filled',
+                ],
+                'targets.any' => [
+                    'required_with:targets'
+                ],
+                'targets.*' => [
+                    'string',
+                    'url'
+                ],
+                'active' => [
+                    'sometimes', 
+                    'required',
+                    'bool'
+                ],
+            ]);
+
+            if ( $validator->fails() ) {
+                throw new CodeException($validator->errors()->first());
+            }
+
+            # Turn it into collection for having some methods
+            $fields = collect($fields)->recursive();
+
+            # Get the model from DB
+            if( $fields->has('id') ){
+                $code = Code::find($fields['id']);
+                if ( empty($code) ){
+                    throw new CodeException('Code not found');
+                }
+            }else{
+                $code = new Code;
+            }
+
+            # Set new values
+            if( $fields->has('user_id') ){
+                $code->user_id = $fields['user_id'];
+            }
+
+            if( $fields->has('active') ){
+                $code->active = $fields['active'];
+            }
+
+            if( $fields->has('name') ){
+                $code->name = $fields['name'];
+            }
+
+            # Check allowed targets
+            if( $fields->has('targets') ){
+                $newTargets = collect([]);
+                foreach ( $fields['targets'] as $key => $target ){
+                    if( !in_array($key, Code::ALLOWED_TARGETS) ){
+                        throw new CodeException('The targets.'.$key.' field is not allowed');
+                    }
+
+                    $newTargets->push([
+                        'url'    => $target,
+                        'system' => $key
+                    ]);
+                }  
+                $data = $code->data;
+                $data['targets'] = $newTargets->toArray();
+                $code->data = $data;
+            }
+
+            if( !$code->save() ){
+                throw new CodeException('Impossible to update the code');
+            }
+           
+            return $code;
+            
+        } catch ( Exception $e ){
+            Log::error($e);
+            return null;
+        }
+    }
+
+
+
     /**
     * Get all QR codes for signed in
     * user as a Laravel collection
@@ -246,6 +378,7 @@ class CodesController extends Controller
     * @param  Illuminate\Http\Request
     * @return Illuminate\Http\RedirectResponse
     */
+    /*
     public static function UpdateOrCreateOne( Request $request )
     {
         try{
@@ -330,6 +463,7 @@ class CodesController extends Controller
                     ]);
         }
     }
+    */
 
 
 
@@ -339,6 +473,7 @@ class CodesController extends Controller
     * @param  Illuminate\Http\Request
     * @return \Illuminate\Http\RedirectResponse
     */
+    /*
     public static function DeleteOne( Request $request )
     {
         try{
@@ -371,6 +506,7 @@ class CodesController extends Controller
                     ]);
         }
     }
+    */
 
 
 

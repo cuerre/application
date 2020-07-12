@@ -13,6 +13,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+# Version 1
+Route::prefix('v1')->group(function () {
+
+    Route::get('/echo', function(){
+        return 'echo';
+    });
+
+    # This group will handle masive encoding requests
+    Route::middleware(['cerbero:manage_encoders'])->group(function () {
+
+        Route::match(['get', 'post'], '/encode', 'ApiV1Controller@EncodeString');
+
+        Route::post('/decode', 'ApiV1Controller@DecodeFile');
+    });
+
+    # This group will handle stat codes request
+    Route::middleware(['cerbero:manage_redirections'])->group(function () {
+
+        Route::post('/code', 'ApiV1Controller@PostCode');
+
+        Route::put('/code', 'ApiV1Controller@PutCode');
+
+        Route::delete('/code', 'ApiV1Controller@DeleteCode');
+    });
+
+});
+
+
+
+/*
 Route::middleware(['cerbero'])->group(function () {
 
     # Version 1
@@ -38,6 +68,7 @@ Route::middleware(['cerbero'])->group(function () {
 
 });
 
+*/
 
 
 Route::any('/{any}', function () {
