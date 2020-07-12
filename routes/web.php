@@ -80,6 +80,18 @@ Route::prefix('documentation')->group(function () {
             Route::get('/decode', function () {
                 return view('modules.documentation.api.v1.decode');
             });
+
+            Route::get('/getcode', function () {
+                return view('modules.documentation.api.v1.getcode');
+            });
+
+            Route::get('/postcode', function () {
+                return view('modules.documentation.api.v1.postcode');
+            });
+
+            Route::get('/putcode', function () {
+                return view('modules.documentation.api.v1.putcode');
+            });
         });
     });
 

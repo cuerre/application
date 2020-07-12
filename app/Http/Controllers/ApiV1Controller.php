@@ -274,13 +274,11 @@ class ApiV1Controller extends Controller
             # Check the input fields
             $validator = Validator::make($request->all(), [
                 'name' => [
-                    'sometimes', 
                     'required',
                     'filled',
                     'string'
                 ],
                 'targets' => [
-                    'sometimes', 
                     'required',
                     'filled',
                 ],
@@ -290,13 +288,7 @@ class ApiV1Controller extends Controller
                 'targets.*' => [
                     'string',
                     'url'
-                ],
-                'active' => [
-                    'sometimes', 
-                    'required',
-                    'bool'
-                ],
-                
+                ]
             ]);
     
             if ( $validator->fails() ) {
