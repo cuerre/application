@@ -21,11 +21,11 @@ use App\Http\Controllers\StatsController;
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Example usage:
- * self::DeleteOne( int $id )
- * self::UpdateOrCreateOne( array $fields )
+ * self::DeleteOne( int $id ) : bool
+ * self::UpdateOrCreateOne( array $fields ) : Model|null
+ * self::GetOne( int ) : Illuminate\Support\Collection
  * 
  * self::GetAll()
- * self::GetOne( int )
  * self::GetEmbededImage( int )
  * self::GetImageDownload( Request )
  * self::SwitchOne( int )
@@ -43,7 +43,7 @@ use App\Http\Controllers\StatsController;
 class CodesController extends Controller
 {
     /**
-    * Delete a Code from the system
+    * Delete a code from the system
     *
     * @param int $id
     * @return bool
@@ -70,11 +70,9 @@ class CodesController extends Controller
         }
     }
 
-
-
     /**
     * Update or create a 
-    * Code into the system
+    * code into the system
     *
     * @param array $fields
     * @return Model|null
@@ -154,7 +152,66 @@ class CodesController extends Controller
         }
     }
 
+    /**
+    * Get a code from the system
+    * and return all information 
+    * about it
+    *
+    * @param int $id
+    * @return Illuminate\Support\Collection  
+    */
+    public static function GetOne( int $id )
+    {
+        try {
+            
+            # Get the code model from DB
+            $code = Code::find($id);
 
+            if ( empty($code) ){
+                throw new CodeException('code not found');
+            }
+
+            # Set a placeholder for the response
+            $data = collect([]);
+
+            # Push the id into response
+            $data->put('id', $code->id);
+
+            # Push the name into response
+            $data->put('name', $code->name);
+
+            # Check targets
+            if( empty($code->data['targets']) ){
+                throw new CodeException('code not found');
+            }
+
+            # Put the targets into response
+            $targets = [];
+            foreach($code->data['targets'] as $key => $target){
+                $targets[$target['system']] = $target['url'];
+            }
+            $data->put('targets', $targets);
+
+            # Put the stats into response
+            $stats = new StatsController($id);
+            $data->put('stats', [
+                'sample'        => $stats->GetSampleMax(),
+                'platforms'     => $stats->GetPlatforms(),
+                'browsers'      => $stats->GetBrowsers(),
+                'deviceTypes'   => $stats->GetDeviceTypes(),
+                'browserTypes'  => $stats->GetBrowserTypes(),
+                'lastWeek'      => $stats->GetLastWeek(),
+                'lastMonth'     => $stats->GetLastMonth(),
+                'lastYear'      => $stats->GetLastYear(),
+            ]);
+           
+            return $data;
+            
+        } catch ( Exception $e ){
+            Log::error( $e );
+            return collect([]);
+        }
+    }
 
     /**
     * Get all QR codes for signed in
@@ -162,6 +219,7 @@ class CodesController extends Controller
     *
     * @return \Illuminate\Support\Collection  
     */
+    /*
     public static function GetAll()
     {
         try {
@@ -179,35 +237,7 @@ class CodesController extends Controller
             return collect([]);
         }
     }
-
-
-
-    /**
-    * Get one QR code for signed in user
-    *
-    * @param  int  $codeId  The code id into database 
-    * @return  \Illuminate\Support\Collection
     */
-    public static function GetOne( int $codeId )
-    {
-        try {
-            
-            # Retrieve the code
-            $codes = Code::where('user_id', Auth::id())
-                ->where('id', $codeId)
-                ->first();
-            
-            # Convert results to collections
-            return collect( $codes )
-                 ->recursive();
-            
-        } catch ( Exception $e ){
-            Log::error( $e );
-            return collect([]);
-        }
-    }
-
-
 
     /**
     * Get a Base64 representation
@@ -237,8 +267,6 @@ class CodesController extends Controller
             return '';
         }
     }
-
-
 
     /**
     * Force the download a code according
@@ -286,8 +314,6 @@ class CodesController extends Controller
             Log::error( $e );
         }
     }
-
-
 
     /**
      * Set a code as 'active'
@@ -352,147 +378,6 @@ class CodesController extends Controller
                     ]);
         }
     }
-
-
-
-    /**
-    * Update a Code if its 'id' is present 
-    * on the request or create new one
-    *
-    * @param  Illuminate\Http\Request
-    * @return Illuminate\Http\RedirectResponse
-    */
-    /*
-    public static function UpdateOrCreateOne( Request $request )
-    {
-        try{
-            # Retrieve the user
-            $userId = Auth::id();
-            
-            # Check the input fields
-            $validator = Validator::make($request->all(), [
-                'code'    => [
-                    'sometimes',
-                    'required',
-                    'integer', 
-                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
-                        $query->where('user_id', $userId);
-                    })
-                ],
-                'name'    => ['required', 'max:100'],
-                'targets' => ['required', 'array', 'min:1'],
-            ]);
-            
-            if ($validator->fails())
-                throw new CodeException ('Some field is malformed');
-
-            # Convert targets to a collection
-            $targets = collect( $request->input('targets') )->recursive();
-            
-            # Check targets
-            $verifyTargets = $targets->every(function ($value, $key) {
-                if ( !is_int($key) )
-                    return false;
-                    
-                $validator = Validator::make($value->toArray(), [
-                    'system' => ['required', 'alpha_num', 'filled'],
-                    'url' => ['required', 'url', 'filled'],
-                ]);
-                
-                if ( $validator->fails() ){
-                    return false;
-                }
-                return true;
-            });
-            
-            if (!$verifyTargets)
-                throw new CodeException ('Some target is malformed');
-                
-            # Check if 'Any' target is set
-            $verifyAny = $targets->firstWhere('system', 'any');
-            
-            if ( is_null($verifyAny) )
-                throw new CodeException ('You must define, at least, the "Any" target');
-
-            $code = Code::updateOrCreate(
-                [
-                    'id' => $request->input('code'), 
-                    'user_id' => $userId
-                ],
-                [
-                    'name' => $request->input('name'), 
-                    'data->targets' => $targets->toArray()
-                ]
-            );
-
-            # Check if saved successfully
-            if ( !( $code->wasChanged() || $code->wasRecentlyCreated ) )
-                return redirect()
-                        ->back()
-                        ->withErrors([
-                            'message' => __('Sorry, we could not touch the code')
-                        ]);
-
-            # Go to the index
-            return redirect('dashboard/codes');
-            
-        } catch ( CodeException $e ) {
-            Log::error($e);
-            
-            # Go to the form with error bag
-            return redirect()
-                    ->back()
-                    ->withErrors([
-                        'message' => __( $e->getMessage() )
-                    ]);
-        }
-    }
-    */
-
-
-
-    /**
-    * Remove a Code and all associated data
-    *
-    * @param  Illuminate\Http\Request
-    * @return \Illuminate\Http\RedirectResponse
-    */
-    /*
-    public static function DeleteOne( Request $request )
-    {
-        try{
-                
-            # Check input data
-            $validator = Validator::make($request->all(), [
-                'id' => ['required', 'integer', 'exists:codes'],
-            ]);
-            
-            if ($validator->fails())
-                throw new CodeException ('Some field is malformed');
-            
-            # Delete asked code
-            $delete = Code::where('user_id', Auth::id())
-                          ->where('id', $request->input('id'))
-                          ->delete();
-                
-            if (!$delete)
-                throw new CodeException ('We could not delete the code');
-
-            return redirect('dashboard/codes');
-                    
-        } catch ( CodeException $e ) {
-            Log::error( $e );
-            
-            return redirect()
-                    ->back()
-                    ->withErrors([
-                        'message' => __('Impossible to delete your code')
-                    ]);
-        }
-    }
-    */
-
-
 
     /**
     * Show the index view with codes

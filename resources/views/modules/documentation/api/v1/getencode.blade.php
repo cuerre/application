@@ -3,7 +3,7 @@
 
 @section('module')
     <x-card-header
-        title="GET encode"
+        title="GET or POST encode"
         hint="documentation / api · v1">
     </x-card-header>
 

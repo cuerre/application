@@ -2,12 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Exceptions\StatsException;
+use App\StatsExceptions\StatsStatsException;
 use App\StatBrowscap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
+/**
+ * Controller to take several statistics of a QR code
+ * using a sample for avoiding to saturate the system
+ * 
+ * Methods:
+ * $stats = new StatsController($codeId)
+ * $stats->GetSample()       : Illuminate\Support\Collection
+ * $stats->GetSampleMax()    : int
+ * $stats->GetPlatforms()    : Illuminate\Support\Collection
+ * $stats->GetBrowsers()     : Illuminate\Support\Collection
+ * $stats->GetDeviceTypes()  : Illuminate\Support\Collection
+ * $stats->GetBrowserTypes() : Illuminate\Support\Collection
+ * $stats->GetAfterDate(Carbon $date) : Illuminate\Support\Collection
+ * $stats->GetLastWeek()     : Illuminate\Support\Collection
+ * $stats->GetLastMonth()    : Illuminate\Support\Collection
+ * $stats->GetLastYear()     : Illuminate\Support\Collection
+ * 
+ */
 class StatsController extends Controller
 {
     /**
@@ -60,7 +77,7 @@ class StatsController extends Controller
             $this->sample->put('browscap', $browsersSample);
             unset($browsersSample);
             
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error( $e );
             abort(404);
         }
@@ -73,8 +90,22 @@ class StatsController extends Controller
      *
      * @return Illuminate\Support\Collection
      */
-    public function GetSample(){
-    return $this->sample;
+    public function GetSample()
+    {
+        return $this->sample;
+    }
+
+
+
+    /**
+     * Return the quantity of data
+     * into the sample
+     *
+     * @return int
+     */
+    public function GetSampleMax()
+    {
+        return $this->sampleMax;
     }
     
     
@@ -106,7 +137,7 @@ class StatsController extends Controller
             
             return $platforms;
         
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error( $e );
             return collect([]);
         }
@@ -141,7 +172,7 @@ class StatsController extends Controller
             
             return $browsers;
         
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error($e);
             return collect([]);
         }
@@ -176,7 +207,7 @@ class StatsController extends Controller
             
             return $devices;
         
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error($e);
             return collect([]);
         }
@@ -210,7 +241,7 @@ class StatsController extends Controller
             
             return $devices;
         
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error($e);
             return collect([]);
         }
@@ -234,7 +265,7 @@ class StatsController extends Controller
                                ->oldest()
                                ->get();
 
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error( $e );
             return collect([]);
         }
@@ -268,7 +299,7 @@ class StatsController extends Controller
             });
 
             return $readings;
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error( $e );
             return collect([]);
         }
@@ -303,7 +334,7 @@ class StatsController extends Controller
 
             return $readings;
 
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error( $e );
             return collect([]);
         }
@@ -337,7 +368,7 @@ class StatsController extends Controller
             });
 
             return $readings;
-        } catch (Exception $e){
+        } catch (StatsException $e){
             Log::error( $e );
             return collect([]);
         }

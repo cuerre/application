@@ -31,6 +31,8 @@ Route::prefix('v1')->group(function () {
     # This group will handle stat codes request
     Route::middleware(['cerbero:manage_redirections'])->group(function () {
 
+        Route::get('/code', 'ApiV1Controller@GetCode');
+
         Route::post('/code', 'ApiV1Controller@PostCode');
 
         Route::put('/code', 'ApiV1Controller@PutCode');

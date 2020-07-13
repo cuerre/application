@@ -113,6 +113,61 @@ class ApiV1Controller extends Controller
         }
     }
 
+
+    
+    /**
+     * Get a code from the system
+     * and render all information and stats 
+     * into a JSON message
+     * 
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public static function GetCode ( Request $request )
+    {
+        try{
+
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'id' => [
+                    'required', 
+                    'integer', 
+                    Rule::exists('codes', 'id')->where(function ($query) use ($request){
+                        $token = Token::where('token', $request->input('apikey'))->first();
+
+                        # Code owner must be the same as token owner
+                        $query->where('user_id', $token->user_id);
+                    })
+                ],
+            ]);
+    
+            if ($validator->fails()) {
+                throw new CodeException('code not found');
+            }
+
+            # Delete the image
+            $got = CodesController::GetOne($request->input('id'));
+            if( empty($got) ){
+                throw new CodeException('impossible to get the code');
+            }
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'provided',
+                'data'    => $got
+            ], 200);
+            
+        } catch ( CodeException $e ) {
+
+            Log::error($e);
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
     /**
      * Delete a code from the system
      * and render a JSON message
