@@ -30,12 +30,12 @@
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
             content="{http:get} or {http:post} /encode" 
-            :link="url('documentation/api/v1/encode')">
+            :link="url('documentation/api/v1/getencode')">
         </x-dashboard-menu-item>
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
             content="{http:post} /decode" 
-            :link="url('documentation/api/v1/decode')">
+            :link="url('documentation/api/v1/postdecode')">
         </x-dashboard-menu-item>
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
@@ -65,7 +65,7 @@
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
             content="{http:delete} /code" 
-            :link="url('documentation/api/v1/code/delete')">
+            :link="url('documentation/api/v1/deletecode')">
         </x-dashboard-menu-item>
     </x-dashboard-menu>
 

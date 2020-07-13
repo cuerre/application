@@ -21,9 +21,11 @@ use App\Http\Controllers\StatsController;
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Example usage:
+ * self::DeleteOne( int $id )
+ * self::UpdateOrCreateOne( array $fields )
+ * 
  * self::GetAll()
  * self::GetOne( int )
- * self::UpdateOrCreateOne( Request )
  * self::GetEmbededImage( int )
  * self::GetImageDownload( Request )
  * self::SwitchOne( int )
@@ -43,6 +45,7 @@ class CodesController extends Controller
     /**
     * Delete a Code from the system
     *
+    * @param int $id
     * @return bool
     */
     public static function DeleteOne( int $id ) : bool
@@ -70,8 +73,10 @@ class CodesController extends Controller
 
 
     /**
-    * Update a Code into the system
+    * Update or create a 
+    * Code into the system
     *
+    * @param array $fields
     * @return Model|null
     */
     public static function UpdateOrCreateOne( array $fields )
@@ -80,34 +85,13 @@ class CodesController extends Controller
 
             # Check the input fields
             $validator = Validator::make($fields, [
-                'id' => [
-                    'sometimes',
-                    'required', 
-                    'integer', 
-                ],
-                'name' => [
-                    'sometimes', 
-                    'required',
-                    'filled',
-                    'string'
-                ],
-                'targets' => [
-                    'sometimes', 
-                    'required',
-                    'filled',
-                ],
-                'targets.any' => [
-                    'required_with:targets'
-                ],
-                'targets.*' => [
-                    'string',
-                    'url'
-                ],
-                'active' => [
-                    'sometimes', 
-                    'required',
-                    'bool'
-                ],
+                'id'          => ['sometimes', 'required', 'integer'],
+                'user_id'     => ['sometimes', 'required', 'integer'],
+                'name'        => ['sometimes', 'required', 'filled', 'string'],
+                'targets'     => ['sometimes', 'required', 'filled'],
+                'targets.any' => ['required_with:targets'],
+                'targets.*'   => ['string','url'],
+                'active'      => ['sometimes', 'required', 'bool'],
             ]);
 
             if ( $validator->fails() ) {
@@ -115,7 +99,7 @@ class CodesController extends Controller
             }
 
             # Turn it into collection for having some methods
-            $fields = collect($fields)->recursive();
+            $fields = collect($validator->validated())->recursive();
 
             # Get the model from DB
             if( $fields->has('id') ){

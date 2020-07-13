@@ -3,12 +3,23 @@
 
 @section('module')
     <x-card-header
-        title="Decode"
+        title="POST decode"
         hint="documentation / api · v1">
     </x-card-header>
 
     <div class="mb-5">
+        <h4>Introduction</h4>
+        <p>
+            This route is used to read a QR code from a picture you send us. We will return back 
+            the content without any effort.
+        </p>
+    </div>
+
+    <div class="mb-5">
         <h4>Methods</h4>
+        <p>
+            <span class="badge badge-primary">POST</span>
+        </p>
         <p>
             Decoding a QR code requires to send data to our service. For that task,
             the most convenient method is <code>POST</code> 

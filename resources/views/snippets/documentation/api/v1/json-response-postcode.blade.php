@@ -5,7 +5,7 @@ echo htmlentities('
     "status"  : "success",
     "message" : "A wonderful hint",
     "data"    : {
-        "code" : "{YOUR CODE ID}",
+        "id"   : "{YOUR CODE ID}",
         "name" : "{YOUR CODE NAME}",
         "targets" : {
             "any" : "http://target.com",

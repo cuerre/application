@@ -4,21 +4,21 @@
 @section('module')
     <x-card-header
         hint="documentation / api · v1"
-        title="PUT code">
+        title="DELETE code">
     </x-card-header>
 
     <div class="mb-5">
         <h4>Introduction</h4>
         <p>
-            This route is used to update a QR code. This will change information like
-            name, targets or activeness.
+            This route is used to delete a QR code. This remove the code, the stats and everything
+            related to that code.
         </p>
     </div>
 
     <div class="mb-5">
         <h4>Methods</h4>
         <p>
-            <span class="badge badge-primary">PUT</span>
+            <span class="badge badge-primary">DELETE</span>
         </p>
         <p>
             Requests have to be sent to <code>{{ secure_url('/') }}/api/v1/code</code>
@@ -43,53 +43,6 @@
                 or during creation of the code with <code>POST /code</code>
             </p>
         </p>
-
-        {{-- name --}}
-        <p>
-            <span class="font-weight-bolder">
-                name 
-            </span>
-            <p>
-                A name to identify your code. Numbers, characters, symbols or spaces can be used. 
-                Feel free for organizing your mind as you want.
-            </p>
-        </p>
-        
-        {{-- targets--}}
-        <p>
-            <span class="font-weight-bolder">
-                targets 
-            </span>
-            <p>
-                An array of targets. Targets are defined to send your visits to different 
-                places according to the platform or browser they use or country they are visiting from.
-                Each one is defined with a key setting the source and value setting the destination. 
-            </p>
-            <p>
-                There is a target called 'any' that must be always defined as a fallback to send visits 
-                when other targets are not defined or something fail. If you want to send all visits to a website
-                this is the target you have to use.
-            </p>
-            <p>
-                Allowed targets: 
-                @php 
-                    foreach(App\Code::ALLOWED_TARGETS as $key => $value){
-                        echo '<code class="mx-2">'.$value.'</code>';
-                    }
-                @endphp
-            </p>
-        </p>
-
-        {{-- active --}}
-        <p>
-            <span class="font-weight-bolder">
-                active 
-            </span>
-            <p>
-                This parameter can be <code>true</code> or <code>false</code> and determines 
-                if the code is active (and redirects, take stats), or not
-            </p>
-        </p>
     </div>
 
     <div class="mb-5">
@@ -103,11 +56,11 @@
         {{-- bash request --}}
         <div class="mb-5">
             <p>
-                With the following code, you will update a QR code redirecting all visits to a website.
+                With the following code, you will remove a QR code.
             </p>
             <x-snippet 
                 language="bash"
-                snippet="documentation.api.v1.curl-putcode">
+                snippet="documentation.api.v1.curl-deletecode">
             </x-snippet>
         </div>
 
@@ -118,7 +71,7 @@
             </p>
             <x-snippet 
                 language="php"
-                snippet="documentation.api.v1.php-putcode">
+                snippet="documentation.api.v1.php-deletecode">
             </x-snippet>
         </div>
     </div>
@@ -126,12 +79,11 @@
     <div class="mb-5">
         <h4>Response</h4>
         <p>
-            The response for this route include some useful information
-            inside the 'data' field that can help developers with following requests
+            The response for this route does NOT include more information
         </p>
         <x-snippet 
             language="json"
-            snippet="documentation.api.v1.json-response-postcode">
+            snippet="documentation.api.v1.json-response-deletecode">
         </x-snippet>
     </div>
 

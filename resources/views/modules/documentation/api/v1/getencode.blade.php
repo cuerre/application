@@ -3,12 +3,24 @@
 
 @section('module')
     <x-card-header
-        title="Encode"
+        title="GET encode"
         hint="documentation / api · v1">
     </x-card-header>
 
     <div class="mb-5">
+        <h4>Introduction</h4>
+        <p>
+            This route is used to create a QR code with a phrase or another desired information. 
+            You decide which data must be written as content.
+        </p>
+    </div>
+
+    <div class="mb-5">
         <h4>Methods</h4>
+        <p>
+            <span class="badge badge-primary">GET</span>
+            <span class="badge badge-primary">POST</span>
+        </p>
         <p>
             For convenience, to get a QR code, our service admits <code>GET</code> and <code>POST</code> methods 
             that can be used with cURL, Python, PHP and many other languages.

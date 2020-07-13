@@ -8,6 +8,14 @@
     </x-card-header>
 
     <div class="mb-5">
+        <h4>Introduction</h4>
+        <p>
+            This route is used to create a QR code. Some information must be provided
+            like name or targets and some information will be returned like id or activeness.
+        </p>
+    </div>
+
+    <div class="mb-5">
         <h4>Methods</h4>
         <p>
             <span class="badge badge-primary">POST</span>
@@ -78,7 +86,7 @@
             </p>
             <x-snippet 
                 language="bash"
-                snippet="documentation.api-v1.curl-postcode">
+                snippet="documentation.api.v1.curl-postcode">
             </x-snippet>
         </div>
 
@@ -89,7 +97,7 @@
             </p>
             <x-snippet 
                 language="php"
-                snippet="documentation.api-v1.php-postcode">
+                snippet="documentation.api.v1.php-postcode">
             </x-snippet>
         </div>
     </div>
@@ -102,7 +110,7 @@
         </p>
         <x-snippet 
             language="json"
-            snippet="documentation.api-v1.json-response-postcode">
+            snippet="documentation.api.v1.json-response-postcode">
         </x-snippet>
     </div>
 
@@ -115,7 +123,7 @@
         </p>
         <x-snippet 
             language="json"
-            snippet="documentation.api-v1.json-error-response">
+            snippet="documentation.api.v1.json-error-response">
         </x-snippet>
     </div>
 

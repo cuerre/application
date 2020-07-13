@@ -126,7 +126,7 @@ class ApiV1Controller extends Controller
 
             # Check the input fields
             $validator = Validator::make($request->all(), [
-                'code' => [
+                'id' => [
                     'required', 
                     'integer', 
                     Rule::exists('codes', 'id')->where(function ($query) use ($request){
@@ -143,7 +143,7 @@ class ApiV1Controller extends Controller
             }
 
             # Delete the image
-            $deleted = CodesController::DeleteOne($request->input('code'));
+            $deleted = CodesController::DeleteOne($request->input('id'));
             if( !$deleted ){
                 throw new CodeException('impossible to delete the code');
             }
@@ -151,6 +151,72 @@ class ApiV1Controller extends Controller
             return response()->json([
                 'status'  => 'success',
                 'message' => 'code deleted'
+            ], 200);
+            
+        } catch ( CodeException $e ) {
+
+            Log::error($e);
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Check input fields and 
+     * create a brand new code
+     * 
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public static function PostCode ( Request $request )
+    {
+        try{
+            $token = Token::where('token', $request->input('apikey'))->first();
+
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'name'        => ['required', 'filled', 'string'],
+                'targets'     => ['required', 'filled'],
+                'targets.any' => ['required_with:targets'],
+                'targets.*'   => ['string', 'url']
+            ]);
+    
+            if ( $validator->fails() ) {
+                throw new CodeException($validator->errors()->first());
+            }
+
+            # Check allowed targets
+            if ( $request->has('targets') ) {
+                foreach ( $request->input('targets') as $key => $target ){
+                    if( !in_array($key, Code::ALLOWED_TARGETS) ){
+                        throw new CodeException('The targets.'.$key.' field is not allowed');
+                    }
+                }                
+            }
+
+            # Filter some things before passing it            
+            $fields = $validator->validated();
+            $fields['user_id'] = $token->user_id;
+            $fields['active']  = false;
+            
+            # Create the code
+            $created = CodesController::UpdateOrCreateOne($fields);
+            if( empty($created) ){
+                throw new CodeException('Impossible to create the code');
+            }
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'created',
+                'data'    => [
+                    'id'      => $created->id,
+                    'name'    => $created->name,
+                    'targets' => $created->data['targets'],
+                    'active'  => $created->active
+                ]
             ], 200);
             
         } catch ( CodeException $e ) {
@@ -179,7 +245,7 @@ class ApiV1Controller extends Controller
 
             # Check the input fields
             $validator = Validator::make($request->all(), [
-                'code' => [
+                'id' => [
                     'required', 
                     'integer', 
                     Rule::exists('codes', 'id')->where(function ($query) use ($token){
@@ -188,30 +254,11 @@ class ApiV1Controller extends Controller
                         $query->where('user_id', $token->user_id);
                     })
                 ],
-                'name' => [
-                    'sometimes', 
-                    'required',
-                    'filled',
-                    'string'
-                ],
-                'targets' => [
-                    'sometimes', 
-                    'required',
-                    'filled',
-                ],
-                'targets.any' => [
-                    'required_with:targets'
-                ],
-                'targets.*' => [
-                    'string',
-                    'url'
-                ],
-                'active' => [
-                    'sometimes', 
-                    'required',
-                    'bool'
-                ],
-                
+                'name'        => ['sometimes', 'required', 'filled', 'string'],
+                'targets'     => ['sometimes', 'required', 'filled'],
+                'targets.any' => ['required_with:targets'],
+                'targets.*'   => ['string', 'url'],
+                'active'      => ['sometimes', 'required', 'bool'],
             ]);
     
             if ( $validator->fails() ) {
@@ -228,10 +275,7 @@ class ApiV1Controller extends Controller
             }
 
             # Update the image
-            $fields = $request->all();
-            $fields['id'] = $fields['code'];
-            unset($fields['code']);
-            unset($fields['user_id']);
+            $fields = $validator->validated();
 
             $updated = CodesController::UpdateOrCreateOne($fields);
             if( empty($updated) ){
@@ -240,90 +284,12 @@ class ApiV1Controller extends Controller
 
             return response()->json([
                 'status'  => 'success',
-                'message' => 'Code updated',
+                'message' => 'updated',
                 'data'    => [
-                    'code'    => $updated->id,
+                    'id'      => $updated->id,
                     'name'    => $updated->name,
                     'targets' => $updated->data['targets'],
                     'active'  => $updated->active
-                ], 200]);
-            
-        } catch ( CodeException $e ) {
-
-            Log::error($e);
-
-            return response()->json([
-                'status'  => 'error',
-                'message' => $e->getMessage()
-            ], 400);
-        }
-    }
-
-    /**
-     * Check input fields and 
-     * create a brand new code
-     * 
-     * @param \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
-     */
-    public static function PostCode ( Request $request )
-    {
-        try{
-            $token = Token::where('token', $request->input('apikey'))->first();
-
-            # Check the input fields
-            $validator = Validator::make($request->all(), [
-                'name' => [
-                    'required',
-                    'filled',
-                    'string'
-                ],
-                'targets' => [
-                    'required',
-                    'filled',
-                ],
-                'targets.any' => [
-                    'required_with:targets'
-                ],
-                'targets.*' => [
-                    'string',
-                    'url'
-                ]
-            ]);
-    
-            if ( $validator->fails() ) {
-                throw new CodeException($validator->errors()->first());
-            }
-
-            # Check allowed targets
-            if ( $request->has('targets') ) {
-                foreach ( $request->input('targets') as $key => $target ){
-                    if( !in_array($key, Code::ALLOWED_TARGETS) ){
-                        throw new CodeException('The targets.'.$key.' field is not allowed');
-                    }
-                }                
-            }
-
-            # Filter some things before passing it            
-            $fields = $request->all();
-            unset($fields['id']);
-            unset($fields['code']);
-            $fields['user_id'] = $token->user_id;
-            
-            # Create the code
-            $created = CodesController::UpdateOrCreateOne($fields);
-            if( empty($created) ){
-                throw new CodeException('Impossible to create the code');
-            }
-
-            return response()->json([
-                'status'  => 'success',
-                'message' => 'Code created',
-                'data'    => [
-                    'code'    => $created->id,
-                    'name'    => $created->name,
-                    'targets' => $created->data['targets'],
-                    'active'  => $created->active
                 ]
             ], 200);
             
@@ -337,5 +303,7 @@ class ApiV1Controller extends Controller
             ], 400);
         }
     }
+
+    
     
 }

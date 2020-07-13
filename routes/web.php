@@ -73,12 +73,12 @@ Route::prefix('documentation')->group(function () {
                 return view('modules.documentation.api.v1.prologue');
             });
 
-            Route::get('/encode', function () {
-                return view('modules.documentation.api.v1.encode');
+            Route::get('/getencode', function () {
+                return view('modules.documentation.api.v1.getencode');
             });
 
-            Route::get('/decode', function () {
-                return view('modules.documentation.api.v1.decode');
+            Route::get('/postdecode', function () {
+                return view('modules.documentation.api.v1.postdecode');
             });
 
             Route::get('/getcode', function () {
@@ -91,6 +91,10 @@ Route::prefix('documentation')->group(function () {
 
             Route::get('/putcode', function () {
                 return view('modules.documentation.api.v1.putcode');
+            });
+
+            Route::get('/deletecode', function () {
+                return view('modules.documentation.api.v1.deletecode');
             });
         });
     });
