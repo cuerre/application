@@ -79,7 +79,7 @@ class ActionController extends Controller
                             ->__toString();
                 
                 # Go to the promoted site
-                if ( $target === $platform)
+                if ( $target === $platform )
                     return redirect()
                             ->away($item['url'])
                             ->send();

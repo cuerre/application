@@ -32,6 +32,10 @@ Auth::routes();
 
 Route::get('/redirect', 'VisitController@Pipeline');
 
+
+
+
+
 Route::get('/pricing', function () {
     return view('pricing');
 });

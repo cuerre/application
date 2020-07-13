@@ -14,7 +14,9 @@ use App\Http\Controllers\ActionController;
  * for /redirect route, collecting data first
  * and redirecting after that.
  * 
- * Example usage:
+ * Methods:
+ * self::Pipeline()
+ * 
  * 
  * @package Cuerre
  * @author Alby Hernández
