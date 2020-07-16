@@ -114,6 +114,55 @@ class ApiV1Controller extends Controller
     }
 
 
+
+    /**
+     * Get a code from the system
+     * and render all information and stats 
+     * into a JSON message
+     * 
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public static function GetCodes ( Request $request )
+    {
+        try{
+
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'page' => ['sometimes', 'required', 'integer'],
+            ]);
+
+            if ($validator->fails()) {
+                throw new CodeException('page malformed');
+            }
+
+            $token = Token::where('token', $request->input('apikey'))->first();
+
+            # Get a page of codes
+            $got = CodesController::GetPage($token->user_id);
+
+            if( $got->isEmpty() ){
+                throw new CodeException('the list is empty');
+            }
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'provided',
+                'data'    => $got
+            ], 200);
+            
+        } catch ( CodeException $e ) {
+
+            Log::error($e);
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+
     
     /**
      * Get a code from the system

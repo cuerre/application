@@ -85,6 +85,10 @@ Route::prefix('documentation')->group(function () {
                 return view('modules.documentation.api.v1.postdecode');
             });
 
+            Route::get('/getcodes', function () {
+                return view('modules.documentation.api.v1.getcodes');
+            });
+
             Route::get('/getcode', function () {
                 return view('modules.documentation.api.v1.getcode');
             });

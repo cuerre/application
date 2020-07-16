@@ -9,7 +9,12 @@ return [
 
     # General vars 
     'processing' => [
-        'chunk' => env('CUERRE_PROCESSING_CHUNK', 100), // users processed at the same time
+        'chunk' => env('CUERRE_PROCESSING_CHUNK', 100), // users processed at the same time on task scheduling
+    ],
+
+    #
+    'billing' => [
+        'currency' => env('CUERRE_BILLING_CURRENCY', 'eur'),
     ],
 
     # Information of each product

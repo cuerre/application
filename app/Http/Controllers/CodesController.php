@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Exceptions\CodeException;
 use App\Code;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -64,7 +64,7 @@ class CodesController extends Controller
            
             return true;
             
-        } catch ( Exception $e ){
+        } catch ( CodeException $e ){
             Log::error($e);
             return false;
         }
@@ -146,7 +146,7 @@ class CodesController extends Controller
            
             return $code;
             
-        } catch ( Exception $e ){
+        } catch ( CodeException $e ){
             Log::error($e);
             return null;
         }
@@ -207,37 +207,70 @@ class CodesController extends Controller
            
             return $data;
             
-        } catch ( Exception $e ){
+        } catch ( CodeException $e ){
             Log::error( $e );
             return collect([]);
         }
     }
 
     /**
-    * Get all QR codes for signed in
-    * user as a Laravel collection
-    *
-    * @return \Illuminate\Support\Collection  
-    */
-    /*
-    public static function GetAll()
+     * Get a page of QR codes for a
+     * user
+     *
+     * @param int $userId 
+     * @param int $perPage
+     * @return \Illuminate\Support\Collection  
+     */
+    public static function GetPage( int $userId, int $perPage = 25 )
     {
         try {
 
-            # Retrieve all codes
-            $codes = Code::where('user_id', Auth::id())
-                         ->get();
+            # Retrieve all codes for the 'page' given by GET
+            $page = Code::where('user_id', $userId)
+                         ->paginate($perPage);
+
+            if( $page->isEmpty() ){
+                throw new CodeException('no items found');
+            }
+
+            # Collect some useful information
+            $info = [
+                'total'       => $page->total(),
+                'perPage'     => $page->perPage(),
+                'currentPage' => $page->currentPage(),
+                'lastPage'    => $page->lastPage(),
+                'currency'    => config('cuerre.billing.currency'),
+                'itemPrice'   => config('cuerre.products.codes.price'),
+                'totalCost'   => $page->total() * config('cuerre.products.codes.price')
+            ];
+
+            # Filter codes to show just some params
+            $items = collect([]);
+            foreach($page->items() as $item){
+                $items->push([
+                    'id'      => $item->id,
+                    'name'    => $item->name,
+                    'active'  => $item->active,
+                    'created' => Carbon::parse($item->created_at)->toDateTimeString()
+                ]);
+            }
+
+            # Put all information together
+            $data = collect([]);
+            foreach($info as $key => $value){
+                $data->put($key, $value);
+            }
+            $data->put('codes', $items );
+
+            # Return it
+            return $data;
             
-            # Convert results to collections
-            return collect( $codes )
-                 ->recursive();
-            
-        } catch ( Exception $e ){
+        } catch ( CodeException $e ){
             Log::error($e);
             return collect([]);
         }
     }
-    */
+    
 
     /**
     * Get a Base64 representation
@@ -262,7 +295,7 @@ class CodesController extends Controller
             ->buildImage()
             ->GetBase64();
             
-        } catch ( Exception $e ) {
+        } catch ( CodeException $e ) {
             Log::error( $e );
             return '';
         }
@@ -394,7 +427,7 @@ class CodesController extends Controller
             # Show index view
             return view('modules.codes.index', ['codes' => $codes]);
             
-        } catch ( Exception $e ) {
+        } catch ( CodeException $e ) {
             Log::error( $e );
             abort(404);
         }
@@ -412,7 +445,7 @@ class CodesController extends Controller
             # Show index view
             return view('modules.codes.creation');
             
-        } catch ( Exception $e ) {
+        } catch ( CodeException $e ) {
             Log::error( $e );
             abort(404);
         }
@@ -459,7 +492,7 @@ class CodesController extends Controller
                 'lastYear'      => $stats->GetLastYear(),
             ]);
             
-        } catch ( Exception $e ){
+        } catch ( CodeException $e ){
             Log::error( $e );
             abort(404);
         }
@@ -496,7 +529,7 @@ class CodesController extends Controller
                 'code' => self::GetOne( $request->input('code') )
             ]);
             
-        } catch ( Exception $e ) {
+        } catch ( CodeException $e ) {
             Log::error( $e );
             abort(404);
         }

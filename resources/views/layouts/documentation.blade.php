@@ -39,8 +39,8 @@
         </x-dashboard-menu-item>
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
-            content="{http:get} /code/list" 
-            :link="url('documentation/api/v1/getcodelist')">
+            content="{http:get} /codes" 
+            :link="url('documentation/api/v1/getcodes')">
         </x-dashboard-menu-item>
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
