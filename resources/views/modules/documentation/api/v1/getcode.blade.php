@@ -3,7 +3,7 @@
 
 @section('module')
     <x-card-header
-        title="Get a code"
+        title="GET code"
         hint="documentation / api · v1">
     </x-card-header>
 

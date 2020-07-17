@@ -33,7 +33,8 @@ use Illuminate\Support\Str;
  * $qrCode->BuildImage();
  * 
  * # Get the result
- * $qrCode->GetBase65();
+ * $qrCode->GetImagePath();
+ * $qrCode->GetBase64();
  * $qrCode->GetImage();
  * $qrCode->GetDownload();
  * 
@@ -131,19 +132,17 @@ class EncodingController extends Controller
             return $this;
 
         }catch ( Exception $e ){
-            Log::error('Params(): '. $e->getMessage());
+            Log::error($e);
 
             return $this;
         }
     }
 
-
-
     /*
      * Generate an image with 
      * defined params
      * 
-     * @return  String  Path/to/the/image
+     * @return EncodingController $this
      */
     public function BuildImage () 
     {
@@ -151,7 +150,7 @@ class EncodingController extends Controller
             $cmd = $this->params;
 
             # Building a random temporary path
-            $tmpPath = '/tmp/' . Str::random(40);
+            $tmpPath = storage_path('app/public/'.Str::random(40) );
             
             # Execute decoding
             $cmd = [
@@ -180,11 +179,30 @@ class EncodingController extends Controller
             return $this;
 
         }catch ( Exception $e ){
-            Log::error('BuildImage(): '. $e->getMessage());
+            Log::error($e);
             $this->imagePath = '';
             return $this;
         }
+    }
 
+    /*
+     * Get the path to the current
+     * generated image
+     * 
+     * @return string|null
+     */
+    public function GetImagePath () 
+    {
+        try {
+            if( empty($this->imagePath) ){
+                return null;
+            }
+            return $this->imagePath;
+
+        }catch ( Exception $e ){
+            Log::error($e);
+            return null;
+        }
     }
 
     /**
@@ -206,7 +224,7 @@ class EncodingController extends Controller
 
         }catch( Exception $e ){
 
-            Log::error('GetBase64(): '.$e->getMessage());
+            Log::error($e);
             return '';
         }
     }
@@ -229,7 +247,7 @@ class EncodingController extends Controller
 
         }catch( Exception $e ){
 
-            Log::error('GetImage(): '.$e->getMessage());
+            Log::error($e);
             return '';
         }
     }
@@ -250,12 +268,12 @@ class EncodingController extends Controller
             # Return the download
             return response()->download( 
                 $this->imagePath, 
-                Str::random(40) .'.'. $this->params['output'] 
-            );
+                Str::random(40) .'.'. $this->params['output']
+            )->deleteFileAfterSend();
 
         }catch( Exception $e ){
 
-            Log::error('GetDownload(): ' . $e->getMessage());
+            Log::error($e);
             return '';
         }
     }

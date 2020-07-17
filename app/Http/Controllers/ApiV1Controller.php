@@ -14,7 +14,24 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\EncodingController;
 
 /**
+ * This controller is the input door
+ * for the API v1. All the API routes 
+ * have a method here that validate the 
+ * parameters before executing actions
+ * on the real controllers. This controller 
+ * take the returned value of other classes and
+ * return a valid JSON response for the user
  * 
+ * Methods:
+ * --------
+ * self::EncodeString()
+ * self::DecodeFile()
+ * self::GetCodes()
+ * self::GetCode()
+ * self::GetCodeImage()
+ * self::DeleteCode()
+ * self::PostCode()
+ * self::PutCode()
  * 
  */
 class ApiV1Controller extends Controller
@@ -30,7 +47,7 @@ class ApiV1Controller extends Controller
         try{
             # Check if data is included (required)
             $validator = Validator::make($request->all(), [
-                'data' => 'required|string|max:255',
+                'data' => ['required', 'string', 'max:255'],
             ]);
     
             if ($validator->fails()) {
@@ -43,7 +60,7 @@ class ApiV1Controller extends Controller
             # Build the image
             $newCode = new EncodingController;
             $qrCode = $newCode->Params($request->all())
-                ->BuildImage();
+                              ->BuildImage();
 
             # Check if the user want to download it
             if( $request->has('download') )
@@ -54,7 +71,7 @@ class ApiV1Controller extends Controller
             
         } catch ( Exception $e ) {
 
-            Log::error($e->getMessage());
+            Log::error($e);
 
             return response()->json([
                 'status'  => 'error',
@@ -71,7 +88,6 @@ class ApiV1Controller extends Controller
      */
     public static function DecodeFile ( Request $request )
     {
-
         try{
 
             # Try to decode the file
@@ -112,8 +128,6 @@ class ApiV1Controller extends Controller
             ], 500);
         }
     }
-
-
 
     /**
      * Get a code from the system
@@ -162,8 +176,6 @@ class ApiV1Controller extends Controller
         }
     }
 
-
-    
     /**
      * Get a code from the system
      * and render all information and stats 
@@ -208,6 +220,70 @@ class ApiV1Controller extends Controller
             
         } catch ( CodeException $e ) {
 
+            Log::error($e);
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Download a code as image
+     * 
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public static function GetCodeImage ( Request $request )
+    {
+        try{
+            
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'id' => [
+                    'required', 
+                    'integer', 
+                    Rule::exists('codes', 'id')->where(function ($query) use ($request){
+                        $token = Token::where('token', $request->input('apikey'))->first();
+
+                        # Code owner must be the same as token owner
+                        $query->where('user_id', $token->user_id);
+                    })
+                    
+                ],
+                'format' => [
+                    'required',
+                    Rule::in(['svg', 'png', 'eps']),
+                ],
+            ]);
+            
+            if ($validator->fails())
+                throw new CodeException ('field malformed');
+
+            # Create the new image
+            $newImage = CodesController::GetImage( 
+                $request->input('id'), 
+                $request->input('format') 
+            );
+
+            if( empty($newImage) ){
+                throw new CodeException('impossible to build the image');
+            }
+
+            # Craft the code public URL
+            $publicPath = url('storage/'.basename($newImage['path']));
+
+            # Give the response to the user
+            return response()->json([
+                'status'  => 'success',
+                'data'    => [
+                    'image'  => $publicPath,
+                    'format' => $request->input('format')
+                ]
+            ], 200, [], JSON_UNESCAPED_SLASHES);
+            
+        }catch( CodeException $e ){
             Log::error($e);
 
             return response()->json([

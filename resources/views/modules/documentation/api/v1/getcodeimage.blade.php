@@ -3,16 +3,18 @@
 
 @section('module')
     <x-card-header
-        title="GET codes"
+        title="GET code/image"
         hint="documentation / api · v1">
     </x-card-header>
 
     <div class="mb-5">
         <h4>Introduction</h4>
         <p>
-            This route is used to get a list with brief information about
-            all codes you own. The list is divided on pages to avoid system overload or abuses.
-            Some useful information is added, like currency, cost per day, total owned codes, etc.
+            You can get the image of a code in several file formats always you want using this route.
+        </p>
+        <p>
+            As a good practise, try to use this route as little as you can and store the image
+            to use it always you want.
         </p>
     </div>
 
@@ -22,7 +24,7 @@
             <span class="badge badge-primary">GET</span>
         </p>
         <p>
-            Requests have to be sent to <code>{{ secure_url('/') }}/api/v1/codes</code>
+            Requests have to be sent to <code>{{ secure_url('/') }}/api/v1/code/image</code>
         </p>
     </div>
 
@@ -33,15 +35,28 @@
             for you if you make that mistake as developer (but that is horrible, don't do it)
         </p>
 
-        {{-- page --}}
+        {{-- id --}}
         <p>
             <span class="font-weight-bolder">
-                page 
-                <!--<code>(mandatory)</code>-->
+                id 
+                <code>(mandatory)</code>
             </span>
             <p>
-                Due to the list is divided into pages, this parameter is the number that identify a page. 
-                If page is not provided, the first page will be returned.
+                The number that identify a code you own
+            </p>
+        </p>
+
+        {{-- format --}}
+        <p>
+            <span class="font-weight-bolder">
+                format 
+                <code>(mandatory)</code>
+            </span>
+            <p>
+                Output format you would like to get the image: 
+                <code>png</code> 
+                <code>eps</code> 
+                <code>svg</code>
             </p>
         </p>
     </div>
@@ -62,7 +77,7 @@
             </p>
             <x-snippet 
                 language="bash"
-                snippet="documentation.api.v1.curl-getcodes">
+                snippet="documentation.api.v1.curl-getcodeimage">
             </x-snippet>
         </div>
 
@@ -73,7 +88,7 @@
             </p>
             <x-snippet 
                 language="bash"
-                snippet="documentation.api.v1.php-getcodes">
+                snippet="documentation.api.v1.php-getcodeimage">
             </x-snippet>
         </div>
     </div>
@@ -87,20 +102,19 @@
         </p>
         <x-snippet 
             language="none">
-            {{ secure_url('/') }}/api/v1/codes?apikey={API KEY}&page=1
+            {{ secure_url('/') }}/api/v1/code/image?apikey={API KEY}&id=9&format=png
         </x-snippet>
     </div>
 
     <div class="mb-5">
         <h4>Response</h4>
         <p>
-            The response for this route include a lot of information
-            inside the 'data' field that can help developers to analyze
-            big data about a QR code
+            The response for this route include the URL you should use
+            to access the image and the format of the generated file
         </p>
         <x-snippet 
             language="json"
-            snippet="documentation.api.v1.json-response-getcodes">
+            snippet="documentation.api.v1.json-response-getcodeimage">
         </x-snippet>
     </div>
 

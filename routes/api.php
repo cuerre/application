@@ -35,6 +35,8 @@ Route::prefix('v1')->group(function () {
 
         Route::get('/code', 'ApiV1Controller@GetCode');
 
+        Route::get('/code/image', 'ApiV1Controller@GetCodeImage');
+
         Route::post('/code', 'ApiV1Controller@PostCode');
 
         Route::put('/code', 'ApiV1Controller@PutCode');

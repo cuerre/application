@@ -93,6 +93,10 @@ Route::prefix('documentation')->group(function () {
                 return view('modules.documentation.api.v1.getcode');
             });
 
+            Route::get('/getcodeimage', function () {
+                return view('modules.documentation.api.v1.getcodeimage');
+            });
+
             Route::get('/postcode', function () {
                 return view('modules.documentation.api.v1.postcode');
             });

@@ -20,12 +20,16 @@ use App\Http\Controllers\StatsController;
  * and renderable Views. This means that everything related to url('dashboard/codes')
  * can be found here. This controller tries to keep all methods as static.
  * 
- * Example usage:
+ * Methods:
+ * --------
  * self::DeleteOne( int $id ) : bool
  * self::UpdateOrCreateOne( array $fields ) : Model|null
  * self::GetOne( int ) : Illuminate\Support\Collection
+ * self::GetPage( int $userId, int $perPage )
+ * self::GetImage( int $id, string $format ) : string|null
  * 
- * self::GetAll()
+ * 
+ * 
  * self::GetEmbededImage( int )
  * self::GetImageDownload( Request )
  * self::SwitchOne( int )
@@ -270,6 +274,71 @@ class CodesController extends Controller
             return collect([]);
         }
     }
+
+    /**
+     * Force the download a code according
+     * to the request params
+     *
+     * @param int $id
+     * @param string $format
+     * @return array [
+     *     'path'   => string,
+     *     'format' => string
+     * ]
+     */
+    public static function GetImage( int $id, string $format )
+    {
+        try{
+            
+            # Set the content of the code
+            $codeContent = Str::of('')
+                ->append(url('redirect?c='))
+                ->append($id);
+
+            # Build and download the code
+            $newCode = new EncodingController;
+            
+            $newImage = $newCode->params([
+                'data'   => $codeContent->__toString(),
+                'output' => strtoupper($format)
+            ])
+            ->buildImage()
+            ->GetImagePath();
+
+            if( empty($newImage) ){
+                return [];
+            }
+
+            return [
+                'path'   => $newImage,
+                'format' => $format
+            ];
+            
+        } catch ( CodeException $e ) {
+            Log::error( $e );
+            return [];
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
     /**
@@ -301,52 +370,16 @@ class CodesController extends Controller
         }
     }
 
-    /**
-    * Force the download a code according
-    * to the request params
-    *
-    * @param Request $request [
-    *     ?code=
-    *     ?output=   
-    * ]
-    * @return File
-    */
-    public static function GetImageDownload( Request $request )
-    {
-        try{
-            # Check the input fields
-            $validator = Validator::make($request->all(), [
-                'code' => [
-                    'required', 
-                    'integer', 
-                    Rule::exists('codes', 'id')->where(function ($query) {
-                        $query->where('user_id', Auth::id());
-                    })
-                ],
-            ]);
+    
 
-            if ($validator->fails())
-                throw new CodeException ('Some field is malformed');
 
-            # Set the content of the code
-            $codeContent = Str::of('')
-                ->append(url('redirect?c='))
-                ->append($request->input('code'));
 
-            # Build and download the code
-            $newCode = new EncodingController;
-            
-            return $newCode->params([
-                'data'   => $codeContent->__toString(),
-                'output' => $request->input('output')
-            ])
-            ->buildImage()
-            ->GetDownload();
-            
-        } catch ( CodeException $e ) {
-            Log::error( $e );
-        }
-    }
+
+
+
+
+
+
 
     /**
      * Set a code as 'active'
