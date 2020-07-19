@@ -251,9 +251,17 @@ class CodesController extends Controller
             # Filter codes to show just some params
             $items = collect([]);
             foreach($page->items() as $item){
+
+                # Put the targets into response
+                $targets = [];
+                foreach($item->data['targets'] as $key => $target){
+                    $targets[$target['system']] = $target['url'];
+                }
+
                 $items->push([
                     'id'      => $item->id,
                     'name'    => $item->name,
+                    'targets' => $targets,
                     'active'  => $item->active,
                     'created' => Carbon::parse($item->created_at)->toDateTimeString()
                 ]);
@@ -319,28 +327,7 @@ class CodesController extends Controller
             return [];
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
-
     /**
     * Get a Base64 representation
     * of the given code
@@ -369,17 +356,6 @@ class CodesController extends Controller
             return '';
         }
     }
-
-    
-
-
-
-
-
-
-
-
-
 
     /**
      * Set a code as 'active'
@@ -417,7 +393,7 @@ class CodesController extends Controller
                 case false:
                     if ( !Auth::user()->HasCredits() )
                         throw new CodeException ('You need credits to perform this action');
-                    
+
                     $code->active = true;
                     break;
             }
@@ -454,11 +430,13 @@ class CodesController extends Controller
     public static function ViewIndex ()
     {
         try {
-            # Get the codes collection and paginate them
-            $codes = self::GetAll()->paginate(3);
+            # Get the codes collection and paginate them (->paginate(3) ) 
+            $page = self::GetPage(Auth::id(), 5);
+
+            //dd($page);
 
             # Show index view
-            return view('modules.codes.index', ['codes' => $codes]);
+            return view('modules.codes.index', ['page' => $page]);
             
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -466,6 +444,23 @@ class CodesController extends Controller
         }
     }
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
     * Show the creation view for codes
     *
@@ -483,8 +478,6 @@ class CodesController extends Controller
             abort(404);
         }
     }
-
-
 
     /**
     * Get all available stats of a code given

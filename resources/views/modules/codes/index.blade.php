@@ -52,7 +52,7 @@
     </x-attention>
     
     {{-- Code list --}}
-    @forelse ($codes->items() as $code)
+    @forelse ($page['codes'] as $code)
         <x-box>
         
             <div class="row justify-content-center">
@@ -77,14 +77,14 @@
                         <div class="p-2 text-break mb-auto">
                             <small class="text-uppercase text-muted">Targets</small>
                             <div>    
-                                @foreach ( $code['data']['targets'] as $target )
-                                    <a href="{{ $target['url'] }}" target="_blank" class="text-decoration-none">
+                                @foreach ( $code['targets'] as $target => $url )
+                                    <a href="{{ $url }}" target="_blank" class="text-decoration-none">
                                         <button type="button" class="btn btn-sm bg-secondary text-light"
                                             data-toggle="tooltip" 
                                             data-placement="top" 
-                                            title="{{ $target['url'] }}">
+                                            title="{{ $url }}">
                                                 <span class="text-capitalize">
-                                                    {{ $target['system'] }}
+                                                    {{ $target }}
                                                 </span>
                                         </button>
                                     </a>
@@ -126,12 +126,45 @@
         </x-card-empty-message>
     @endforelse
     
+
+
     {{-- Paginator --}}
-    @if ( $codes->lastPage() > 1)
-        <div class="d-flex justify-content-end mt-3">
-            {{ $codes->links() }}
-        </div>
-    @endif
+    <div class="d-flex justify-content-end p-0 ">
+        <nav>
+            <ul class="pagination">
+                @php 
+                    $disabled = true;
+                    if ( $page['currentPage'] <= $page['lastPage'] &&  $page['currentPage'] > 1)
+                        $disabled = false;
+                @endphp
+
+                <li class="page-item @if($disabled) disabled @endif">
+                    <a class="page-link bg-light" 
+                       style="border: 2px solid WhiteSmoke !important;"
+                       href="{{ url()->current() }}?page={{ $page['currentPage']-1 }}">
+                        <i class="material-icons align-middle">navigate_before</i>
+                        {{ __('Previous') }}
+                    </a>
+                </li>
+
+                @php 
+                    $disabled = true;
+                    if ( $page['currentPage'] < $page['lastPage'] )
+                        $disabled = false;
+                @endphp
+                
+                <li class="page-item @if($disabled) disabled @endif">
+                    <a class="page-link bg-light" 
+                       style="border: 2px solid WhiteSmoke !important;"
+                       href="{{ url()->current() }}?page={{ $page['currentPage']+1 }}">
+                        {{ __('Next') }}
+                        <i class="material-icons align-middle">navigate_next</i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
     
 @endsection
 
