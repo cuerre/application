@@ -19,7 +19,7 @@
         <form action="{{ url('dashboard/codes') }}" method="POST">
             @csrf
             @method('DELETE')
-            <input type="hidden" name="id" value="{{ $id }}">
+            <input type="hidden" name="code" value="{{ $id }}">
             <button 
                 type="submit" 
                 class="dropdown-item" 

@@ -138,21 +138,21 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
         Route::get('/', 'CodesController@ViewIndex');
 
-        Route::get('/download', 'CodesController@GetImageDownload')->middleware(['throttle:60,1']);
+        Route::get('/download', 'CodesController@ViewDownload')->middleware(['throttle:60,1']);
 
         Route::get('/creation', 'CodesController@ViewCreation');
 
         Route::get('/modification', 'CodesController@ViewModification');
 
-        Route::put('/switching', 'CodesController@SwitchOne');
+        Route::put('/switching', 'CodesController@ViewSwitch');
 
         Route::get('/stats', 'CodesController@ViewStats');
 
-        Route::delete('/', 'CodesController@DeleteOne');
+        Route::delete('/', 'CodesController@ViewDelete');
 
-        Route::post('/', 'CodesController@UpdateOrCreateOne');
+        Route::post('/', 'CodesController@ViewUpdateOrCreate');
 
-        Route::put('/', 'CodesController@UpdateOrCreateOne');
+        Route::put('/', 'CodesController@ViewUpdateOrCreate');
 
     });
 

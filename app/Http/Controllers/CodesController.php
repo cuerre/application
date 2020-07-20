@@ -24,19 +24,20 @@ use App\Http\Controllers\StatsController;
  * --------
  * self::DeleteOne( int $id ) : bool
  * self::UpdateOrCreateOne( array $fields ) : Model|null
- * self::GetOne( int ) : Illuminate\Support\Collection
- * self::GetPage( int $userId, int $perPage )
+ * self::GetOne( int $id ) : Illuminate\Support\Collection
+ * self::GetPage( int $userId, int $perPage ) : array
+ * self::SwitchOne( int $id ) : bool
  * self::GetImage( int $id, string $format ) : string|null
+ * self::GetEmbededImage( int $id ) : string
  * 
- * 
- * 
- * self::GetEmbededImage( int )
- * self::GetImageDownload( Request )
- * self::SwitchOne( int )
  * self::ViewIndex()
- * self::ViewCreation()
- * self::ViewModification( Request )
+ * self::ViewSwitch( Request )
+ * self::ViewDownload( Request )
  * self::ViewStats( Request )
+ * self::ViewCreation()
+ * 
+ * self::ViewModification( Request )
+ * 
  * 
  * @package Cuerre
  * @author Alby Hernández
@@ -284,6 +285,47 @@ class CodesController extends Controller
     }
 
     /**
+     * Set a code as 'active' 
+     * or 'inactive'
+     * 
+     * @param int $id
+     * @return bool
+     */
+    public static function SwitchOne( int $id )
+    {
+        try {
+
+            # Take the code and switch it
+            $code = Code::find($id);
+
+            if ( empty($code) ){
+                throw new CodeException('code not found');
+            }
+
+            switch ( $code->active ){
+                case true:
+                    $code->active = false;
+                    break;
+                case false:
+                    $code->active = true;
+                    break;
+            }
+
+            # Check code switching
+            if ( !$code->save() ){
+                throw new CodeException ('impossible to switch the code');
+            }
+
+            # Give a response
+            return true;
+
+        } catch ( CodeException $e ) {
+            Log::error( $e );
+            return false;
+        }
+    }
+
+    /**
      * Force the download a code according
      * to the request params
      *
@@ -358,12 +400,33 @@ class CodesController extends Controller
     }
 
     /**
+    * Show the index view with codes
+    *
+    * @param  Request $request
+    * @return Illuminate\Contracts\Support\Renderable
+    */
+    public static function ViewIndex ()
+    {
+        try {
+            # Get the codes collection and paginate them (->paginate(3) ) 
+            $page = self::GetPage(Auth::id(), 5);
+
+            # Show index view
+            return view('modules.codes.index', ['page' => $page]);
+            
+        } catch ( CodeException $e ) {
+            Log::error( $e );
+            abort(404);
+        }
+    }
+
+    /**
      * Set a code as 'active'
      * 
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public static function SwitchOne( Request $request )
+    public static function ViewSwitch( Request $request )
     {
         try {
 
@@ -381,26 +444,10 @@ class CodesController extends Controller
             if ($validator->fails())
                 throw new CodeException ('Some field is malformed');
 
-            # Take the code and switch it
-            $code = Code::where('user_id', Auth::id())
-                        ->where('id', $request->input('code'))
-                        ->first();
+            $switched = self::SwitchOne( $request->input('code') );
 
-            switch ( $code->active ){
-                case true:
-                    $code->active = false;
-                    break;
-                case false:
-                    if ( !Auth::user()->HasCredits() )
-                        throw new CodeException ('You need credits to perform this action');
-
-                    $code->active = true;
-                    break;
-            }
-
-            # Check code switching
-            if ( !$code->save() ){
-                throw new CodeException ('Code could not be switched');
+            if ( !$switched ){
+                throw new CodeException('Code could not be switched right now');
             }
 
             # Go to index page
@@ -408,7 +455,7 @@ class CodesController extends Controller
                     ->back()
                     ->with([
                         'message' => __('Code switched successfully')
-                    ]);;
+                    ]);
 
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -422,56 +469,47 @@ class CodesController extends Controller
     }
 
     /**
-    * Show the index view with codes
-    *
-    * @param  Request $request
-    * @return Illuminate\Contracts\Support\Renderable
-    */
-    public static function ViewIndex ()
+     * Force the download a code according
+     * to the request params
+     *
+     * @param Illuminate\Http\Request $request
+     * @return Illuminate\Http\Response
+     */
+    public static function ViewDownload( Request $request )
     {
-        try {
-            # Get the codes collection and paginate them (->paginate(3) ) 
-            $page = self::GetPage(Auth::id(), 5);
+        try{
 
-            //dd($page);
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'code' => [
+                    'required', 
+                    'integer', 
+                    Rule::exists('codes', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
+                    })
+                ],
+                'output' => ['required',  Rule::in(['png', 'svg', 'eps'])],
+            ]);
 
-            # Show index view
-            return view('modules.codes.index', ['page' => $page]);
-            
-        } catch ( CodeException $e ) {
-            Log::error( $e );
-            abort(404);
-        }
-    }
-    
+            if ( $validator->fails() ) {
+                throw new CodeException($validator->errors()->first());
+            }
 
+            # Build the image
+            $newImage = self::GetImage( 
+                $request->input('code'), 
+                $request->input('output') 
+            );
 
+            if( empty($newImage) ){
+                throw new CodeException('impossible to build the image');
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-    * Show the creation view for codes
-    *
-    * @param  Request $request
-    * @return Illuminate\Contracts\Support\Renderable
-    */
-    public static function ViewCreation ()
-    {
-        try {
-            # Show index view
-            return view('modules.codes.creation');
+            # Give the image to the user
+            return response()->download(
+                $newImage['path'], 
+                $request->input('code') . '.' . $newImage['format'] 
+            );
             
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -524,7 +562,73 @@ class CodesController extends Controller
         }
     }
 
+    /**
+     * Delete a code (?code=) 
+     * of the signed user
+     *
+     * @param  Illuminate\Http\Request $request
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public static function ViewDelete( Request $request )
+    {
+        try {
 
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'code' => [
+                    'required', 
+                    'integer',
+                    Rule::exists('codes', 'id')->where(function ($query) {
+                        $query->where('user_id', Auth::id());
+                    }),
+                ],
+            ]);
+            
+            if ($validator->fails())
+                throw new CodeException ('Some field is malformed');
+
+            # Delete that code
+            $deleted = self::DeleteOne( $request->input('code') );
+
+            # Check deletion
+            if( !$deleted ) {
+                throw new CodeException('Impossible to delete the code');
+            }
+
+            # Return a response
+            return redirect()
+                    ->back()
+                    ->with([
+                        'message' => __('Code deleted successfully')
+                    ]);
+            
+        } catch ( CodeException $e ){
+            Log::error( $e );
+            return redirect()
+                 ->back()
+                 ->withErrors([
+                     'message' => __('Impossible to delete the code')
+                 ]);
+        }
+    }
+    
+    /**
+     * Show the creation view for codes
+     *
+     * @param  Request $request
+     * @return Illuminate\Contracts\Support\Renderable
+     */
+    public static function ViewCreation ()
+    {
+        try {
+            # Show index view
+            return view('modules.codes.creation');
+            
+        } catch ( CodeException $e ) {
+            Log::error( $e );
+            abort(404);
+        }
+    }
 
     /**
     * Show the modification view for a given Code
@@ -559,6 +663,102 @@ class CodesController extends Controller
             Log::error( $e );
             abort(404);
         }
+    }
+
+    /**
+     * Show the creation processor 
+     * view for codes
+     *
+     * @param  Illuminate\Http\Request $request
+     * @return Illuminate\Contracts\Support\Renderable
+     */
+    public static function ViewUpdateOrCreate ( Request $request )
+    {
+        try{
+            # Retrieve the user
+            $userId = Auth::id();
+            
+            # Check the input fields
+            $validator = Validator::make($request->all(), [
+                'code'    => [
+                    'sometimes',
+                    'required',
+                    'integer', 
+                    Rule::exists('codes', 'id')->where(function ($query) use ($userId) {
+                        $query->where('user_id', $userId);
+                    })
+                ],
+                'name'    => ['required', 'max:100'],
+                'targets' => ['required', 'array', 'min:1'],
+            ]);
+            
+            if ($validator->fails())
+                throw new CodeException ('Some field is malformed');
+
+            # Convert targets to a collection
+            $targets = collect( $request->input('targets') )->recursive();
+            
+            # Check targets
+            $verifyTargets = $targets->every(function ($value, $key) {
+                if ( !is_int($key) )
+                    return false;
+                    
+                $validator = Validator::make($value->toArray(), [
+                    'system' => ['required', 'alpha_num', 'filled'],
+                    'url' => ['required', 'url', 'filled'],
+                ]);
+                
+                if ( $validator->fails() ){
+                    return false;
+                }
+                return true;
+            });
+            
+            if (!$verifyTargets)
+                throw new CodeException ('Some target is malformed');
+                
+            # Check if 'Any' target is set
+            $verifyAny = $targets->firstWhere('system', 'any');
+            
+            if ( is_null($verifyAny) )
+                throw new CodeException ('You must define, at least, the "Any" target');
+
+            # Process the targets array a bit
+            $newTargets = [];
+            $targets->each(function ($item, $key) use (&$newTargets) {
+                $newTargets[$item['system']] = $item['url'];
+            });
+
+            # Try to create/update the code
+            $data = [
+                'user_id' => $userId,
+                'name'    => $request->input('name'),
+                'targets' => $newTargets,
+            ];
+
+            if( !empty($request->input('code')) ){
+                $data['id'] = $request->input('code');
+            }
+            $touched = self::UpdateOrCreateOne($data);
+
+            # Check if saved successfully
+            if ( !$touched )
+                throw new CodeException('We could not modify the code at this moment');
+
+            # Go to the index
+            return redirect('dashboard/codes');
+            
+        } catch ( CodeException $e ) {
+            Log::error($e);
+            
+            # Go to the form with error bag
+            return redirect()
+                    ->back()
+                    ->withErrors([
+                        'message' => __( $e->getMessage() )
+                    ]);
+        }
+
     }
       
 
