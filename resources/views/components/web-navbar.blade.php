@@ -51,7 +51,7 @@
                         </li>
                     @endif
                 @else
-                    <x-user-dropdown/>
+                    <x-dashboard-user-dropdown/>
                 @endguest
             </ul>
         </div>

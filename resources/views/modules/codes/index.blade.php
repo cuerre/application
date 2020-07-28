@@ -1,4 +1,5 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
+
 
 
 
@@ -7,12 +8,12 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Codes')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
         <div class="my-auto">
             <x-link-button 
                 icon="add"
                 :content="__('New')"
-                :link="url('dashboard/codes/creation')">
+                :link="url('desk/codes/creation')">
             </x-link-button >
         </div>
     </x-card-header>
@@ -95,7 +96,7 @@
                         {{-- Bottom bar container --}}
                         <div class="d-flex flex-row w-100 py-2">
                             {{-- Stats --}}
-                            <a href="{{ url('dashboard/codes/stats?code=' . $code['id']) }}" role="button" class="btn btn-sm text-dark text-decoration-none mr-1">
+                            <a href="{{ url('desk/codes/stats?code=' . $code['id']) }}" role="button" class="btn btn-sm text-dark text-decoration-none mr-1">
                                 <i class="material-icons align-middle">bar_chart</i>
                             </a>
 

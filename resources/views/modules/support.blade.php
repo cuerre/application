@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -6,7 +6,7 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Support')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
     </x-card-header>
 
     {{-- Errors --}}
@@ -16,7 +16,7 @@
     <x-alert-messages />
 
     <x-box>
-        <form action="{{ url('dashboard/support') }}" method="POST">
+        <form action="{{ url('desk/support') }}" method="POST">
             @csrf
             <div class="row align-items-end rounded py-4">
                 <div class="col-md align-self-stretch">

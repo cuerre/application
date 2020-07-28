@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -7,7 +7,7 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('New code')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
     </x-card-header>
     
     {{-- Errors --}}
@@ -17,38 +17,47 @@
     <x-alert-messages />
 
     <x-box>
-        <form action="{{ url('dashboard/codes') }}" method="POST">
+        <form action="{{ url('desk/codes') }}" method="POST">
             @csrf
 
             {{-- Name --}}
-            <x-input
-                name="name" 
-                type="text" 
-                :pre="__('Give it a name')">
-            </x-input>
-            
-            {{-- Buttons --}}
-            <div class="d-flex justify-content-end">
-                <div class="btn-group rounded" role="group">
-                    <button type="button" class="btn btn-light" v-on:click="addTarget()">
-                        <i class="material-icons align-middle">add</i>
-                    </button>
-                    <button type="button" class="btn btn-light" v-on:click="removeTarget()">
-                        <i class="material-icons align-middle">remove</i>
-                    </button>
-                </div>
+            <div class="mb-5">
+                <x-box-header>{{ __('Name') }}</x-box-header>
+                <x-input
+                    name="name" 
+                    type="text" 
+                    :pre="__('Give it a name')">
+                </x-input>
             </div>
             
-            {{-- Targets --}}     
-            <codes-target-selector 
-                v-for="item in codes.targets" 
-                v-bind:name="item">
-            </codes-target-selector>
+            <div class="mb-5">
+                {{-- Targets --}} 
+                <x-box-header>{{ __('Targets') }}</x-box-header>
+
+                {{-- Target Buttons --}}
+                <div class="d-flex justify-content-start">
+                    <div class="btn-group rounded" role="group">
+                        <button type="button" class="btn btn-light" v-on:click="addTarget()">
+                            <i class="material-icons align-middle text-muted">add</i>
+                        </button>
+                        <button type="button" class="btn btn-light" v-on:click="removeTarget()">
+                            <i class="material-icons align-middle text-muted">remove</i>
+                        </button>
+                    </div>
+                </div>
+                
+                {{-- Target Fields --}}
+                <codes-target-selector 
+                    v-for="item in codes.targets" 
+                    v-bind:name="item">
+                </codes-target-selector>
+            </div>
     
             {{-- Submit button --}}
             <div class="d-flex justify-content-end">
                 <x-submit-button 
-                    :content="__('Create!')">
+                    :content="__('Create code')"
+                    block>
                 </x-submit-button>
             </div>
             

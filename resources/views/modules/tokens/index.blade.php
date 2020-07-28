@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -6,11 +6,11 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Tokens')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
         <x-link-button
             icon="add"
             :content="__('New')"
-            :link="url('dashboard/tokens/creation')">
+            :link="url('desk/tokens/creation')">
         </x-link-button>
     </x-card-header>
     

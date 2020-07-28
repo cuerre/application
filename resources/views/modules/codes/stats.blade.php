@@ -1,11 +1,11 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
 @section('module')
     <x-card-header
         :title="__('Stats')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
         <x-link-button
             icon="refresh"
             :content="__('Refresh')"

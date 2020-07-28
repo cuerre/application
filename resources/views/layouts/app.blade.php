@@ -77,17 +77,10 @@
 <body class="bg-light">
     <div id="app">
     
-        {{-- Navbar --}}
-        <x-web-navbar/>
-        
-
-        {{-- Content --}}
-        <main class="container-fluid d-flex flex-column m-0 px-0" style="min-height: 70vh !important;">
-            @yield('content')
+        {{-- Full screen wrapper --}}
+        <main class="container-fluid d-flex flex-column m-0 px-0" style="min-height: 100vh !important;">
+            @yield('wrapper')
         </main>
-        
-        {{-- Footer --}}
-        <x-web-footer/>
         
     </div>
     

@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -6,7 +6,7 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Billing')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
     </x-card-header>
 
     {{-- Errors --}}

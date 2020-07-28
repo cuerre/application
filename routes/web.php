@@ -125,13 +125,13 @@ Route::prefix('documentation')->group(function () {
 
 /**
  *
- * Dashboard endpoints
+ * Desk endpoints
  *
  */
-Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+Route::middleware(['auth'])->prefix('desk')->group(function () {
 
     Route::get('/', function () {
-        return redirect('/dashboard/codes');
+        return redirect('/desk/codes');
     });
 
     Route::prefix('codes')->group(function () {
@@ -192,7 +192,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
         Route::get('/', function () {
             return view('modules.billing');
-        })->name('dashboard.billing');
+        })->name('desk.billing');
 
         Route::post('payment', 'PaymentController@Payment')->name('payment');
 

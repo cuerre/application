@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -6,13 +6,13 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Change your name')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
     </x-card-header>
 
     {{-- Errros --}}
     <x-alert-errors />
     
-    <form action="{{ url('dashboard/profile/name') }}" method="POST">
+    <form action="{{ url('desk/profile/name') }}" method="POST">
         @csrf
         @method('PUT')
         <x-input

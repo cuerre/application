@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class UserDropdown extends Component
+class DashboardUserDropdown extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class UserDropdown extends Component
      */
     public function render()
     {
-        return view('components.user-dropdown');
+        return view('components.dashboard-user-dropdown');
     }
 }

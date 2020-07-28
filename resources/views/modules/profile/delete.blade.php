@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -6,13 +6,13 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Delete your account')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
     </x-card-header>
 
     {{-- Errors --}}
     <x-alert-errors /> 
     
-    <form action="{{ url('dashboard/profile') }}" method="POST">
+    <form action="{{ url('desk/profile') }}" method="POST">
         @csrf
         @method('DELETE')
         

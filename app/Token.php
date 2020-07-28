@@ -49,6 +49,19 @@ class Token extends Model
 
 
     /**
+     * The allowed token 
+     * abilities
+     * 
+     * @var const array
+     */
+    const ALLOWED_ABILITIES = [
+        'manage_encoders',
+        'manage_redirections',
+    ];
+
+
+
+    /**
      * Check an ability
      *
      * @param string $ability

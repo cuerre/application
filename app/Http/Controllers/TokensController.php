@@ -254,7 +254,9 @@ class TokensController extends Controller
     {
         try {
             # Show creation view
-            return view('modules.tokens.creation');
+            return view('modules.tokens.creation', [
+                'abilities' => Token::ALLOWED_ABILITIES
+            ]);
 
         } catch ( Exception $e ) {
             Log::error($e);

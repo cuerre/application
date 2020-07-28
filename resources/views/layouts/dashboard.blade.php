@@ -1,53 +1,51 @@
-@extends('layouts.dash')
+@extends('layouts.app')
 
 
-@section('menu')
-    {{-- Navigation --}}
-    <x-dashboard-menu header="dashboard">
-        <x-dashboard-menu-item 
-            icon="crop_square" 
-            content="Codes" 
-            :link="url('dashboard/codes')">
-        </x-dashboard-menu-item>
-        
-        <x-dashboard-menu-item 
-            icon="face" 
-            content="Profile" 
-            :link="url('dashboard/profile')">
-        </x-dashboard-menu-item>
 
-        <x-dashboard-menu-item 
-            icon="vpn_key" 
-            content="Tokens" 
-            :link="url('dashboard/tokens')">
-        </x-dashboard-menu-item>
-        
-        <x-dashboard-menu-item 
-            icon="monetization_on" 
-            content="Billing" 
-            :link="url('dashboard/billing')">
-        </x-dashboard-menu-item>
-        
-        <x-dashboard-menu-item 
-            icon="mail" 
-            content="Support" 
-            :link="url('dashboard/support')">
-        </x-dashboard-menu-item>
-    </x-dashboard-menu>
+@push('styles.tablet')
     
-    {{-- Navigation extra --}}
-    {{--
-    <x-dashboard-menu header="more">
-        <x-dashboard-menu-item 
-            icon="code" 
-            content="Developers" 
-            :link="url('documentation/api/releases')">
-        </x-dashboard-menu-item>
-    </x-dashboard-menu>
-    --}}
-@endsection
+@endpush
 
 
-@section('module')
-    @yield('module')
+
+@section('wrapper')
+
+    {{-- <x-dashboard-navbar/> --}}
+
+    <div>
+    
+        {{-- Sidebar --}}
+        <div style="position: fixed; width: 20rem; height:100%;" 
+             class="pl-5 pt-4 bg-light shadow-sm">
+            <div class="mb-4">
+                {{-- Logo --}}
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{ asset('imgs/logo-title.png') }}" 
+                         style="max-height: 2rem;" 
+                         class="align-middle"/>
+                </a>
+            </div>
+            @yield('menu')
+        </div>
+
+        {{-- Content --}}
+        <div style="margin-left: 20rem;">                        
+            <div class="container-fluid bg-white">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 p-0" style="min-height: 100vh !important;">
+                        <x-dashboard-topbar sentence=""/>
+                        <div class="container-fluid" style="padding: 3rem 2.5rem 0 2.5rem !important;">
+                            @yield('module') 
+                        </div>
+                    </div>
+                </div>            
+            </div>        
+        </div>
+
+    </div>
+
+
+    
+        
+
 @endsection

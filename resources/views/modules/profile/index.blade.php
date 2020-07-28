@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.desk')
 
 
 
@@ -6,7 +6,7 @@
     {{-- Top title --}}
     <x-card-header
         :title="__('Profile')"
-        :hint="__('dashboard')">
+        :hint="__('desk')">
     </x-card-header>
     
     <x-alert-errors/>
@@ -22,7 +22,7 @@
                 <x-link-button
                     icon="edit"
                     :content="__('Edit')"
-                    :link="url('dashboard/profile/change/name')">
+                    :link="url('desk/profile/change/name')">
                 </x-link-button>
             </x-action-list-item>
             
@@ -32,7 +32,7 @@
                 <x-link-button
                     icon="edit"
                     :content="__('Edit')"
-                    :link="url('dashboard/profile/change/password')">
+                    :link="url('desk/profile/change/password')">
                 </x-link-button>
             </x-action-list-item>
             
@@ -60,7 +60,7 @@
             {{ __('If you would like to delete your account, click on the bottom link.') }}
         </p>
         <div class="mt-5">
-            <a href="{{ url('dashboard/profile/deletion') }}">
+            <a href="{{ url('desk/profile/deletion') }}">
                 {{ __('Delete account') }}
             </a>
         </div>
