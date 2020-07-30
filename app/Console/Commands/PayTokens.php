@@ -60,7 +60,6 @@ class PayTokens extends Command
         parent::__construct();
 
         $this->chunk = config('cuerre.processing.chunk');
-        $this->grace = config('cuerre.products.tokens.grace'); // hours
         $this->price = config('cuerre.products.tokens.price');
     }
 
@@ -77,20 +76,7 @@ class PayTokens extends Command
             ->chunk($this->chunk, function ($users) {
                 foreach ( $users as $user ) {
 
-                    # Calculate min hour to avoid 
-                    # the bill
-                    $grace = Carbon::now()
-                                ->subHours($this->grace);
-
-                    # Take all the tokens for this user
-                    $tokens = Token::where('user_id', $user->id)
-                                   ->where('active', true)
-                                   ->orWhere(function($query) use ($grace) {
-                                         $query->where('active', false)
-                                         ->whereTime('updated_at', '>', $grace);
-                                     })
-                                   ->orderBy('id')
-                                   ->get();
+                    $tokens = $user->BillableTokens();
 
                     # Pay for the used tokens or unable it
                     $tokens->each(function($token) use ($user) {

@@ -1,26 +1,34 @@
-<div class="sticky-top">
-    <div class="d-flex align-items-center bg-white px-4 shadow-sm" 
-        style="height: 5rem !important;">
-        <div class="h5 font-weight-light">
-            @unless( empty($sentence) ) {{ $sentence }} @endunless
+<div class="sticky-top p-0">
+
+
+        <div class="row m-0 p-0 align-items-center bg-white shadow-sm"
+             style="height: 5rem !important;">
+            <div class="col">
+                @unless( empty($slot) ) {{ $slot }} @endunless
+            </div>
+            <div class="col-auto">
+                <div class="d-flex justify-content-center align-items-center">
+
+                    {{-- Cost per day --}}
+                    <x-dashboard-user-cost-box/>
+                
+                    {{-- Authentication Links --}}
+                    @guest
+                        
+                        <div>
+                            <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">
+                                {{ __('Login') }}
+                            </a>
+                            <a class="btn btn-primary mr-2" href="{{ route('register') }}">
+                                {{ __('Register') }}
+                            </a>
+                        </div>
+                    @else
+                        <x-dashboard-user-dropdown/>
+                    @endguest
+
+                </div>
+            </div>
         </div>
-        <div class="ml-auto">
-            {{-- Authentication Links --}}
-            @guest
-                @if(Route::currentRouteName() !== 'login' )
-                    <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">
-                        {{ __('Login') }}
-                    </a>
-                @endif
-                @if (Route::has('register') && Route::currentRouteName() !== 'register')
-                    <a class="btn btn-primary mr-2" href="{{ route('register') }}">
-                        {{ __('Register') }}
-                    </a>
-                @endif
-            @else
-                <x-dashboard-user-dropdown/>
-            @endguest
-        </div>
-    </div>
-    <!--<div class="p-1 bg-primary rounded-bottom m-0 shadow-sm"></div>-->
+
 </div>

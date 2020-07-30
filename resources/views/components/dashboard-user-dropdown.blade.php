@@ -11,6 +11,8 @@
     </a>
 
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <h6 class="dropdown-header">{{ __('Current bill') }}</h6>
+        <h6 class="dropdown-header font-weight-normal">{{ Auth::user()->CurrentBill() }} €</h6>
         <h6 class="dropdown-header">{{ __('Remaining credits') }}</h6>
         <h6 class="dropdown-header font-weight-normal">{{ Auth::user()->credits }} €</h6>
         <div class="dropdown-divider"></div>

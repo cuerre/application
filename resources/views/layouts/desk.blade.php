@@ -1,6 +1,13 @@
 @extends('layouts.dashboard')
 
 
+{{-- Extra content on the topbar--}}
+@push('dashboard.topbar')
+    
+@endpush
+
+
+
 @section('menu')
     {{-- Products --}}
     <x-dashboard-menu header="products">

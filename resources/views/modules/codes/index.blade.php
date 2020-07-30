@@ -2,7 +2,6 @@
 
 
 
-
 @section('module')
 
     {{-- Top title --}}

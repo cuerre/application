@@ -4,9 +4,8 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class DashboardTopbar extends Component
+class DashboardUserCostBox extends Component
 {
-
     /**
      * Create a new component instance.
      *
@@ -14,7 +13,7 @@ class DashboardTopbar extends Component
      */
     public function __construct()
     {
-        
+        //
     }
 
     /**
@@ -24,6 +23,6 @@ class DashboardTopbar extends Component
      */
     public function render()
     {
-        return view('components.dashboard-topbar');
+        return view('components.dashboard-user-cost-box');
     }
 }

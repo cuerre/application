@@ -60,7 +60,6 @@ class PayCodes extends Command
         parent::__construct();
 
         $this->chunk = config('cuerre.processing.chunk');
-        $this->grace = config('cuerre.products.codes.grace'); // hours
         $this->price = config('cuerre.products.codes.price');
     }
 
@@ -77,21 +76,7 @@ class PayCodes extends Command
             ->chunk($this->chunk, function ($users) {
                 foreach ( $users as $user ) {
 
-                    # Calculate min hour to avoid 
-                    # the bill when deactivated
-                    $grace = Carbon::now()
-                                ->subHours($this->grace)
-                                ->toTimeString();
-
-                    # Get active and recently deactivated (12h)
-                    $codes = Code::where('user_id', $user->id)
-                                ->where('active', true)
-                                ->orWhere(function($query) use ($grace) {
-                                    $query->where('active', false)
-                                        ->whereTime('updated_at', '>', $grace);
-                                })
-                                ->orderBy('id')
-                                ->get();
+                    $codes = $user->BillableCodes();
 
                     # Pay for the code or unable it
                     $codes->each(function($code) use ($user) {

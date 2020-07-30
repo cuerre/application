@@ -33,10 +33,15 @@
             <div class="container-fluid bg-white">
                 <div class="row justify-content-center">
                     <div class="col-md-12 p-0" style="min-height: 100vh !important;">
-                        <x-dashboard-topbar sentence=""/>
+
+                        <x-dashboard-topbar>
+                            @stack('dashboard.topbar')
+                        </x-dashboard-topbar>
+
                         <div class="container-fluid" style="padding: 3rem 2.5rem 0 2.5rem !important;">
                             @yield('module') 
                         </div>
+
                     </div>
                 </div>            
             </div>        
