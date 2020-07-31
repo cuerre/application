@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class DashboardUserCostBox extends Component
+class DashboardUserBalanceBox extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class DashboardUserCostBox extends Component
      */
     public function render()
     {
-        return view('components.dashboard-user-cost-box');
+        return view('components.dashboard-user-balance-box');
     }
 }

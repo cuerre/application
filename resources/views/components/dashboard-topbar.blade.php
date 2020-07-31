@@ -10,7 +10,7 @@
                 <div class="d-flex justify-content-center align-items-center">
 
                     {{-- Cost per day --}}
-                    <x-dashboard-user-cost-box/>
+                    <x-dashboard-user-balance-box/>
                 
                     {{-- Authentication Links --}}
                     @guest
