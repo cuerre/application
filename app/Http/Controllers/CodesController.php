@@ -412,7 +412,7 @@ class CodesController extends Controller
             $page = self::GetPage(Auth::id(), 5);
 
             # Show index view
-            return view('modules.codes.index', ['page' => $page]);
+            return view('desk.codes.index', ['page' => $page]);
             
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -546,7 +546,7 @@ class CodesController extends Controller
             $stats = new StatsController( $request->input('code') );
 
             # Show index view
-            return view('modules.codes.stats', [
+            return view('desk.codes.stats', [
                 'platforms'     => $stats->GetPlatforms(),
                 'browsers'      => $stats->GetBrowsers(),
                 'deviceTypes'   => $stats->GetDeviceTypes(),
@@ -622,7 +622,7 @@ class CodesController extends Controller
     {
         try {
             # Show index view
-            return view('modules.codes.creation');
+            return view('desk.codes.creation');
             
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -655,7 +655,7 @@ class CodesController extends Controller
                 throw new CodeException ('Some field is malformed');
 
             # Show index view
-            return view('modules.codes.modification', [
+            return view('desk.codes.modification', [
                 'code' => self::GetOne( $request->input('code') )
             ]);
             

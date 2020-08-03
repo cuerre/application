@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class RemainingCredits extends Component
+class BillingRemainingCredits extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class RemainingCredits extends Component
      */
     public function render()
     {
-        return view('components.remaining-credits');
+        return view('components.billing-remaining-credits');
     }
 }

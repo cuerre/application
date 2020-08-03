@@ -58,6 +58,8 @@
     </x-dashboard-menu>
 @endsection
 
+
+
 @section('module')
     @yield('module')
 @endsection

@@ -62,7 +62,7 @@ class PaymentController extends Controller
             # Go to billing
             if( $validator->fails() ){
                 return redirect()
-                     ->route('dashboard.billing')
+                     ->route('desk.billing')
                      ->withErrors($validator);
             }
 
@@ -77,7 +77,7 @@ class PaymentController extends Controller
 
             # Go to billing page
             return redirect()
-                 ->route('dashboard.billing')
+                 ->route('desk.billing')
                  ->with([
                      'message' => __('Imposible to go to payment page')
                  ]);
@@ -151,7 +151,7 @@ class PaymentController extends Controller
 
             # Go to billing index
             return redirect()
-                 ->route('dashboard.billing')
+                 ->route('desk.billing')
                  ->with([
                      'message' => __('Thank you for your buy. Enjoy your credits')
                  ]);
@@ -162,7 +162,7 @@ class PaymentController extends Controller
 
             # Go to billing index with errors
             return redirect()
-                 ->route('dashboard.billing')
+                 ->route('desk.billing')
                  ->with([
                      'message' => __('Sorry, something was bad. If you have problems, contact support.')
                  ]);

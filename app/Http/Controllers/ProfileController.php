@@ -196,7 +196,7 @@ class ProfileController extends Controller
             $profile = self::Get();
 
             # Show index view
-            return view('modules.profile.index', ['profile' => $profile]);
+            return view('desk.profile.index', ['profile' => $profile]);
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
@@ -214,7 +214,7 @@ class ProfileController extends Controller
     {
         try {
             # Show index view
-            return view('modules.profile.change.name');
+            return view('desk.profile.change.name');
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
@@ -232,7 +232,7 @@ class ProfileController extends Controller
     {
         try {
             # Show index view
-            return view('modules.profile.change.password');
+            return view('desk.profile.change.password');
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
@@ -250,7 +250,7 @@ class ProfileController extends Controller
     {
         try {
             # Show index view
-            return view('modules.profile.delete');
+            return view('desk.profile.delete');
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());

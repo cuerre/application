@@ -11,12 +11,12 @@
     <div class="dropdown-menu">
 
         {{-- Modify --}}
-        <a class="dropdown-item" href="{{ url('dashboard/codes/modification?code='.$id) }}">
+        <a class="dropdown-item" href="{{ url('desk/codes/modification?code='.$id) }}">
             {{ __('Modify') }}
         </a>
 
         {{-- Delete --}}
-        <form action="{{ url('dashboard/codes') }}" method="POST">
+        <form action="{{ url('desk/codes') }}" method="POST">
             @csrf
             @method('DELETE')
             <input type="hidden" name="code" value="{{ $id }}">
@@ -29,7 +29,7 @@
         </form>
 
         {{-- Enable / Disable --}}
-        <form action="{{ url('dashboard/codes/switching') }}" method="POST">
+        <form action="{{ url('desk/codes/switching') }}" method="POST">
             @csrf
             @method('PUT')
             <input type="hidden" name="code" value="{{ $id }}">

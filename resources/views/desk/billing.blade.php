@@ -16,10 +16,10 @@
     <x-alert-messages />
 
     {{-- Remaining credits --}}
-    <x-remaining-credits/>
+    <x-billing-remaining-credits/>
 
     {{-- Buy credits --}}
-    <x-buy-credits/>
+    <x-billing-buy-credits/>
 
     {{-- History --}}
     <x-billing-history />

@@ -9,6 +9,14 @@
 
     .dashboard-content-wrapper {}
 
+    .dashboard-sidebar-menu-expanded {
+        display: none;
+    }
+
+    .dashboard-sidebar-menu-collapsed {
+        display: block;
+    }
+
 @endpush
 
 
@@ -24,6 +32,14 @@
     .dashboard-content-wrapper {
         margin-left: 20rem;
     }
+
+    .dashboard-sidebar-menu-expanded {
+        display: block;
+    }
+
+    .dashboard-sidebar-menu-collapsed {
+        display: none;
+    }
 @endpush
 
 
@@ -31,7 +47,7 @@
 @section('wrapper')
     
     {{-- Sidebar --}}
-    <div class="pl-5 pt-4 bg-light shadow-sm dashboard-sidebar-wrapper">
+    <div class="px-5 py-4 bg-light shadow-sm dashboard-sidebar-wrapper">
         <div class="mb-4">
             {{-- Logo --}}
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -40,7 +56,19 @@
                         class="align-middle"/>
             </a>
         </div>
-        @yield('menu')
+
+        {{-- Responsive menu: expanded --}}
+        <div class="dashboard-sidebar-menu-expanded">
+            @yield('menu')
+        </div>
+
+        {{-- Responsive menu: collapsed --}}
+        <div class="dashboard-sidebar-menu-collapsed">
+            <x-collapsible-box class="btn btn-block btn-light border text-muted mb-4">
+                @yield('menu')
+            </x-collapsible-box>
+        </div>
+        
     </div>
     
 
