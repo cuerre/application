@@ -27,6 +27,7 @@
             @method('PUT')
 
             {{-- Name --}}
+            <x-box-header>{{ __('Name') }}</x-box-header>
             <x-input
                 name="name" 
                 type="text"  
@@ -35,24 +36,31 @@
             </x-input>
 
             <input type="hidden" name="code" value="{{ $code['id'] }}" />
-            
-            {{-- Buttons --}}
-            <div class="d-flex justify-content-end">
-                <div class="btn-group rounded" role="group">
-                    <button type="button" class="btn btn-light" v-on:click="addTarget()">
-                        <i class="material-icons align-middle">add</i>
-                    </button>
-                    <button type="button" class="btn btn-light" v-on:click="removeTarget()">
-                        <i class="material-icons align-middle">remove</i>
-                    </button>
+
+            <div class="mb-5">
+                {{-- Targets --}} 
+                <x-box-header>{{ __('Targets') }}</x-box-header>
+
+                {{-- Target Buttons --}}
+                <div class="d-flex justify-content-start">
+                    <div class="btn-group rounded" role="group">
+                        <button type="button" class="btn btn-light" v-on:click="addTarget()">
+                            <i class="material-icons align-middle text-muted">add</i>
+                        </button>
+                        <button type="button" class="btn btn-light" v-on:click="removeTarget()">
+                            <i class="material-icons align-middle text-muted">remove</i>
+                        </button>
+                    </div>
                 </div>
+            
+                {{-- Target Fields --}}
+                <codes-target-selector 
+                    v-for="item in codes.targets" 
+                    v-bind:name="item">
+                </codes-target-selector>
             </div>
             
-            {{-- Targets --}}     
-            <codes-target-selector 
-                v-for="item in codes.targets" 
-                v-bind:name="item">
-            </codes-target-selector>
+            
     
             {{-- Submit button --}}
             <div class="d-flex justify-content-end">

@@ -17,7 +17,7 @@ use App\Http\Controllers\StatsController;
  * CodesController is a Laravel Controller for managing App\Code Models and Views
  * 
  * CodesController is a Laravel Controller for managing App\Code data Models 
- * and renderable Views. This means that everything related to url('dashboard/codes')
+ * and renderable Views. This means that everything related to url('desk/codes')
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Methods:
@@ -35,9 +35,8 @@ use App\Http\Controllers\StatsController;
  * self::ViewDownload( Request )
  * self::ViewStats( Request )
  * self::ViewCreation()
- * 
  * self::ViewModification( Request )
- * 
+ * self::ViewUpdateOrCreate ( Request )
  * 
  * @package Cuerre
  * @author Alby Hernández
@@ -746,7 +745,7 @@ class CodesController extends Controller
                 throw new CodeException('We could not modify the code at this moment');
 
             # Go to the index
-            return redirect('dashboard/codes');
+            return redirect('desk/codes');
             
         } catch ( CodeException $e ) {
             Log::error($e);

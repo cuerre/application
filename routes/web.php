@@ -149,6 +149,7 @@ Route::middleware(['auth'])->prefix('desk')->group(function () {
         Route::delete('/', 'CodesController@ViewDelete');
 
         Route::post('/', 'CodesController@ViewUpdateOrCreate');
+        //Route::post('/', 'CodesController@ViewCreateOne');
 
         Route::put('/', 'CodesController@ViewUpdateOrCreate');
 
