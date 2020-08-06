@@ -1978,21 +1978,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       options: {
         legend: {
-          display: false
+          display: true
         },
-        responsive: true,
-        scales: {
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              suggestedMin: 50,
-              maxTicksLimit: 3
-            }
-          }]
-        }
+        responsive: true
       }
     };
   },
@@ -2010,7 +1998,7 @@ __webpack_require__.r(__webpack_exports__);
     /* eslint-disable no-new */
 
     new Chart(document.getElementById('stats_browser_chart'), {
-      type: 'horizontalBar',
+      type: 'doughnut',
       data: chartData,
       options: this.options
     });
@@ -2377,21 +2365,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       options: {
         legend: {
-          display: false
+          display: true
         },
-        responsive: true,
-        scales: {
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              suggestedMin: 50,
-              maxTicksLimit: 3
-            }
-          }]
-        }
+        responsive: true
       }
     };
   },
@@ -2409,7 +2385,7 @@ __webpack_require__.r(__webpack_exports__);
     /* eslint-disable no-new */
 
     new Chart(document.getElementById('stats_platforms_chart'), {
-      type: 'horizontalBar',
+      type: 'doughnut',
       data: chartData,
       options: this.options
     });
@@ -90884,8 +90860,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/achetronic/Documentos/cuerre/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/achetronic/Documentos/cuerre/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/achetronic/Documentos/application/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/achetronic/Documentos/application/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

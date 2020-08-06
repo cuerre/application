@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
  * ProfileController is a Laravel Controller for managing App\User Models and Views
  * 
  * ProfileController is a Laravel Controller for managing App\User data Models 
- * and renderable Views. This means that everything related to url('dashboard/profile')
+ * and renderable Views. This means that everything related to url('desk/profile')
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Example usage:
@@ -111,7 +111,7 @@ class ProfileController extends Controller
             }
                 
             # Go to the index
-            return redirect('dashboard/profile')
+            return redirect('desk/profile')
                     ->send();
             
         } catch ( Exception $e ) {

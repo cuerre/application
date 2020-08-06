@@ -109,7 +109,6 @@ Route::prefix('documentation')->group(function () {
         });
     });
 
-    
     Route::prefix('contracts')->group(function () {
         Route::get('/terms', function () {
             return view('documentation.contracts.terms');

@@ -53,7 +53,7 @@
     
     {{-- Code list --}}
     @forelse ($page['codes'] as $code)
-        <x-box>
+        <x-box class="mb-5">
         
             <div class="row justify-content-center">
                 <div class="col-md-auto p-3">

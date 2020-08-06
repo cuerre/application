@@ -46,6 +46,68 @@
     <div class="container h-100 py-5">
         <div class="row mb-5">
 
+
+
+            {{-- Codes offer --}}
+            <div class="col-lg ">
+                <div class="overShadow rounded h-100">
+                    <x-striped-card>
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bolder text-uppercase">
+                                {{ __('GUI access') }}
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-end">
+                            <div>
+                                <span class="h1 font-weight-bold text-uppercase">
+                                    1€
+                                </span>
+                            </div>
+                            <div class="ml-2">
+                                <small>/ {{ __('day') }} ({{ __('each code') }})</small>
+                            </div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <x-link-button
+                                content="SELECT"
+                                :link="url('register')"
+                                size="md" 
+                                block
+                                color="primary">
+                            </x-link-button>
+                        </div>
+                        
+                        <div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Create QR that redirects') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Reuse QR between campaigns') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Detailed stats about visits') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Set different targets') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Prior Technical Support') }}</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </x-striped-card>
+                </div>
+            </div>
+
+
+
             {{-- Tokens offer --}}
             <div class="col-lg">
                 <div class="overShadow rounded h-100">
@@ -89,65 +151,6 @@
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
                                     <small>{{ __('3k request per hour / each token') }}</small>
-                                </li>
-                                <li class="list-group-item border-0">
-                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Prior Technical Support') }}</small>
-                                </li>
-                            </ul>
-                        </div>
-                    </x-striped-card>
-                </div>
-            </div>
-
-
-            {{-- Codes offer --}}
-            <div class="col-lg ">
-                <div class="overShadow rounded h-100">
-                    <x-striped-card>
-                        <div class="d-flex justify-content-center">
-                            <p class="font-weight-bolder text-uppercase">
-                                {{ __('Marketing guru') }}
-                            </p>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-end">
-                            <div>
-                                <span class="h1 font-weight-bold text-uppercase">
-                                    1€
-                                </span>
-                            </div>
-                            <div class="ml-2">
-                                <small>/ {{ __('day') }} ({{ __('each code') }})</small>
-                            </div>
-                        </div>
-                        
-                        <div class="py-3">
-                            <x-link-button
-                                content="SELECT"
-                                :link="url('register')"
-                                size="md" 
-                                block
-                                color="primary">
-                            </x-link-button>
-                        </div>
-                        
-                        <div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item border-0">
-                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Create QR that redirects') }}</small>
-                                </li>
-                                <li class="list-group-item border-0">
-                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Reuse QR between campaigns') }}</small>
-                                </li>
-                                <li class="list-group-item border-0">
-                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Detailed stats about visits') }}</small>
-                                </li>
-                                <li class="list-group-item border-0">
-                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Set different targets') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>

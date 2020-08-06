@@ -58,7 +58,7 @@
     
 
     @forelse ( $tokens as $token )
-        <x-box>
+        <x-box class="mb-5">
             <div class="row">
                 <div class="col text-muted">
                     <div class="d-inline">

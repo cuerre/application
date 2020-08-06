@@ -1,4 +1,4 @@
-<x-box>
+<x-box class="mb-5">
     <x-box-header>
         {{ __('Buy credits') }}
     </x-box-header>

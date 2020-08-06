@@ -11,7 +11,7 @@
     <div class="dropdown-menu dropdown-menu-right">
 
         {{-- Delete --}}
-        <form action="{{ url('dashboard/tokens') }}" method="POST">
+        <form action="{{ url('desk/tokens') }}" method="POST">
             @csrf
             @method('DELETE')
             <input name="id" type="hidden" value="{{ $id }}">
@@ -24,7 +24,7 @@
         </form>
 
         {{-- Enable / Disable --}}
-        <form action="{{ url('dashboard/tokens/switching') }}" method="POST">
+        <form action="{{ url('desk/tokens/switching') }}" method="POST">
             @csrf
             @method('PUT')
             <input type="hidden" name="token" value="{{ $id }}">

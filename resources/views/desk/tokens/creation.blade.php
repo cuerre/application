@@ -88,7 +88,7 @@
                             <div class="col-auto">
                                 <p class="font-weight-bold text-capitalize text-muted">{{ __($abilities[1]) }}</p>
                                 <p class="text-muted">
-                                    {{ __('This ability is free to have and allows you to create vitamin codes at a fixed price per created code.') }}
+                                    {{ __('This ability is free and allows you to create vitamin codes at a fixed price per day for each created code.') }}
                                 </p>
                             </div>
                         </div>

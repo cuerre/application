@@ -11,7 +11,7 @@
     
     <x-alert-errors/>
     
-    <x-box>
+    <x-box class="mb-5">
         <x-box-header>
             {{ __('Your personal data') }}
         </x-box-header>
@@ -19,21 +19,13 @@
             <x-action-list-item
                 :field="__('Name')" 
                 :value="$profile['name']">
-                <x-link-button
-                    icon="edit"
-                    :content="__('Edit')"
-                    :link="url('desk/profile/change/name')">
-                </x-link-button>
+                <a href="{{ url('desk/profile/change/name') }}">{{ __('Change') }}</a>
             </x-action-list-item>
             
             <x-action-list-item
                 :field="__('Password')" 
                 value="******">
-                <x-link-button
-                    icon="edit"
-                    :content="__('Edit')"
-                    :link="url('desk/profile/change/password')">
-                </x-link-button>
+                <a href="{{ url('desk/profile/change/password') }}">{{ __('Change') }}</a>
             </x-action-list-item>
             
             <x-action-list-item
@@ -49,7 +41,7 @@
         {{ __('After clicking the button, we really destroy your data to protect your privacy.') }}
         {{ __('If you find any problem doing this action, please, contact us to help you.') }}
     </x-attention>
-    <x-box>
+    <x-box class="mb-5">
         <x-box-header>
             {{ __('You are part of this') }}
         </x-box-header>

@@ -24,6 +24,9 @@
 {{-- > Tablets --}}
 @push('styles.tablet')
     .dashboard-sidebar-wrapper {
+        scrollbar-width: thin;
+        overflow-x: hidden;
+        overflow-y: scroll;
         position: fixed; 
         width: 20rem; 
         height:100%;
@@ -68,6 +71,12 @@
                 @yield('menu')
             </x-collapsible-box>
         </div>
+
+        {{-- Version --}}
+        <div class="mt-4 mb-4">
+            {{-- Logo --}}
+            <span class="text-muted small ">{{ __('Version') }}: {{ config('cuerre.version') }}</span>
+        </div>
         
     </div>
     
@@ -82,7 +91,7 @@
                         @stack('dashboard.topbar')
                     </x-dashboard-topbar>
 
-                    <div class="container-fluid" style="padding: 3rem 2.5rem 0 2.5rem !important;">
+                    <div class="container" style="padding: 3rem 2.5rem 0 2.5rem !important;">
                         @yield('module') 
                     </div>
 
