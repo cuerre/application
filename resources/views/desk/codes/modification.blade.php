@@ -16,7 +16,7 @@
     {{-- Messages bag --}}
     <x-alert-messages />
 
-    <x-attention>
+    <x-attention show>
         {{ __('You are going to change the targets of this QR code.') }}
         {{ __('Make sure what you are doing because this can be risky on marketing campaigns.') }}
     </x-attention>

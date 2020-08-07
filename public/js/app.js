@@ -90287,6 +90287,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 window.icolor = new _ColorGenerator_js__WEBPACK_IMPORTED_MODULE_10__["default"]();
+/**
+ * 
+ * 
+ */
 
 /***/ }),
 

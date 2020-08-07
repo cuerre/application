@@ -36,10 +36,6 @@
                     <span class="small">30/04/2020</span>
                 </div>
                 <div>
-                    <code>Target</code> 
-                    <span class="small">Free & Premium</span>
-                </div>
-                <div>
                     <code>Maturity</code> 
                     <span class="small">Stable</span>
                 </div>
@@ -50,8 +46,8 @@
     <div class="mb-5">
         <h4>Maturity matters</h4>
         <p class="mb-5">
-            When new features are released, not always are available for free users at the beginning. 
-            This is because we would like to guarantee the quality of service and we launch them under controlled 
+            When new features are released, not always are available for all users at the beginning. 
+            This is because we would like to guarantee the quality of service and launch them under controlled 
             environment with few users. If a feature is mature enough to handle high levels of requests, then we release 
             it for the rest of users. 
         </p>

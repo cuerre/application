@@ -21,30 +21,27 @@
     <x-alert-messages />
 
 
-    <x-attention>
+    <x-attention show>
         <p>
-            {{ __('Tokens are keys that can do actions in your name (they are basically you).') }} 
-            {{ __("For security reasons we will show it just one time after creation.") }}
-            {{ __("So save it in a safe place and if you think some token can be compromised, delete it.") }}
+            {{ __('Tokens can be used to manage your QR codes using our API.') }} 
+            {{ __('This is the easiest way to integrate our service into your application without pain.') }} 
         </p>
         <p>
-            {{ __('Tokens can be used to generate or read QR codes for your application using our API.') }} 
-            {{ __('This service is the easiest way to integrate QR without pain.') }} 
-        </p>
-        <p>
-            <code>{{ __('As a premium service') }},</code> 
-            {{ __('we allow you to generate tokens. They are billed daily.') }}
+            <code class="text-primary">
+                {{ __('As a premium service') }}, {{ __('tokens are billed daily.') }}
+            </code> 
             {{ __('This means you only pay for them if they have been used in the last day.') }}
             <ul>
                 <li>
-                    {{ __('Each token can make a max number of requests per hour (currently 3k).') }} 
+                    {{ __('Each token can make a max number of requests per hour.') }} 
                 </li>
                 <li>
-                    {{ __('They will be deleted if not enough credits to pay for it.') }} 
-                    {{ __('The system tries to pay for older ones first, deleting newer when no credits.') }}
+                    {{ __('They will be switched off if not enough credits to pay for it.') }} 
+                    {{ __('The system tries to pay for older ones first, switching newer when no credits to pay them all.') }}
                 </li>
             </ul>
             
+            {{--
             <p class="mt-3">
                 <x-link-button
                     :content="__('Check the prices')"
@@ -53,12 +50,13 @@
                     color="light">
                 </x-link-button>
             </p>
+            --}}
         </p>
     </x-attention>
     
 
     @forelse ( $tokens as $token )
-        <x-box class="mb-5">
+        <x-box class="mb-4">
             <div class="row">
                 <div class="col text-muted">
                     <div class="d-inline">

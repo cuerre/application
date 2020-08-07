@@ -24,9 +24,8 @@
 {{-- > Tablets --}}
 @push('styles.tablet')
     .dashboard-sidebar-wrapper {
-        scrollbar-width: thin;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
         position: fixed; 
         width: 20rem; 
         height:100%;
@@ -50,7 +49,7 @@
 @section('wrapper')
     
     {{-- Sidebar --}}
-    <div class="px-5 py-4 bg-light shadow-sm dashboard-sidebar-wrapper">
+    <div class="px-5 py-4 bg-white shadow-sm dashboard-sidebar-wrapper">
         <div class="mb-4">
             {{-- Logo --}}
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -58,7 +57,14 @@
                         style="max-height: 2rem;" 
                         class="align-middle"/>
             </a>
+            {{-- Version --}}
+            <p class="text-muted small">
+                {{ __('Version') }}: {{ config('cuerre.version') }}
+            </p>
         </div>
+
+
+        
 
         {{-- Responsive menu: expanded --}}
         <div class="dashboard-sidebar-menu-expanded">
@@ -71,19 +77,13 @@
                 @yield('menu')
             </x-collapsible-box>
         </div>
-
-        {{-- Version --}}
-        <div class="mt-4 mb-4">
-            {{-- Logo --}}
-            <span class="text-muted small ">{{ __('Version') }}: {{ config('cuerre.version') }}</span>
-        </div>
         
     </div>
     
 
     {{-- Content --}}
     <div class="dashboard-content-wrapper">                        
-        <div class="container-fluid bg-white">
+        <div class="container-fluid bg-light">
             <div class="row justify-content-center">
                 <div class="col-md-12 p-0" style="min-height: 100vh !important;">
 
