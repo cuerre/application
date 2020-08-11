@@ -17,8 +17,6 @@ Route::get('/test', function (Request $request) {
 
 });
 
-
-
 Auth::routes();
 
 Route::get('/redirect', 'VisitController@Pipeline');
