@@ -1,35 +1,51 @@
-@extends('layouts.web')
+@extends('layouts.app') 
 
 
 
-@section('content')
+{{-- Smartphones & bigger --}}
+@push('styles.phone.portrait')
+    .error-description-wrapper {
+        max-width: 100% !important;
+    }
+@endpush
 
-    {{-- Error --}}
-    <div class="container-fluid text-muted bg-white border-bottom py-5 mb-5">
-        <div class="container h-100 py-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-auto text-center pb-5 pb-lg-0">
-                    <img src="{{ asset('imgs/logo-sad.png') }}" 
-                        alt="{{ __('Logo with a sad face') }}"
-                        style="height: 10rem; width: 10rem;"/>
-                </div>
-                <div class="col-lg-auto">
-                    <p class="h1 font-weight-bold mb-4 align-self-center text-center">
-                        {{ __('We made a mistake') }}
+
+
+{{-- Desktop & bigger --}}
+@push('styles.large')
+    .error-description-wrapper {
+        max-width: 25rem !important;
+    }
+@endpush
+
+
+
+@section('wrapper')
+
+    <div class="d-flex flex-column justify-content-center align-items-center border vh-100">
+        <div class="row justify-content-center">
+            <div class="col-lg-auto text-center pb-5 pb-lg-0">
+                <img src="{{ asset('imgs/logo-sad.png') }}" 
+                    alt="{{ __('Logo with a sad face') }}"
+                    style="height: 10rem; width: 10rem;"/>
+            </div>
+            <div class="col-lg-auto">
+                <p class="h1 font-weight-bold text-muted mb-4 text-center text-lg-left">
+                    @yield('code')
+                </p>
+                <p class="h3 font-weight-normal text-muted mb-4 text-center text-lg-left">
+                    @yield('message')
+                </p>
+                <div class="error-description-wrapper px-5 px-lg-0">
+                    <p class="h5 font-weight-normal text-muted mb-4 text-center text-lg-left text-justify">
+                        @yield('description')
                     </p>
-                    <p class="h1 font-weight-normal mb-4 align-self-center text-center">
-                        @yield('code') - @yield('message')
-                    </p>
-                    <div class="mb-4 align-self-center text-center">
-                        <x-link-button
-                            :content="__('Go Home')"
-                            :link="url('/')"
-                            size="lg" 
-                            color="primary">
-                        </x-link-button>
-                    </div>
-                    
                 </div>
+                
+                <div class="mb-4 align-self-center text-center text-lg-left">
+                    <a href="{{ url('/') }}" class="btn btn-light btn-lg text-primary active">{{ __('Go Home') }}</a>
+                </div>
+                
             </div>
         </div>
     </div>

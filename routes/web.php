@@ -206,12 +206,6 @@ Route::middleware(['auth'])->prefix('desk')->group(function () {
 
 
 
-/*
-Route::fallback(function () {
+Route::any('/{any}', function () {
     abort (404);
-});
-
-Route::any('/', function () {
-    abort (404);
-});
-*/
+})->where('any', '.*');
