@@ -1,6 +1,6 @@
 <?php
 
-use Exception;
+use App\Exceptions\CuerreException;
 use App\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +24,7 @@ Route::get('/health', function() {
 
         # Check the result
         if ( $collection->isEmpty() ) {
-            throw new Exception('DB query collection is empty');
+            throw new CuerreException('DB query collection is empty');
         }
 
         # Return the response
@@ -33,7 +33,7 @@ Route::get('/health', function() {
             'message'   => 'query successful'
         ], 200 );
 
-    } catch ( Exception $e ) {
+    } catch ( CuerreException $e ) {
         Log::emergency($e);
         return response()->json([
             'status'    => 'error',
