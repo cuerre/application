@@ -48,23 +48,24 @@
 
 
 
-            {{-- Codes offer --}}
+            {{-- Small offer --}}
             <div class="col-lg ">
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
                             <p class="font-weight-bolder text-uppercase">
-                                {{ __('GUI access') }}
+                                {{ __('SMALL PACK') }}
                             </p>
                         </div>
-                        <div class="d-flex justify-content-center align-items-end">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    1€
+                                    0.2€
                                 </span>
-                            </div>
-                            <div class="ml-2">
                                 <small>/ {{ __('day') }} ({{ __('each code') }})</small>
+                            </div>
+                            <div class="my-3">
+                                <span class="font-weight-normal small">{{ __('* -50 codes') }}</span>
                             </div>
                         </div>
                         
@@ -98,7 +99,76 @@
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Prior Technical Support') }}</small>
+                                    <small>{{ __('API access') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Technical support') }}</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </x-striped-card>
+                </div>
+            </div>
+
+
+
+            {{-- Codes offer --}}
+            <div class="col-lg ">
+                <div class="overShadow rounded h-100">
+                    <x-striped-card>
+                        <div class="d-flex justify-content-center">
+                            <p class="font-weight-bolder text-uppercase">
+                                {{ __('MEDIUM PACK') }}
+                            </p>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <div>
+                                <span class="h1 font-weight-bold text-uppercase">
+                                    0.15€
+                                </span>
+                                <small>/ {{ __('day') }} ({{ __('each code') }})</small>
+                            </div>
+                            <div class="my-3">
+                                <span class="font-weight-normal small">{{ __('* 50 - 100 codes') }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <x-link-button
+                                content="SELECT"
+                                :link="url('register')"
+                                size="md" 
+                                block
+                                color="primary">
+                            </x-link-button>
+                        </div>
+                        
+                        <div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Create QR that redirects') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Reuse QR between campaigns') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Detailed stats about visits') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Set different targets') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('API access') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Technical support') }}</small>
                                 </li>
                             </ul>
                         </div>
@@ -114,17 +184,18 @@
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
                             <p class="font-weight-bolder text-uppercase">
-                                {{ __('Developer') }}
+                                {{ __('LARGE PACK') }}
                             </p>
                         </div>
-                        <div class="d-flex justify-content-center align-items-end">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    1€
+                                    0.1€
                                 </span>
+                                <small>/ {{ __('day') }} ({{ __('each code') }})</small>
                             </div>
-                            <div class="ml-2">
-                                <small>/ {{ __('day') }} ({{ __('each API token') }})</small>
+                            <div class="my-3">
+                                <span class="font-weight-normal small">{{ __('* 100+ codes') }}</span>
                             </div>
                         </div>
 
@@ -142,19 +213,27 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Create any QR code') }}</small>
+                                    <small>{{ __('Create QR that redirects') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Read any QR code') }}</small>
+                                    <small>{{ __('Reuse QR between campaigns') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('3k request per hour / each token') }}</small>
+                                    <small>{{ __('Detailed stats about visits') }}</small>
                                 </li>
                                 <li class="list-group-item border-0">
                                     <i class="material-icons align-middle text-success">check_circle_outline</i>
-                                    <small>{{ __('Prior Technical Support') }}</small>
+                                    <small>{{ __('Set different targets') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('API access') }}</small>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <i class="material-icons align-middle text-success">check_circle_outline</i>
+                                    <small>{{ __('Technical support') }}</small>
                                 </li>
                             </ul>
                         </div>
@@ -174,6 +253,20 @@
                 <p class="text-light">
                     {{ __('Need more or have custom needs? Need to bill by year?') }}
                 </p>
+                <ul class="bg-primary p-0">
+                    <li class="list-group-item border-0 bg-primary text-light">
+                        <i class="material-icons align-middle text-success">check_circle_outline</i>
+                        <small>{{ __('Billed by periods') }}</small>
+                    </li>
+                    <li class="list-group-item border-0 bg-primary text-light">
+                        <i class="material-icons align-middle text-success">check_circle_outline</i>
+                        <small>{{ __('Vitamin API') }}</small>
+                    </li>
+                    <li class="list-group-item border-0 bg-primary text-light">
+                        <i class="material-icons align-middle text-success">check_circle_outline</i>
+                        <small>{{ __('High priority technical support') }}</small>
+                    </li>
+                </ul>
                 <x-link-button
                     content="CONTACT SALES"
                     :link="url('sales')" 
@@ -205,15 +298,16 @@
                             :value="__('No, you just buy credits that are used daily, there is no lock in.')">
                         </x-action-list-item>
                         <x-action-list-item
-                            :field="__('Why a developers plan?')" 
-                            :value="__('This is done thinking on app makers who need working with QR codes without hard coding solutions')">
+                            :field="__('Why so few plans?')" 
+                            :value="
+                                __('We would like to keep it simple to help everyone to understand it.') . ' ' . 
+                                __('Once you are inside, you will discover a lot of extra features on your own.')">
                         </x-action-list-item>
                         <x-action-list-item
-                            :field="__('Why a marketing plan?')" 
+                            :field="__('Why an enterprise solution?')" 
                             :value="
-                                __('QR codes have been useless and hard to use for years.') . ' '. 
-                                __('We vitamin them and build enterprise solutions for marketing campaigns.') . ' ' . 
-                                __('Just pay and use them, let us make them better.')">
+                                __('Some companies use massive resources or simply need to be isolated.') . ' '. 
+                                __('We analyse the requirements of those companies and help them from start to end.')">
                         </x-action-list-item>
                     </x-action-list>
                 </div>

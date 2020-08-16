@@ -37,7 +37,7 @@
                     {{ __('Founded in 2019 by engineer Alby Hernández') }}, 
                     {{ __('Cuerre has the mission to provide the most valuable service for QR codes at global scale.') }}
                     {{ __('We process and use big data to produce our accurate statistics') }}, 
-                    {{ __('QR creation and reading and other super fast tools.') }}' 
+                    {{ __('QR creation and reading and other super fast tools.') }}
                 </p>
             </div>
         </div>

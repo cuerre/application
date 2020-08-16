@@ -41,16 +41,6 @@
                 </li>
             </ul>
             
-            {{--
-            <p class="mt-3">
-                <x-link-button
-                    :content="__('Check the prices')"
-                    :link="url('pricing')"
-                    size="sm" 
-                    color="light">
-                </x-link-button>
-            </p>
-            --}}
         </p>
     </x-attention>
     
@@ -74,13 +64,11 @@
             </div>
         </x-box>
     @empty
-        <x-card-empty-message>
+        <x-box>
             {{ __('Touch') }} 
-            <kbd class="mx-2">
-                + {{ __('New') }}
-            </kbd> 
+            <kbd class="mx-2">+ {{ __('New') }}</kbd> 
             {{ __('on the top to create a new token') }}
-        </x-card-empty-message>
+        </x-box>
     @endforelse
     
 @endsection

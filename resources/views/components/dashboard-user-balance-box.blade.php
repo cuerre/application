@@ -63,7 +63,7 @@
        aria-haspopup="true" 
        aria-expanded="false" 
        v-pre>
-        <span class="material-icons align-middle">account_balance</span> 
+        <span class="material-icons align-middle">monetization_on</span> 
     </a>
 
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="balanceDropdown">

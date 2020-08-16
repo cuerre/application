@@ -27,11 +27,11 @@
                         <p class="h5 font-weight-normal">
                             {{ __('With Cuerre, you can know information') }}
                             {{ __('about the people who enter your QR codes') }},
-                            {{ __('generate or decode them, reuse your QR') }} 
+                            {{ __('generate or reuse them') }} 
                             {{ __('between different marketing campaigns') }}, 
                             {{ __('and so much more') }}.
                         </p>
-                        <p class="h5 font-weight-normal">
+                        <p class="h5 font-weight-normal mt-4">
                             {{ __('Fast') }} • 
                             {{ __('Simple to use') }} • 
                             {{ __('Developers friendly') }} • 
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="col-lg offset-lg-1 py-3">
-                    <img src="{{ asset('imgs/pieces/4.png') }}" class="w-100 shadow-lg rounded"/>
+                    <img src="{{ asset('imgs/pieces/7.png') }}" class="w-100 shadow-lg rounded"/>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
                         <p class="h5 font-weight-normal">
                             {{ __('Decide where to send your customers according') }} 
                             {{ __('to the operating system they come from or send everyone to') }} 
-                            {{ __('the same place. It is your decision!') }}'
+                            {{ __('the same place. It is your decision!') }}
                         </p>
                     </div>
                 </div>

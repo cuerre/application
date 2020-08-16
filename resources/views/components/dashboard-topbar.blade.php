@@ -9,12 +9,8 @@
             <div class="col-auto">
                 <div class="d-flex justify-content-center align-items-center">
 
-                    {{-- Cost per day --}}
-                    <x-dashboard-user-balance-box/>
-                
                     {{-- Authentication Links --}}
                     @guest
-                        
                         <div>
                             <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">
                                 {{ __('Login') }}
@@ -24,6 +20,10 @@
                             </a>
                         </div>
                     @else
+                        {{-- Cost per day --}}
+                        <x-dashboard-user-balance-box/>
+
+                        {{-- Menu --}}
                         <x-dashboard-user-dropdown/>
                     @endguest
 
