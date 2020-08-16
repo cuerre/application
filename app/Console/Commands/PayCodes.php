@@ -59,8 +59,8 @@ class PayCodes extends Command
     {
         parent::__construct();
 
-        $this->chunk = config('cuerre.processing.chunk');
-        $this->price = config('cuerre.products.codes.price');
+        $this->chunk  = config('cuerre.processing.chunk');
+        //$this->price  = config('cuerre.products.codes.prices');
     }
 
     /**
@@ -77,11 +77,12 @@ class PayCodes extends Command
                 foreach ( $users as $user ) {
 
                     $codes = $user->BillableCodes();
+                    $price = $user->CurrentCodePrice ();
 
                     # Pay for the code or unable it
-                    $codes->each(function($code) use ($user) {
+                    $codes->each(function($code) use ($user, $price) {
                         if( $user->credits > 0 ){
-                            $user->SubCredits( $this->price );
+                            $user->SubCredits( $price );
                         }else{
                             $code->Unable();
                         }

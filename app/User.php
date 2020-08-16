@@ -101,6 +101,7 @@ class User extends Authenticatable
     public function BillableTokens()
     {
         try {
+            
             # Save config constants for ease
             $tokensGracePeriod  = config('cuerre.products.tokens.grace'); // hours
 
@@ -111,8 +112,9 @@ class User extends Authenticatable
             $billableTokens = Token::where('user_id', $this->id)
                                    ->where('active', true)
                                    ->orWhere(function($query) use ($tokensGraceTime) {
-                                       $query->where('active', false)
-                                             ->whereTime('updated_at', '>', $tokensGraceTime);
+                                        $query->where('user_id', $this->id)
+                                              ->where('active', false)
+                                              ->whereTime('updated_at', '>', $tokensGraceTime);
                                    })
                                    ->orderBy('id')
                                    ->get();
@@ -124,6 +126,7 @@ class User extends Authenticatable
             return collect([]);
         }
     }
+    
 
 
 
@@ -145,7 +148,8 @@ class User extends Authenticatable
             $billableCodes = Code::where('user_id', $this->id)
                                  ->where('active', true)
                                  ->orWhere(function($query) use ($codesGraceTime) {
-                                     $query->where('active', false)
+                                     $query->where('user_id', $this->id)
+                                           ->where('active', false)
                                            ->whereTime('updated_at', '>', $codesGraceTime);
                                  })
                                  ->orderBy('id')
@@ -162,6 +166,43 @@ class User extends Authenticatable
 
 
     /**
+     * Calculate the price for each code
+     * acording to the number of codes
+     * the user owns
+     * 
+     * @return float
+     */
+    public function CurrentCodePrice ()
+    {
+        try{
+            $prices      = config('cuerre.products.codes.prices');
+            $countCodes  = $this->BillableCodes()->count();
+
+            $price = $prices['small'];
+            if( $countCodes >= 50 && $countCodes <= 100 ){
+                $price = $prices['medium'];
+            }
+
+            if( $countCodes > 100 ){
+                $price = $prices['large'];
+            }
+
+            # Check if the price was set
+            if( empty($price) ){
+                throw new ModelException('price could not be calculated');
+            }
+
+            return $price;
+
+        } catch ( ModelException $e ) {
+            Log::error($e);
+            return 0;
+        }
+    }
+
+
+
+    /**
      * Calculate the number of credits
      * the user will have to pay
      * 
@@ -172,16 +213,20 @@ class User extends Authenticatable
         try{
             # Save config constants for ease
             $tokenPrice         = config('cuerre.products.tokens.price');
-            $codePrice          = config('cuerre.products.codes.price');
+            $codePrice          = $this->CurrentCodePrice ();
 
             # Which products are billable?
             $billableTokens = $this->BillableTokens();
             $billableCodes  = $this->BillableCodes();
 
+            # Calculate total for tokens
             $totalToPay  = $billableTokens->count() * $tokenPrice;
-            $totalToPay += $billableCodes->count()  * $codePrice;
 
-            if( !is_int($totalToPay) ){
+            # Calculate total for codes
+            $totalToPay += $billableCodes->count() * $codePrice;
+
+            # Check the total
+            if( !is_numeric($totalToPay) ){
                 throw new ModelException('Trying to return no int value');
             }
             return $totalToPay;

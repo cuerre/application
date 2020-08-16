@@ -21,11 +21,15 @@ return [
     # Information of each product
     'products' => [
         'codes' => [
-            'price' => env('CUERRE_PRODUCTS_CODES_PRICE', 1),   // daily price
-            'grace' => env('CUERRE_PRODUCTS_CODES_GRACE', 8),
+            'prices' => [ 
+                'small'  => env('CUERRE_PRODUCTS_CODES_PRICE_SMALL', 0.2),   // daily price
+                'medium' => env('CUERRE_PRODUCTS_CODES_PRICE_MEDIUM', 0.15), // daily price
+                'large'  => env('CUERRE_PRODUCTS_CODES_PRICE_LARGE', 0.1),   // daily price
+            ],
+            'grace' => env('CUERRE_PRODUCTS_CODES_GRACE', 12),
         ],
         'tokens' => [
-            'price' => env('CUERRE_PRODUCTS_TOKENS_PRICE', 1),   // daily price
+            'price' => env('CUERRE_PRODUCTS_TOKENS_PRICE', 0),   // daily price
             'grace' => env('CUERRE_PRODUCTS_TOKENS_GRACE', 12),
         ]
     ]

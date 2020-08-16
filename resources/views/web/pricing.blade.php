@@ -48,8 +48,8 @@
 
 
 
-            {{-- Small offer --}}
-            <div class="col-lg ">
+            {{-- Small pack offer --}}
+            <div class="col-lg mb-5 mb-lg-0">
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
@@ -60,12 +60,12 @@
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    0.2€
+                                    {{ config('cuerre.products.codes.prices.small') }}€
                                 </span>
                                 <small>/ {{ __('day') }} ({{ __('each code') }})</small>
                             </div>
                             <div class="my-3">
-                                <span class="font-weight-normal small">{{ __('* -50 codes') }}</span>
+                                <span class="font-weight-normal small">{{ __('<50 codes') }}</span>
                             </div>
                         </div>
                         
@@ -113,8 +113,8 @@
 
 
 
-            {{-- Codes offer --}}
-            <div class="col-lg ">
+            {{-- Medium pack offer --}}
+            <div class="col-lg mb-5 mb-lg-0">
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
@@ -125,12 +125,12 @@
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    0.15€
+                                    {{ config('cuerre.products.codes.prices.medium') }}€
                                 </span>
                                 <small>/ {{ __('day') }} ({{ __('each code') }})</small>
                             </div>
                             <div class="my-3">
-                                <span class="font-weight-normal small">{{ __('* 50 - 100 codes') }}</span>
+                                <span class="font-weight-normal small">{{ __('50 - 100 codes') }}</span>
                             </div>
                         </div>
                         
@@ -178,8 +178,8 @@
 
 
 
-            {{-- Tokens offer --}}
-            <div class="col-lg">
+            {{-- Large pack offer --}}
+            <div class="col-lg mb-5 mb-lg-0">
                 <div class="overShadow rounded h-100">
                     <x-striped-card>
                         <div class="d-flex justify-content-center">
@@ -190,12 +190,12 @@
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             <div>
                                 <span class="h1 font-weight-bold text-uppercase">
-                                    0.1€
+                                    {{ config('cuerre.products.codes.prices.large') }}€
                                 </span>
                                 <small>/ {{ __('day') }} ({{ __('each code') }})</small>
                             </div>
                             <div class="my-3">
-                                <span class="font-weight-normal small">{{ __('* 100+ codes') }}</span>
+                                <span class="font-weight-normal small">{{ __('100+ codes') }}</span>
                             </div>
                         </div>
 
