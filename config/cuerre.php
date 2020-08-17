@@ -28,10 +28,6 @@ return [
             ],
             'grace' => env('CUERRE_PRODUCTS_CODES_GRACE', 12),
         ],
-        'tokens' => [
-            'price' => env('CUERRE_PRODUCTS_TOKENS_PRICE', 0),   // daily price
-            'grace' => env('CUERRE_PRODUCTS_TOKENS_GRACE', 12),
-        ]
     ]
 
 ];

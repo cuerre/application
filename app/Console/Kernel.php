@@ -45,13 +45,6 @@ class Kernel extends ConsoleKernel
             ->daily()
             ->runInBackground()
             ->onOneServer();
-
-        # Substract the credits for active codes
-        $schedule->command('pay:tokens')
-            ->daily()
-            ->runInBackground()
-            ->onOneServer();
-
         
     }
 

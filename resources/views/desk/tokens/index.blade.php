@@ -27,20 +27,13 @@
             {{ __('This is the easiest way to integrate our service into your application without pain.') }} 
         </p>
         <p>
-            <code class="text-primary">
-                {{ __('As a premium service') }}, {{ __('tokens are billed daily.') }}
-            </code> 
-            {{ __('This means you only pay for them if they have been used in the last day.') }}
-            <ul>
-                <li>
-                    {{ __('Each token can make a max number of requests per hour.') }} 
-                </li>
-                <li>
-                    {{ __('They will be switched off if not enough credits to pay for it.') }} 
-                    {{ __('The system tries to pay for older ones first, switching newer when no credits to pay them all.') }}
-                </li>
-            </ul>
-            
+            {{ __('Each token can make a max number of requests per hour.') }}
+            {{ __('We recommend you to read our documentation to know more about how to use the API in minutes.') }}
+        </p>
+        <p>
+            <a href="{{ url('documentation') }}" class="btn btn-light text-primary">
+                {{ __('Read documentation') }} 
+            </a>
         </p>
     </x-attention>
     

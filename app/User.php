@@ -90,44 +90,7 @@ class User extends Authenticatable
         }
         return false;
     }
-
-
-
-    /**
-     * Get only billable tokens
-     * 
-     * @return Illuminate\Support\Collection
-     */
-    public function BillableTokens()
-    {
-        try {
-            
-            # Save config constants for ease
-            $tokensGracePeriod  = config('cuerre.products.tokens.grace'); // hours
-
-            # Calculate min hour to avoid # the bill
-            $tokensGraceTime = Carbon::now()->subHours($tokensGracePeriod);
-
-            # Take tokens that has been active some hours
-            $billableTokens = Token::where('user_id', $this->id)
-                                   ->where('active', true)
-                                   ->orWhere(function($query) use ($tokensGraceTime) {
-                                        $query->where('user_id', $this->id)
-                                              ->where('active', false)
-                                              ->whereTime('updated_at', '>', $tokensGraceTime);
-                                   })
-                                   ->orderBy('id')
-                                   ->get();
-
-            return $billableTokens;
-
-        } catch ( ModelException $e ){
-            Log::error($e);
-            return collect([]);
-        }
-    }
     
-
 
 
     /**
@@ -212,18 +175,13 @@ class User extends Authenticatable
     {
         try{
             # Save config constants for ease
-            $tokenPrice         = config('cuerre.products.tokens.price');
             $codePrice          = $this->CurrentCodePrice ();
 
             # Which products are billable?
-            $billableTokens = $this->BillableTokens();
             $billableCodes  = $this->BillableCodes();
 
-            # Calculate total for tokens
-            $totalToPay  = $billableTokens->count() * $tokenPrice;
-
             # Calculate total for codes
-            $totalToPay += $billableCodes->count() * $codePrice;
+            $totalToPay = $billableCodes->count() * $codePrice;
 
             # Check the total
             if( !is_numeric($totalToPay) ){
