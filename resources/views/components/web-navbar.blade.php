@@ -103,9 +103,11 @@
                     <a class="btn btn-primary mr-2" href="{{ route('register') }}">
                                 {{ __('Register') }}
                             </a>
-                </li>
-                @endif @else
-                <x-user-dropdown/> @endguest
+                        </li>
+                    @endif
+                @else
+                    <x-dashboard-user-dropdown/>
+                @endguest
             </ul>
         </div>
     </div>

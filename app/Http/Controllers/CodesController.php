@@ -17,7 +17,7 @@ use App\Http\Controllers\StatsController;
  * CodesController is a Laravel Controller for managing App\Code Models and Views
  * 
  * CodesController is a Laravel Controller for managing App\Code data Models 
- * and renderable Views. This means that everything related to url('dashboard/codes')
+ * and renderable Views. This means that everything related to url('desk/codes')
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Methods:
@@ -35,9 +35,8 @@ use App\Http\Controllers\StatsController;
  * self::ViewDownload( Request )
  * self::ViewStats( Request )
  * self::ViewCreation()
- * 
  * self::ViewModification( Request )
- * 
+ * self::ViewUpdateOrCreate ( Request )
  * 
  * @package Cuerre
  * @author Alby Hernández
@@ -412,7 +411,7 @@ class CodesController extends Controller
             $page = self::GetPage(Auth::id(), 5);
 
             # Show index view
-            return view('modules.codes.index', ['page' => $page]);
+            return view('desk.codes.index', ['page' => $page]);
             
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -546,7 +545,7 @@ class CodesController extends Controller
             $stats = new StatsController( $request->input('code') );
 
             # Show index view
-            return view('modules.codes.stats', [
+            return view('desk.codes.stats', [
                 'platforms'     => $stats->GetPlatforms(),
                 'browsers'      => $stats->GetBrowsers(),
                 'deviceTypes'   => $stats->GetDeviceTypes(),
@@ -622,7 +621,7 @@ class CodesController extends Controller
     {
         try {
             # Show index view
-            return view('modules.codes.creation');
+            return view('desk.codes.creation');
             
         } catch ( CodeException $e ) {
             Log::error( $e );
@@ -655,7 +654,7 @@ class CodesController extends Controller
                 throw new CodeException ('Some field is malformed');
 
             # Show index view
-            return view('modules.codes.modification', [
+            return view('desk.codes.modification', [
                 'code' => self::GetOne( $request->input('code') )
             ]);
             
@@ -746,7 +745,7 @@ class CodesController extends Controller
                 throw new CodeException('We could not modify the code at this moment');
 
             # Go to the index
-            return redirect('dashboard/codes');
+            return redirect('desk/codes');
             
         } catch ( CodeException $e ) {
             Log::error($e);

@@ -18,7 +18,7 @@ class CreateCodesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name', 100);
             $table->json('data');
-            $table->boolean('active')->default(true);
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

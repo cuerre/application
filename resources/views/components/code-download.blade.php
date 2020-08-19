@@ -9,8 +9,8 @@
         <i class="material-icons align-middle">save_alt</i>
     </button>
     <div class="dropdown-menu">
-        <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $id) }}&output=png">.PNG</a>
-        <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $id) }}&output=svg">.SVG</a>
-        <a class="dropdown-item" href="{{ url('dashboard/codes/download?code=' . $id) }}&output=eps">.EPS</a>
+        <a class="dropdown-item" href="{{ url('desk/codes/download?code=' . $id) }}&output=png">.PNG</a>
+        <a class="dropdown-item" href="{{ url('desk/codes/download?code=' . $id) }}&output=svg">.SVG</a>
+        <a class="dropdown-item" href="{{ url('desk/codes/download?code=' . $id) }}&output=eps">.EPS</a>
     </div>
 </div>

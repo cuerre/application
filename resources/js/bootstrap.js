@@ -66,3 +66,10 @@ import 'prismjs/themes/prism.css';
  */
 import ColorGenerator from './ColorGenerator.js'
 window.icolor = new ColorGenerator();
+
+
+
+/**
+ * 
+ * 
+ */

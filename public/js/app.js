@@ -1978,21 +1978,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       options: {
         legend: {
-          display: false
+          display: true
         },
-        responsive: true,
-        scales: {
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              suggestedMin: 50,
-              maxTicksLimit: 3
-            }
-          }]
-        }
+        responsive: true
       }
     };
   },
@@ -2010,7 +1998,7 @@ __webpack_require__.r(__webpack_exports__);
     /* eslint-disable no-new */
 
     new Chart(document.getElementById('stats_browser_chart'), {
-      type: 'horizontalBar',
+      type: 'doughnut',
       data: chartData,
       options: this.options
     });
@@ -2377,21 +2365,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       options: {
         legend: {
-          display: false
+          display: true
         },
-        responsive: true,
-        scales: {
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              suggestedMin: 50,
-              maxTicksLimit: 3
-            }
-          }]
-        }
+        responsive: true
       }
     };
   },
@@ -2409,7 +2385,7 @@ __webpack_require__.r(__webpack_exports__);
     /* eslint-disable no-new */
 
     new Chart(document.getElementById('stats_platforms_chart'), {
-      type: 'horizontalBar',
+      type: 'doughnut',
       data: chartData,
       options: this.options
     });
@@ -90360,6 +90336,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 window.icolor = new _ColorGenerator_js__WEBPACK_IMPORTED_MODULE_10__["default"]();
+/**
+ * 
+ * 
+ */
 
 /***/ }),
 

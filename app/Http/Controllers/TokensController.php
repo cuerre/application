@@ -192,8 +192,8 @@ class TokensController extends Controller
                     $code->active = false;
                     break;
                 case false:
-                    if ( !Auth::user()->HasCredits() )
-                        throw new TokenException ('You need credits to perform this action');
+                    #if ( !Auth::user()->HasCredits() )
+                    #    throw new TokenException ('You need credits to perform this action');
                     
                     $code->active = true;
                     break;
@@ -235,7 +235,7 @@ class TokensController extends Controller
             $tokens = self::Get();
 
             # Show index view
-            return view('modules.tokens.index', ['tokens' => $tokens]);
+            return view('desk.tokens.index', ['tokens' => $tokens]);
             
         } catch ( Exception $e ) {
             Log::error($e);
@@ -254,7 +254,9 @@ class TokensController extends Controller
     {
         try {
             # Show creation view
-            return view('modules.tokens.creation');
+            return view('desk.tokens.creation', [
+                'abilities' => Token::ALLOWED_ABILITIES
+            ]);
 
         } catch ( Exception $e ) {
             Log::error($e);

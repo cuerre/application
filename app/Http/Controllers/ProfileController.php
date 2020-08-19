@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
  * ProfileController is a Laravel Controller for managing App\User Models and Views
  * 
  * ProfileController is a Laravel Controller for managing App\User data Models 
- * and renderable Views. This means that everything related to url('dashboard/profile')
+ * and renderable Views. This means that everything related to url('desk/profile')
  * can be found here. This controller tries to keep all methods as static.
  * 
  * Example usage:
@@ -111,7 +111,7 @@ class ProfileController extends Controller
             }
                 
             # Go to the index
-            return redirect('dashboard/profile')
+            return redirect('desk/profile')
                     ->send();
             
         } catch ( Exception $e ) {
@@ -196,7 +196,7 @@ class ProfileController extends Controller
             $profile = self::Get();
 
             # Show index view
-            return view('modules.profile.index', ['profile' => $profile]);
+            return view('desk.profile.index', ['profile' => $profile]);
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
@@ -214,7 +214,7 @@ class ProfileController extends Controller
     {
         try {
             # Show index view
-            return view('modules.profile.change.name');
+            return view('desk.profile.change.name');
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
@@ -232,7 +232,7 @@ class ProfileController extends Controller
     {
         try {
             # Show index view
-            return view('modules.profile.change.password');
+            return view('desk.profile.change.password');
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());
@@ -250,7 +250,7 @@ class ProfileController extends Controller
     {
         try {
             # Show index view
-            return view('modules.profile.delete');
+            return view('desk.profile.delete');
             
         } catch ( Exception $e ) {
             Log::error($e->getMessage());

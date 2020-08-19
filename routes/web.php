@@ -17,35 +17,31 @@ Route::get('/test', function (Request $request) {
 
 });
 
-
-
-/**
- *
- * Web endpoints
- *
- */
-Route::get('/', function () {
-    return view('index');
-});
-
 Auth::routes();
 
 Route::get('/redirect', 'VisitController@Pipeline');
 
 
 
-
+/**
+ *
+ * Website endpoints
+ *
+ */
+Route::get('/', function () {
+    return view('web.index');
+});
 
 Route::get('/pricing', function () {
-    return view('pricing');
+    return view('web.pricing');
 });
 
 Route::get('/about', function () {
-    return view('about');
+    return view('web.about');
 });
 
 Route::get('/sales', function () {
-    return view('sales');
+    return view('web.sales');
 });
 
 Route::post('/sales', 'ContactController@SendSalesRequest');
@@ -64,74 +60,73 @@ Route::prefix('documentation')->group(function () {
     });
 
     Route::get('/faq', function () {
-        return view('modules.documentation.faq');
+        return view('documentation.faq');
     });
 
     Route::prefix('api')->group(function () {
         Route::get('/releases', function () {
-            return view('modules.documentation.api.releases');
+            return view('documentation.api.releases');
         });
 
         Route::prefix('v1')->group(function () {
             Route::get('/prologue', function () {
-                return view('modules.documentation.api.v1.prologue');
+                return view('documentation.api.v1.prologue');
             });
 
             Route::get('/getencode', function () {
-                return view('modules.documentation.api.v1.getencode');
+                return view('documentation.api.v1.getencode');
             });
 
             Route::get('/postdecode', function () {
-                return view('modules.documentation.api.v1.postdecode');
+                return view('documentation.api.v1.postdecode');
             });
 
             Route::get('/getcodes', function () {
-                return view('modules.documentation.api.v1.getcodes');
+                return view('documentation.api.v1.getcodes');
             });
 
             Route::get('/getcode', function () {
-                return view('modules.documentation.api.v1.getcode');
+                return view('documentation.api.v1.getcode');
             });
 
             Route::get('/getcodeimage', function () {
-                return view('modules.documentation.api.v1.getcodeimage');
+                return view('documentation.api.v1.getcodeimage');
             });
 
             Route::get('/postcode', function () {
-                return view('modules.documentation.api.v1.postcode');
+                return view('documentation.api.v1.postcode');
             });
 
             Route::get('/putcode', function () {
-                return view('modules.documentation.api.v1.putcode');
+                return view('documentation.api.v1.putcode');
             });
 
             Route::get('/deletecode', function () {
-                return view('modules.documentation.api.v1.deletecode');
+                return view('documentation.api.v1.deletecode');
             });
         });
     });
 
-    
     Route::prefix('contracts')->group(function () {
         Route::get('/terms', function () {
-            return view('modules.documentation.contracts.terms');
+            return view('documentation.contracts.terms');
         });
 
         Route::get('/privacy', function () {
-            return view('modules.documentation.contracts.privacy');
+            return view('documentation.contracts.privacy');
         });
     });
 });
 
 /**
  *
- * Dashboard endpoints
+ * Desk endpoints
  *
  */
-Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+Route::middleware(['auth'])->prefix('desk')->group(function () {
 
     Route::get('/', function () {
-        return redirect('/dashboard/codes');
+        return redirect('/desk/codes');
     });
 
     Route::prefix('codes')->group(function () {
@@ -151,6 +146,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::delete('/', 'CodesController@ViewDelete');
 
         Route::post('/', 'CodesController@ViewUpdateOrCreate');
+        //Route::post('/', 'CodesController@ViewCreateOne');
 
         Route::put('/', 'CodesController@ViewUpdateOrCreate');
 
@@ -191,8 +187,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::prefix('billing')->group(function () {
 
         Route::get('/', function () {
-            return view('modules.billing');
-        })->name('dashboard.billing');
+            return view('desk.billing');
+        })->name('desk.billing');
 
         Route::post('payment', 'PaymentController@Payment')->name('payment');
 
@@ -202,7 +198,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     });
     
     Route::get('/support', function () {
-        return view('modules.support');
+        return view('desk.support');
     });
 
     Route::post('/support', 'ContactController@SendSupportRequest');
@@ -210,12 +206,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
 
 
-/*
-Route::fallback(function () {
+Route::any('/{any}', function () {
     abort (404);
-});
-
-Route::any('/', function () {
-    abort (404);
-});
-*/
+})->where('any', '.*');
