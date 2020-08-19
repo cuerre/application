@@ -192,8 +192,8 @@ class TokensController extends Controller
                     $code->active = false;
                     break;
                 case false:
-                    if ( !Auth::user()->HasCredits() )
-                        throw new TokenException ('You need credits to perform this action');
+                    #if ( !Auth::user()->HasCredits() )
+                    #    throw new TokenException ('You need credits to perform this action');
                     
                     $code->active = true;
                     break;
