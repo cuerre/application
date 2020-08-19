@@ -1,4 +1,4 @@
-@extends('layouts.dash')
+@extends('layouts.dashboard')
 
 
 @section('menu')
@@ -27,6 +27,7 @@
             content="Prologue" 
             :link="url('documentation/api/v1/prologue')">
         </x-dashboard-menu-item>
+        {{--
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
             content="{http:get} or {http:post} /encode" 
@@ -37,6 +38,7 @@
             content="{http:post} /decode" 
             :link="url('documentation/api/v1/postdecode')">
         </x-dashboard-menu-item>
+        --}}
         <x-dashboard-menu-item 
             icon="swap_vertical_circle"
             content="{http:get} /codes" 

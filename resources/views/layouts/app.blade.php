@@ -34,12 +34,11 @@
 
     {{-- Fonts --}}
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <!--<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     {{-- Static styles CSS --}}
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
 
     {{-- Embeded CSS --}}
@@ -78,17 +77,10 @@
 <body class="bg-light">
     <div id="app">
     
-        {{-- Navbar --}}
-        <x-web-navbar/>
-        
-
-        {{-- Content --}}
-        <main class="container-fluid d-flex flex-column m-0 px-0" style="min-height: 70vh !important;">
-            @yield('content')
+        {{-- Full screen wrapper --}}
+        <main class="container-fluid d-flex flex-column m-0 px-0" style="min-height: 100vh !important;">
+            @yield('wrapper')
         </main>
-        
-        {{-- Footer --}}
-        <x-web-footer/>
         
     </div>
     

@@ -1,5 +1,5 @@
 <li class="nav-item">
-    <a href="{{ $link }}" class="nav-link text-secondary">
+    <a href="{{ $link }}" class="nav-link text-muted pl-0">
         <i class="material-icons align-middle mr-2">
             {{ $icon }}
         </i>

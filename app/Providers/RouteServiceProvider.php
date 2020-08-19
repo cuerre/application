@@ -21,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/desk';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -42,6 +42,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapInternalRoutes();
+
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
@@ -50,17 +52,17 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the "web" routes for the application.
+     * Define the "internal" routes for the application.
      *
-     * These routes all receive session state, CSRF protection, etc.
+     * These routes are NOT public.
      *
      * @return void
      */
-    protected function mapWebRoutes()
-    {
-        Route::middleware('web')
+    protected function mapInternalRoutes()
+    {   
+        Route::prefix('internal')
             ->namespace($this->namespace)
-            ->group(base_path('routes/web.php'));
+            ->group(base_path('routes/internal.php'));
     }
 
     /**
@@ -78,4 +80,20 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
+
+    /**
+     * Define the "web" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapWebRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
+    }
+
+    
 }

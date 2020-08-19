@@ -1,8 +1,8 @@
 <div>
-    {{-- @if( $show == false ) --}}
+    @unless( $show == true )
         <p>
             <button 
-                class="btn btn-light text-primary" 
+                class="btn btn-light text-primary bg-white" 
                 type="button" 
                 data-toggle="collapse" 
                 data-target="#collapseAttention" 
@@ -13,9 +13,18 @@
                 {{ __('Attention') }}
             </button>
         </p>
-    {{-- @endif --}}
+    @endunless
     <div class="@if( $show == true ) collapse.show @else collapse @endif" id="collapseAttention">
-        <div class="card card-body mb-4 text-muted">
+        <div class="card card-body mb-4 text-muted"
+             style="border: 2px solid WhiteSmoke !important;">
+
+            @if( $show == true )
+                <p class="text-primary">
+                    <i class="material-icons align-middle">announcement</i>
+                    {{ __('Attention') }}
+                </p>
+            @endif
+            
             {{ $slot }}
         </div>
     </div>

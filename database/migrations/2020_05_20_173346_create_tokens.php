@@ -18,7 +18,7 @@ class CreateTokens extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name', 100);
             $table->string('token')->unique(); # Hashed key
-            $table->boolean('active')->default(true);
+            $table->boolean('active')->default(false);
             $table->json('abilities')->nullable();
             $table->integer('rate_limit')->default(3000); # Max requests per hour
             $table->timestamps();

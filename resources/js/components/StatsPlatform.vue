@@ -16,21 +16,9 @@ export default {
         return {
             options : {
                 legend: {
-                    display: false
+                    display: true
                 },
                 responsive: true,
-                scales: {
-                    xAxes: [{
-                        stacked: true,
-                    }],
-                    yAxes: [{
-                        stacked: true,
-                        ticks: {
-                            suggestedMin: 50,
-                            maxTicksLimit:3
-                        }
-                    }]
-                }
             }
         }
     },
@@ -49,7 +37,7 @@ export default {
 
         /* eslint-disable no-new */
         new Chart(document.getElementById('stats_platforms_chart'), {
-            type: 'horizontalBar',
+            type: 'doughnut',
             data: chartData,
             options: this.options
         })
