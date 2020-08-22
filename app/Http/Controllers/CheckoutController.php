@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Validator;
 
 # Paypal SDK
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
-use PayPalCheckoutSdk\Core\SandboxEnvironment;
+#use PayPalCheckoutSdk\Core\SandboxEnvironment;
+use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalHttp\HttpException;
@@ -72,7 +73,8 @@ class CheckoutController extends Controller
             $this->clientSecret = config('paypal.client.secret');
 
             # Start the environment
-            $environment = new SandboxEnvironment($this->clientId, $this->clientSecret);
+            #$environment = new SandboxEnvironment($this->clientId, $this->clientSecret);
+            $environment = new ProductionEnvironment($this->clientId, $this->clientSecret);
             $this->client = new PayPalHttpClient($environment);
 
             # Define $checkoutData attribute as array

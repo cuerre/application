@@ -8,7 +8,7 @@
 return [
 
     # General vars 
-    'version' => env('CUERRE_CURRENT_VERSION', '1.0'),
+    'version' => env('CUERRE_CURRENT_VERSION', '1'),
     'processing' => [
         'chunk' => env('CUERRE_PROCESSING_CHUNK', 100), // users processed at the same time on task scheduling
     ],
