@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "mollie/mollie-api-php": "^2.0",
+        "paypal/paypal-checkout-sdk": "^1.0",
         "spatie/laravel-cookie-consent": "^2.12",
         "symfony/process": "^5.0"
     },

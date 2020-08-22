@@ -26,9 +26,9 @@
                             {{-- Show transaction description --}}
                             @php
                                 try {
-                                    $briefDescription = Str::limit($payment->data['result']['description'], 20);
-                                    $longDescription  = $payment->data['result']['description'];
-                                    $paidAt           = Carbon\Carbon::parse($payment->data['result']['paidAt'])->toDayDateTimeString();
+                                    $briefDescription = Str::limit($payment->data['outcome']['result']['purchase_units'][0]['reference_id'], 20);
+                                    $longDescription  = $payment->data['outcome']['result']['purchase_units'][0]['reference_id'];
+                                    $paidAt           = Carbon\Carbon::parse($payment->data['outcome']['result']['update_time'])->toDayDateTimeString();
                                 } catch ( Exception $e ){
                                     Log::error($e);
                                     $briefDescription = null;
@@ -68,8 +68,9 @@
                             {{-- Show amount of money spent when present --}}
                             @php
                                 try {
-                                    echo $payment->data['result']['amount']['value'];
-                                    echo $payment->data['result']['amount']['currency'];
+                                    echo $payment->data['outcome']['result']['purchase_units'][0]['amount']['value'];
+                                    echo ' ';
+                                    echo $payment->data['outcome']['result']['purchase_units'][0]['amount']['currency_code'];
                                 } catch ( Exception $e ){
                                     Log::error($e);
                                     echo __('Not registered');
