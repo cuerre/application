@@ -28,8 +28,8 @@ use PayPalHttp\HttpException;
 class CheckoutController extends Controller
 {
     // Creating an environment
-    private $clientId = "AftQ4j5HVwakKO2Tr9pH6anDhmhlIk_PVHtoHTs_1fjr-H210CLPIppzevNr0mOF3aORAaT_LK_mYTws";
-    private $clientSecret = "EHUq2haz_FnKwUkyPMnvDNE1Jak502K_F1yMtBlEwdL98sTexpJcpik6GJn_GeeccyeJmM1Kp7dE6Gv5";
+    private $clientId = null;
+    private $clientSecret = null;
 
 
 
@@ -68,13 +68,12 @@ class CheckoutController extends Controller
     function __Construct( $paymentHash = null )
     {
         try{
+            $this->clientId     = config('paypal.client.id');
+            $this->clientSecret = config('paypal.client.secret');
+
             # Start the environment
             $environment = new SandboxEnvironment($this->clientId, $this->clientSecret);
             $this->client = new PayPalHttpClient($environment);
-
-
-            # Init and store the payment provider
-            //$this->mollie->setApiKey(config('mollie.apikey'));
 
             # Define $checkoutData attribute as array
             $this->paymentData = [];
