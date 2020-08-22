@@ -192,9 +192,9 @@ Route::middleware(['auth'])->prefix('desk')->group(function () {
 
         Route::post('payment', 'PaymentController@Payment')->name('payment');
 
-        Route::get('payment/callback', 'PaymentController@Callback')->name('payment.callback');
+        Route::get('payment/return', 'PaymentController@Return')->name('payment.return');
 
-        Route::get('payment/webhook', 'PaymentController@Webhook')->name('payment.webhook');
+        Route::get('payment/cancel', 'PaymentController@Cancel')->name('payment.cancel');
     });
     
     Route::get('/support', function () {

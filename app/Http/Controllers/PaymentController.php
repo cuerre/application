@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
-use App\Http\Controllers\MolliePaymentController;
 use App\Exceptions\PaymentException;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Log;
 class PaymentController extends Controller
 {
     /**
-     * MolliePaymentController instance
+     * CheckoutController instance
      * 
-     * @var MolliePaymentController
+     * @var CheckoutController
      */
-    private $payment;
+    private $checkout;
 
 
 
@@ -31,13 +31,13 @@ class PaymentController extends Controller
      */
     function __Construct( Request $request )
     {
-        # Generate Paypal instance (express checkout)
-        if ( $request->has('payment') ){
-            $this->payment = new MolliePaymentController(
-                $request->input('payment')
+        # Generate Paypal instance (checkout)
+        if ( $request->has('paymentHash') ){
+            $this->checkout = new CheckoutController(
+                $request->input('paymentHash')
             );
         }else{
-            $this->payment = new MolliePaymentController();
+            $this->checkout = new CheckoutController();
         }
     }
 
@@ -45,7 +45,7 @@ class PaymentController extends Controller
 
     /**
      * Recieves an amount of credits as input and 
-     * goes to Mollie to finish payment
+     * goes to Paypal to finish payment
      * 
      * @param   Request  $request
      * @return  RedirectResponse
@@ -67,9 +67,9 @@ class PaymentController extends Controller
             }
 
             # Go to do the payment
-            $this->payment
+            $this->checkout
                  ->SetTotal( $request->input('credits') )
-                 ->GetPayment();
+                 ->SetPayment();
 
         } catch ( PaymentException $e ) {
 
@@ -87,73 +87,82 @@ class PaymentController extends Controller
 
 
     /**
-     * This is 
+     * This is where to go when payment is returned
      * 
      * @param   Request $request
      * @return  RedirectResponse
      */
-    public function Webhook( Request $request )
-    {
-        try {
-
-        } catch ( PaymentException $e ){
-            Log::error( $e );
-        }
-    }
-
-
-    /**
-     * This is where to go when payment is done
-     * to process and save it into our system
-     * 
-     * @param   Request $request
-     * @return  RedirectResponse
-     */
-    public function Callback( Request $request )
+    public function Return( Request $request )
     {
         try {
 
             # Get payment details
-            $payment = $this->payment->GetPaymentDetails();
+            $payment = $this->checkout->GetPayment();
 
             # Check if we have details
-            if ( is_null($payment) ){
-                throw new PaymentException (
-                    'Could not get the payment details'
-                );
+            if ( empty($payment['outcome']) ){
+                throw new PaymentException ('could not get the payment outcome');
             }
 
-            # Check if credits were paid
-            if ( !$payment->isPaid() ){
-                throw new PaymentException (
-                    'Credits are not paid'
-                );
+            # Check if we have status on the outcome
+            if ( empty($payment['outcome']['result']['status']) ){
+                throw new PaymentException ('could not get the payment status');
             }
 
-            # Join all information
-            $paymentData = [
-                'result'  => collect($payment)->toArray()
-            ];
+            # Check if outcome status is 'COMPLETED'
+            if ( $payment['outcome']['result']['status'] != 'COMPLETED' ){
+                throw new PaymentException ('payment outcome status is not COMPLETED');
+            }
     
             # Store the transaction into DB
             $newPayment           = new Payment;
             $newPayment->user_id  = Auth::id();
-            $newPayment->data     = $paymentData;
+            $newPayment->data     = $payment;
             
             if( !$newPayment->save() ){
-                throw new PaymentException (
-                    'Payment not saved into database'
-                );
+                throw new PaymentException ('payment not saved into database');
             }
 
             # Sum the credits to the user
-            Auth::user()->SumCredits($payment->amount->value);
+            Auth::user()->SumCredits($payment['request']['purchase_units'][0]['amount']['value']);
 
             # Go to billing index
             return redirect()
                  ->route('desk.billing')
                  ->with([
                      'message' => __('Thank you for your buy. Enjoy your credits')
+                 ]);
+
+        } catch ( PaymentException $e ){
+
+            Log::error( $e );
+
+            # Go to billing index with errors
+            return redirect()
+                 ->route('desk.billing')
+                 ->with([
+                     'message' => __('Sorry, something was bad. If you have problems, contact support.')
+                 ]);
+        }
+    }
+
+
+
+    /**
+     * This is where to go when payment is canceled
+     * 
+     * @param   Request $request
+     * @return  RedirectResponse
+     */
+    public function Cancel( Request $request )
+    {
+        try {
+
+            # Go to billing index with errors
+            return redirect()
+                 ->route('desk.billing')
+                 ->with([
+                     'message' => __('The payment was canceled.')
                  ]);
 
         } catch ( PaymentException $e ){
