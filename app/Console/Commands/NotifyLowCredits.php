@@ -58,16 +58,12 @@ class NotifyLowCredits extends Command
             ->chunk($this->chunk, function ($users) {
                 foreach ($users as $user) {
 
-                    # Check if the user has created codes
-                    $numCodes = Code::where('user_id', $user->id)->count();
-                    $sumCodes = $numCodes * config('cuerre.products.codes.price');
-
-                    # Check if the user has created tokens
-                    $numTokens = $user->tokens()->count();
-                    $sumTokens = $numTokens * config('cuerre.products.tokens.price');
+                    # Check created codes
+                    $codes = $user->BillableCodes()->count();
+                    $price = $user->CurrentCodePrice ();
 
                     # Total credits needed
-                    $neededCredits = $sumCodes + $sumTokens;
+                    $neededCredits = $codes + $price;
 
                     # Has created codes? 
                     if ( $user->credits <  $neededCredits ){
