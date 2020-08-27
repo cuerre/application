@@ -6,7 +6,7 @@
 <br>
 <br>
 
-@component('mail::button', ['url' => url('dashboard/billing') ])
+@component('mail::button', ['url' => url('desk/billing') ])
 Buy credits
 @endcomponent
 
