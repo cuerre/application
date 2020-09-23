@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /**
+         * Force Laravel to build https URLS
+         * when APP_ENV var is set as 'production'
+         */
+        if (App::environment('production')) { URL::forceScheme('https'); }
+
+
+
         /**
          * Paginate a standard Laravel Collection
          *
