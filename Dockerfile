@@ -106,21 +106,35 @@ RUN chown www-data:www-data -R /app
 RUN find /app -type f -exec chmod 644 {} \;
 RUN find /app -type d -exec chmod 755 {} \;
 
+# Crafting the entrypoint script
+RUN rm -rf /entrypoint.sh && touch /entrypoint.sh
+RUN echo "#!/bin/bash" >> /entrypoint.sh
+RUN echo "service cron start" >> /entrypoint.sh
+RUN echo "service php${php_version}-fpm start" >> /entrypoint.sh
+RUN echo "shopt -s dotglob" >> /entrypoint.sh
+RUN echo "mkdir -p /var/www/" >> /entrypoint.sh
+RUN echo "mv /app/* /var/www/" >> /entrypoint.sh
+RUN echo "(crontab -l; echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1';) | crontab -" >> /entrypoint.sh
+RUN echo "touch /etc/crontab /etc/cron.*/*" >> /entrypoint.sh
+RUN echo 'exec "$@"' >> /entrypoint.sh
+RUN echo "php /var/www/artisan config:cache" >> /entrypoint.sh
+RUN echo "php /var/www/artisan browscap:cache" >> /entrypoint.sh
 
+RUN chown root:root /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-#### FINAL OPERATIONS
+# Crafting the cmd script
 RUN rm -rf /init.sh && touch /init.sh
 RUN echo "#!/bin/bash" >> /init.sh
-RUN echo "service php${php_version}-fpm start" >> /init.sh
-RUN echo "shopt -s dotglob" >> /init.sh
-RUN echo "mkdir -p /var/www/" >> /init.sh
-RUN echo "mv /app/* /var/www/" >> /init.sh
-RUN echo "(crontab -l; echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1';) | crontab -" >> /init.sh
-RUN echo "php /var/www/artisan config:cache" >> /init.sh
-RUN echo "php /var/www/artisan browscap:cache" >> /init.sh
 RUN echo "/bin/bash" >> /init.sh
+
 RUN chown root:root /init.sh
 RUN chmod +x /init.sh
-EXPOSE 9000
-CMD /init.sh
 
+# Gaining a bit of comfort
+WORKDIR "/var/www"
+EXPOSE 9000
+
+# Executing the scripts
+ENTRYPOINT ["/entrypoint.sh"]
+CMD /init.sh
